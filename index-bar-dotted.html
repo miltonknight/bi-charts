@@ -1,0 +1,188 @@
+<html>
+
+<head>
+<meta charset="utf-8" />
+<title>Dotted bar</title>
+<script src="js/echarts.js"></script>
+<script src="js/jquery-2.2.3.js"></script>
+<style type="text/css">
+#main {
+	width: 800px;
+	height: 500px;
+	border: 1px solid #ccc;
+	margin: 30px;
+}
+</style>
+</head>
+
+<body>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="main"></div>
+
+<script type="text/javascript">
+// 基于准备好的dom，初始化echarts实例
+var myChart = echarts.init(document.getElementById("main"));
+
+// 指定图表的配置项和数据
+// Generate data
+var category = [];
+var dottedBase = +new Date();
+var lineData = [];
+var barData = [];
+var objData = [];
+objData = {
+	c0: ['2020-7', '2020-8', '2020-9', '2020-10', '2020-11', '2020-12'], // X轴数值
+	c1: [50, 123, 200, 67, 80, 150], // Y轴数值
+	// c1: [0, 0, 0, 0, 0, 0], // Y轴数值
+	c2: [90, 150, 240, 100, 230, 170], // 包络线数值
+	c3: [],
+	c4: [],
+	c5: []
+}
+
+for (var j = 0; j < objData.c1.length; j++) {
+	var text = '';
+	text = objData.c1[j] / objData.c2[j]
+	text = parseInt(text * 10000) / 100 ;
+	// console.log("c"+ j +" ", data.c3[j]);
+	console.log("c"+ j +" ", text);
+	objData.c3.push(text);
+}
+
+data = objData;
+console.log("objData", objData);
+console.log("data", data);
+
+for (var i = 0; i < 20; i++) {
+    var date = new Date(dottedBase += 3600 * 24 * 1000);
+    category.push([
+        date.getFullYear(),
+        date.getMonth() + 1,
+        date.getDate()
+    ].join('-'));
+    var b = Math.random() * 200;
+    var d = Math.random() * 200;
+    barData.push(b)
+    lineData.push(d + b);
+}
+console.log("barData", barData);
+console.log("lineData", lineData);
+
+// option
+option = {
+    backgroundColor: '#0f375f',
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+			// 设置为阴影
+			type: 'shadow',
+			// 设置阴影颜色
+			shadowStyle: { 
+				color: 'rgba(10, 90, 150, 0.5)',
+			}
+        }
+    },
+    legend: { // 上标
+        data: ['计划', '完成量'],
+        textStyle: {
+            color: '#ccc'
+        }
+    },
+    xAxis: {
+		name: '日期',
+		// data: category,
+		data: data.c0,
+        axisLine: {
+            lineStyle: {
+                color: '#ccc'
+            }
+		},
+		// 轴文字设置，rotate=倾斜角度，interval=显示间隔，间隔为列数
+		axisLabel: {
+			rotate: 50, 
+			interval: 0
+		}
+    },
+    yAxis: {
+		name: '数量',
+        splitLine: {show: false}, // Y轴（横向）刻度线显隐
+        axisLine: {
+            lineStyle: {
+                color: '#ccc'
+            }
+        }
+    },
+    series: [{
+		// 包络线图形
+		// name: 'line',
+		name: '第1项数据',
+        type: 'line',
+        smooth: true,
+        showAllSymbol: true,
+        symbol: 'emptyCircle',
+		symbolSize: 10,
+		// data: lineData
+		data: data.c2
+    }, {
+		// 柱子图形
+		// name: 'bar',
+		name: '完成量',
+        type: 'bar',
+        barWidth: 20,
+        itemStyle: {
+            barBorderRadius: 0, // 柱圆角设置
+            color: new echarts.graphic.LinearGradient(
+                0, 0, 0, 1,
+                [ // 柱子渐变颜色 
+                    // {offset: 0, color: '#14c8d4'},
+					// {offset: 1, color: '#43eec6'}
+					{offset: 0, color: '#e6a23c'},
+                    {offset: 1, color: '#a56608'}
+                ]
+            )
+        },
+		// data: barData
+		data: data.c1
+    }, {
+		// name: 'line',
+		name: '计划量',
+        type: 'bar',
+        barGap: '-100%',
+        barWidth: 20,
+        itemStyle: {
+            color: new echarts.graphic.LinearGradient(
+                0, 0, 0, 1,
+                [  // 渐变赋值方式 { color: (hex/rgb/rgba) }
+                    {offset: 0, color: 'rgba(20,200,212,0.5)'},
+                    // {offset: 0.2, color: 'rgba(20,200,212,0.2)'},
+                    {offset: 1, color: 'rgba(20,200,212,0)'}
+                ]
+            )
+        },
+        z: -12,
+		// data: lineData
+		data: data.c2
+	}, {
+		// name: 'dotted',
+		name: '完成度',
+        type: 'pictorialBar',
+		symbol: 'rect',
+		show: false,
+        itemStyle: {
+            color: '#0f375f'
+        },
+        symbolRepeat: true,
+        symbolSize: [12, 4],
+        symbolMargin: 1,
+        z: -10,
+		// data: lineData
+		data: data.c3
+	}]
+};
+
+myChart.setOption(option);
+
+</script>
+</body>
+
+</html>
