@@ -1,0 +1,176 @@
+<html>
+
+<head>
+<meta charset="utf-8" />
+<title>Dotted bar</title>
+<script src="js/echarts.js"></script>
+<script src="js/jquery-2.2.3.js"></script>
+<style type="text/css">
+#main {
+	width: 800px;
+	height: 500px;
+	border: 1px solid #ccc;
+	margin: 30px;
+}
+</style>
+</head>
+
+<body>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="main"></div>
+
+<script type="text/javascript">
+// 基于准备好的dom，初始化echarts实例
+var myChart = echarts.init(document.getElementById("main"));
+
+// 指定图表的配置项和数据
+// Generate data
+var category = [];
+var dottedBase = +new Date();
+var lineData = [];
+var barData = [];
+var objData = [];
+objData = {
+	c0: ['中国', '美国', '英国', '法国', '德国', '日本'], // X轴数值
+	c1: [200, 50, 123, 67, 160, 150], // Y轴数值
+	// c1: [0, 0, 0, 0, 0, 0], // Y轴数值
+	c2: [240, 90, 150, 100, 230, 170], // 包络线
+	c3: [],
+	c4: [288, 162, 183, 150, 330, 193], 
+	c5: [163, 110, 83, 90, 160, 93]
+}
+
+data = objData;
+console.log("objData", objData);
+console.log("data", data);
+
+// option
+option = {
+    backgroundColor: '#0f375f',
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+			// 设置为阴影
+			type: 'shadow',
+			// 设置阴影颜色
+			shadowStyle: { 
+				color: 'rgba(10, 90, 150, 0.5)',
+			}
+        }
+    },
+    legend: { // 上标
+        data: ['参数1', '参数A', '参数B', '参数C'],
+        textStyle: {
+            color: '#ccc'
+        }
+    },
+    xAxis: {
+		name: '年份',
+		// data: category,
+        data: data.c0,
+        splitLine: {show: false}, // X轴（横向）刻度线显隐
+        axisLine: {
+            lineStyle: {
+                color: '#ccc'
+            }
+		},
+		// 轴文字设置，rotate=倾斜角度，interval=显示间隔，间隔为列数
+		axisLabel: {
+			rotate: 0, 
+			interval: 0
+		}
+    },
+    yAxis: {
+        name: '数量',
+        // data: data.c0,
+        splitLine: {show: false}, // Y轴（横向）刻度线显隐
+        axisLine: {
+            lineStyle: {
+                color: '#ccc'
+            }
+        }
+    },
+    series: [{
+		// 包络线图形
+		// name: 'line',
+		name: '参数1',
+        type: 'line',
+        smooth: true, // 是否顺滑？ true:平滑曲线 ,false:折现
+        lineStyle :{ // 线条样式
+            width:'1',
+            type :'dotted' // dotted-点型虚线; dashed-线性虚线; solid-实线
+        },
+        showAllSymbol: false,
+        symbol: 'emptyCircle',
+        symbolSize: 10,
+		// data: lineData
+		data: data.c4
+    },{
+		// name: 'line',
+		name: '参数A',
+        type: 'bar',
+        barGap: '0%', // 柱间隙每个为100%，-100%代表与原来重合（注意是重合不是堆叠）
+        barWidth: 15,
+        itemStyle: {
+            barBorderRadius: 0, // 柱圆角设置
+            color: new echarts.graphic.LinearGradient(
+                0, 0, 0, 1,
+                [  // 渐变赋值方式 { color: (hex/rgb/rgba) }
+                    {offset: 0, color: 'rgba(20,200,212,0.5)'},
+                    // {offset: 0.2, color: 'rgba(20,200,212,0.2)'},
+                    {offset: 1, color: 'rgba(20,200,212,0)'}
+                ]
+            )
+        },
+        z: -12,
+		// data: lineData
+		data: data.c1
+	},{
+		// 柱子图形
+		// name: 'bar',
+		name: '参数B',
+        type: 'bar',
+        barWidth: 15,
+        itemStyle: {
+            barBorderRadius: 0, // 柱圆角设置
+            color: new echarts.graphic.LinearGradient(
+                0, 0, 0, 1,
+                [ // 柱子渐变颜色 
+                    // {offset: 0, color: '#14c8d4'},
+					// {offset: 1, color: '#43eec6'}
+					{offset: 0, color: '#e6a23c'},
+                    {offset: 1, color: '#a56608'}
+                ]
+            )
+        },
+		// data: barData
+		data: data.c2
+    },{
+		// 柱子图形
+		// name: 'bar',
+		name: '参数C',
+        type: 'bar',
+        barWidth: 15,
+        itemStyle: {
+            barBorderRadius: 0, // 柱圆角设置
+            color: new echarts.graphic.LinearGradient(
+                0, 0, 0, 1,
+                [ // 柱子渐变颜色 
+                    // {offset: 0, color: '#14c8d4'},
+					// {offset: 1, color: '#43eec6'}
+					{offset: 0, color: '#e88181'},
+                    {offset: 1, color: '#b30303'}
+                ]
+            )
+        },
+		// data: barData
+		data: data.c5
+    }]
+};
+
+myChart.setOption(option);
+
+</script>
+</body>
+
+</html>
