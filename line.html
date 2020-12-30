@@ -1,0 +1,73 @@
+<html>
+
+<head>
+<meta charset="utf-8" />
+<title>异形柱状图demo</title>
+<script src="js/echarts.js"></script>
+<script src="js/jquery-2.2.3.js"></script>
+<style type="text/css">
+#main {
+	width: 800px;
+	height: 500px;
+	border: 1px solid #ccc;
+	margin: 30px;
+}
+</style>
+</head>
+
+<body>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="main"></div>
+
+<script type="text/javascript">
+// 基于准备好的dom，初始化echarts实例
+var myChart = echarts.init(document.getElementById("main"));
+
+option = {
+	title: {
+		text: "折线图",
+		subtext: "测试折线图",
+		left: 'center',
+		top: '5px'
+	},
+    xAxis: {
+        type: 'category',
+        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [{
+		name: '参数1',
+        type: 'line',
+        smooth: true, // 是否顺滑？ true:平滑曲线 ,false:折线
+        lineStyle :{ // 线条样式
+			type: 'dotted', // dotted-点型虚线; dashed-线性虚线; solid-实线
+            width: '1',
+			color: 'red'
+        },
+        showAllSymbol: false,
+        symbol: 'emptyCircle',
+        symbolSize: 5,
+		// data: lineData
+		data: [820, 932, 901, 934, 1290, 1330, 1320],
+    },{
+        data: [520, 532, 601, 734, 690, 930, 820],
+		type: 'line',
+		smooth: false, // 是否顺滑？ true:平滑曲线 ,false:折线
+        lineStyle :{ // 线条样式
+			type: 'solid', // dotted-点型虚线; dashed-线性虚线; solid-实线
+            width: '3',
+			color: '#e78308'
+		},
+		symbolSize: 10 // 点大小
+    }]
+};
+
+
+myChart.setOption(option);
+
+</script>
+</body>
+
+</html>

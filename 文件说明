@@ -1,10 +1,94 @@
 1. 柱状图Bars
-index-bar-double.html 双柱
+1.1 bar.html 柱图基础版
+1.2 bar-double.html 双（多）柱，包络线
+1.3 bar-dotted.html 重叠柱，包络线，随机数据
+1.4 bar-vertical.html
+1.5 bar-horizon.html 横向堆叠柱状图（类甘特）
+
+2. 线形图 
+2.1 line.html
+
+3. 饼状图
+3.1  
 
 
-1.1 index-bar-dotted.html 
-1.2 index-bar-vertical.html
-1.3 index-bar.html
-1.4 index-cross.html
-1.5 index-gannt.html
-1.6 index-panel.html
+4. 仪表盘
+4.1 index-panel.html 仪表盘
+
+
+
+1.5 index-cross.html
+1.6 index-gannt.html 甘特图
+1.7 index-panel.html 
+
+
+
+#################### 相关事件 ####################
+1. title:图标标题
+title: {
+    text: "折线图", // 主标题
+    subtext: "测试折线图", // 副标题
+    left: 'center', // 横向距离（位置）
+    top: '5px' // 距上距离
+}
+2. legend:图例事件
+legend: {
+    data: ['item-A', 'item-B', 'item-C', 'item-D', 'item-E'],
+    selectedMode: false, // 取消图例上的点击事件
+    textStyle: { // 文本样式
+        color: '#ccc'
+    }
+}
+3. xAxis/yAxis:横纵轴设置
+xAxis: {
+    name: "单位：{tColor|箱}", // 轴标题
+    nameTextStyle: {
+        color: "#fff", // 标题颜色
+        rich: {
+            // 调用富文本方式
+            red: {
+                color: "red",
+            },
+            tColor: {
+                color: "orange",
+            },
+        },
+    },
+    data: category, // 数据来源对象
+    // 刻度显隐
+    axisTick: {
+        show: true,
+    },
+    // 轴线设置
+    axisLine: { 
+        lineStyle: {
+            // y轴线颜色
+            color: "rgba(255, 129, 109, 0.3)",
+            width: 1, //这里是为了突出显示加上的
+        },
+    },
+    // 轴文字设置，数值取整否则渲染有问题
+    axisLabel: {
+        rotate: 0, // rotate=倾斜角度
+        interval: 0 // 显示间隔，间隔为列（整）数
+    },
+    splitArea: { // 分割区域
+        areaStyle: {
+            color: "rgba(255,255,255,.5)",
+        },
+    },
+    splitLine: { // 分割线
+        show: true,
+        lineStyle: {
+            color: "rgba(255, 129, 109, 1)",
+            width: 5,
+            type: "dashed",
+        },
+    }
+}
+
+
+
+
+
+

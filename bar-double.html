@@ -31,42 +31,18 @@ var lineData = [];
 var barData = [];
 var objData = [];
 objData = {
-	c0: ['2020-7', '2020-8', '2020-9', '2020-10', '2020-11', '2020-12'], // X轴数值
-	c1: [50, 123, 200, 67, 80, 150], // Y轴数值
+	c0: ['中国', '美国', '英国', '法国', '德国', '日本'], // X轴数值
+	c1: [200, 50, 123, 67, 160, 150], // Y轴数值
 	// c1: [0, 0, 0, 0, 0, 0], // Y轴数值
-	c2: [90, 150, 240, 100, 230, 170], // 包络线数值
+	c2: [240, 90, 150, 100, 230, 170], // 包络线
 	c3: [],
-	c4: [],
-	c5: []
-}
-
-for (var j = 0; j < objData.c1.length; j++) {
-	var text = '';
-	text = objData.c1[j] / objData.c2[j]
-	text = parseInt(text * 10000) / 100 ;
-	// console.log("c"+ j +" ", data.c3[j]);
-	console.log("c"+ j +" ", text);
-	objData.c3.push(text);
+	c4: [288, 162, 183, 150, 330, 193], 
+	c5: [163, 110, 83, 90, 160, 93]
 }
 
 data = objData;
 console.log("objData", objData);
 console.log("data", data);
-
-for (var i = 0; i < 20; i++) {
-    var date = new Date(dottedBase += 3600 * 24 * 1000);
-    category.push([
-        date.getFullYear(),
-        date.getMonth() + 1,
-        date.getDate()
-    ].join('-'));
-    var b = Math.random() * 200;
-    var d = Math.random() * 200;
-    barData.push(b)
-    lineData.push(d + b);
-}
-console.log("barData", barData);
-console.log("lineData", lineData);
 
 // option
 option = {
@@ -83,52 +59,82 @@ option = {
         }
     },
     legend: { // 上标
-        data: ['第1项数据', '完成量', '计划量', '完成度'],
+        data: ['参数1', '参数A', '参数B', '参数C'],
         textStyle: {
             color: '#ccc'
         }
     },
     xAxis: {
-		name: '日期',
+		name: '年份',
 		// data: category,
-		data: data.c0,
+        data: data.c0,
+        splitLine: {show: false}, // X轴（横向）刻度线显隐
         axisLine: {
             lineStyle: {
                 color: '#ccc'
             }
 		},
-		// 轴文字设置，rotate=倾斜角度，interval=显示间隔，间隔为列数
+		// 轴文字设置，rotate=倾斜角度，interval=显示间隔，间隔为列（整）数
 		axisLabel: {
-			rotate: 50, 
+			rotate: 0, 
 			interval: 0
 		}
     },
     yAxis: {
-		name: '数量',
+        name: '数量',
+        // data: data.c0,
         splitLine: {show: false}, // Y轴（横向）刻度线显隐
         axisLine: {
             lineStyle: {
                 color: '#ccc'
             }
-        }
+        },
+        axisLabel: {
+			rotate: 0, 
+			interval: 0
+		}
     },
     series: [{
 		// 包络线图形
 		// name: 'line',
-		name: '第1项数据',
+		name: '参数1',
         type: 'line',
-        smooth: true,
-        showAllSymbol: true,
+        smooth: true, // 是否顺滑？ true:平滑曲线 ,false:折现
+        lineStyle :{ // 线条样式
+            width:'1',
+            type :'dotted' // dotted-点型虚线; dashed-线性虚线; solid-实线
+        },
+        showAllSymbol: false,
         symbol: 'emptyCircle',
-		symbolSize: 10,
+        symbolSize: 10,
 		// data: lineData
-		data: data.c2
-    }, {
+		data: data.c4
+    },{
+		// name: 'line',
+		name: '参数A',
+        type: 'bar',
+        barGap: '0%', // 柱间隙每个为100%，-100%代表与原来重合（注意是重合不是堆叠）
+        barWidth: 15,
+        itemStyle: {
+            barBorderRadius: 0, // 柱圆角设置
+            color: new echarts.graphic.LinearGradient(
+                0, 0, 0, 1,
+                [  // 渐变赋值方式 { color: (hex/rgb/rgba) }
+                    {offset: 0, color: 'rgba(20,200,212,0.5)'},
+                    // {offset: 0.2, color: 'rgba(20,200,212,0.2)'},
+                    {offset: 1, color: 'rgba(20,200,212,0)'}
+                ]
+            )
+        },
+        z: -12,
+		// data: lineData
+		data: data.c1
+	},{
 		// 柱子图形
 		// name: 'bar',
-		name: '完成量',
+		name: '参数B',
         type: 'bar',
-        barWidth: 20,
+        barWidth: 15,
         itemStyle: {
             barBorderRadius: 0, // 柱圆角设置
             color: new echarts.graphic.LinearGradient(
@@ -142,42 +148,28 @@ option = {
             )
         },
 		// data: barData
-		data: data.c1
-    }, {
-		// name: 'line',
-		name: '计划量',
+		data: data.c2
+    },{
+		// 柱子图形
+		// name: 'bar',
+		name: '参数C',
         type: 'bar',
-        barGap: '-100%',
-        barWidth: 20,
+        barWidth: 15,
         itemStyle: {
+            barBorderRadius: 0, // 柱圆角设置
             color: new echarts.graphic.LinearGradient(
                 0, 0, 0, 1,
-                [  // 渐变赋值方式 { color: (hex/rgb/rgba) }
-                    {offset: 0, color: 'rgba(20,200,212,0.5)'},
-                    // {offset: 0.2, color: 'rgba(20,200,212,0.2)'},
-                    {offset: 1, color: 'rgba(20,200,212,0)'}
+                [ // 柱子渐变颜色 
+                    // {offset: 0, color: '#14c8d4'},
+					// {offset: 1, color: '#43eec6'}
+					{offset: 0, color: '#e88181'},
+                    {offset: 1, color: '#b30303'}
                 ]
             )
         },
-        z: -12,
-		// data: lineData
-		data: data.c2
-	}, {
-		// name: 'dotted',
-		name: '完成度',
-        type: 'pictorialBar',
-		symbol: 'rect',
-		show: false,
-        itemStyle: {
-            color: '#0f375f'
-        },
-        symbolRepeat: true,
-        symbolSize: [12, 4],
-        symbolMargin: 1,
-        z: -10,
-		// data: lineData
-		data: data.c3
-	}]
+		// data: barData
+		data: data.c5
+    }]
 };
 
 myChart.setOption(option);
