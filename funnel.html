@@ -1,0 +1,86 @@
+<html>
+
+<head>
+<meta charset="utf-8" />
+<title>金字塔</title>
+<script src="js/echarts.js"></script>
+<script src="js/jquery-2.2.3.js"></script>
+<style type="text/css">
+#main {
+	width: 800px;
+	height: 500px;
+	border: 1px solid #ccc;
+	margin: 30px;
+}
+</style>
+</head>
+
+<body>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="main"></div>
+
+<script type="text/javascript">
+// 基于准备好的dom，初始化echarts实例
+var myChart = echarts.init(document.getElementById("main"));
+
+// 指定图表的配置项和数据
+option = {
+    title: {
+        text: '漏斗图',
+        subtext: '纯属虚构'
+    },
+    tooltip: {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c}%"
+    },
+    toolbox: {
+        feature: {
+            dataView: {readOnly: false},
+            restore: {},
+            saveAsImage: {}
+        }
+	},
+	color: ["#9dd3e8", "#f39494","#fbd88a","#b2db9e","#879bd7"],
+    // legend: {
+    //     data: ['展现','点击','访问','咨询','订单']
+    // },
+    series: [
+        {
+            name: '人员分布',
+            type: 'funnel',
+            sort : 'ascending',
+            left: '10%',
+            width: '50%',
+            label: {
+				formatter: '{b}人数占比 {c}%',
+				fontSize: 24
+            },
+            labelLine: {
+                show: true
+            },
+            itemStyle: {
+                opacity: 1
+            },
+            emphasis: {
+                label: {
+                    position: 'inside',
+                    formatter: '{b}人数占比 {c}%'
+                }
+            },
+            data: [
+                {value: 100, name: '本科'},
+                {value: 80, name: '硕士'},
+                {value: 60, name: '博士'},
+                {value: 40, name: '教授'},
+                {value: 20, name: '院士'},
+            ]
+        }
+    ]
+};
+
+myChart.setOption(option);
+
+</script>
+</body>
+
+</html>
