@@ -1,0 +1,105 @@
+<html>
+
+<head>
+<meta charset="utf-8" />
+<title>筛选器</title>
+<script src="js/echarts.js"></script>
+<script src="./js/jquery-2.2.3.min.js"></script>
+<style type="text/css">
+#main {
+	width: 800px;
+	height: 700px;
+	border: 1px solid #ccc;
+	margin: 30px;
+}
+.box {
+    width: 100%;
+
+}
+.box div {
+    width: 100px;
+    height: 30px;
+    line-height: 30px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin: 0 10px 10px 0;
+    background: rgb(235, 200, 4);
+    float: left;
+    text-align: center;
+}
+.box div.done {
+    color: #fff;
+    background: rgb(3, 146, 139);
+}
+</style>
+</head>
+
+<body>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<!-- <div id="main"></div> -->
+<pre>
+    <code>
+        var tData = [
+            {name: "step1", status: 1},
+            {name: "step2", status: 1},
+            {name: "step3", status: 1},
+            {name: "step4", status: 0},
+            {name: "step5", status: 0},
+            {name: "step6", status: 0},
+        ]
+    </code>
+</pre>
+
+<div class="box" id="box">
+
+</div>
+<!-- <div id="p1">321321</div>
+
+<div id="red">
+    <h1>红盒子</h1>
+</div>
+<div id="blue">蓝盒子</div>
+<button id="ok">移动</button> -->
+
+<script type="text/javascript">
+// var ok = document.getElementById("ok");  //获取按钮元素的引用
+//     ok.onclick = function () {  //为按钮注册一个鼠标单击事件的处理函数
+//         var red = document.getElementById("red");  //获取红色盒子的引用
+//         var blue= document.getElementById("blue");  //获取蓝色盒子的引用
+//         blue.appendChild(red);  //最后移动红色盒子到蓝色盒子中
+//     }
+// window.onload=function(){
+//     var pobj=document.getElementById('p1');
+//     pobj.onclick=function(){
+//         var strongobj = document.createElement('div');
+//         var textobj = document.createTextNode('<-------原生JS实现-------->');
+//         pobj.appendChild(strongobj.appendChild(textobj));
+//         document.getElementById("box").appendChild(strongobj); 
+//     }
+// }
+var tData = [
+    {name: "step1", status: 1},
+    {name: "step2", status: 1},
+    {name: "step3", status: 1},
+    {name: "step4", status: 0},
+    {name: "step5", status: 0},
+    {name: "step6", status: 0},
+]
+// var obj = document.getElementById("box");
+var str = '';
+for(var i = 0; i<tData.length; i++) {
+    if(tData[i].status == 1) {
+        str += "<div class=' done'>";
+    }
+    else {
+        str += "<div class=''>";
+    }
+    str += tData[i].name + "</div>";
+}
+console.log("str ", str);
+$("#box").append(str);
+
+</script>
+</body>
+
+</html>

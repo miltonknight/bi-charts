@@ -1,0 +1,123 @@
+<html>
+
+<head>
+<meta charset="utf-8" />
+<title>Dotted bar</title>
+<script src="js/echarts.js"></script>
+<script src="js/jquery-2.2.3.js"></script>
+<style type="text/css">
+#main {
+	width: 800px;
+	height: 500px;
+	border: 1px solid #ccc;
+	margin: 30px;
+}
+</style>
+</head>
+
+<body>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="main"></div>
+
+<script type="text/javascript">
+// 基于准备好的dom，初始化echarts实例
+var myChart = echarts.init(document.getElementById("main"));
+// Generate data
+var category = [];
+var dottedBase = +new Date();
+var lineData = [];
+var barData = [];
+var item = [];
+item = ["KJ-A","KJ-B","KJ-C","KJ-D","HJ-A","HJ-B","HJ-C","HJ-D"]
+var item2 = [];
+item2 = ["阶段1","阶段","阶段3","阶段4","阶段5","阶段6"]
+var plan = [100,100,100,100,100,100,100,100]
+var done = [10,20,30,50,70,40,80,100]
+
+for (var i = 0; i < 20; i++) {
+    var date = new Date(dottedBase += 3600 * 24 * 1000);
+    category.push([
+        date.getFullYear(),
+        date.getMonth() + 1,
+        date.getDate()
+    ].join('-'));
+    var b = Math.random() * 100;
+    var d = Math.random() * 100;
+    var e = 100
+    barData.push(b)
+    // lineData.push(d + b);
+    lineData.push(e);
+}
+
+
+// option
+option = {
+    backgroundColor: '#0f375f',
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'shadow'
+        }
+    },
+    legend: {
+        data: ['line', 'bar'],
+        textStyle: {
+            color: '#ccc'
+        }
+    },
+    yAxis: {
+        data: item,
+        axisLine: {
+            lineStyle: {
+                color: '#ccc'
+            }
+        }
+    },
+    xAxis: {
+        // data: item2,
+        axisLabel: {
+            show: true
+        },
+        splitLine: {
+            show: false
+        },
+        axisLine: {
+            lineStyle: {
+                color: '#ccc'
+            }
+        }
+    },
+    series: [{
+        name: 'dotted2',
+        type: 'pictorialBar',
+        symbol: 'rect',
+        itemStyle: {
+            color: '#18a7f5'
+        },
+        symbolRepeat: true,
+        symbolSize: [6, 15],
+        symbolMargin: 2,
+        z: 1,
+        data: done
+    }, 
+    {
+        name: 'dotted',
+        type: 'pictorialBar',
+        symbol: 'rect',
+        itemStyle: {
+            color: '#143ea0'
+        },
+        symbolRepeat: true,
+        symbolSize: [6, 15],
+        symbolMargin: 2,
+        z: -1,
+        data: plan
+    }]
+};
+
+myChart.setOption(option);
+
+</script>
+</body>
+
+</html>

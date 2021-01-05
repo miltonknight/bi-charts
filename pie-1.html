@@ -1,0 +1,163 @@
+<html>
+
+<head>
+<meta charset="utf-8" />
+<title>pie-1</title>
+<script src="js/echarts.js"></script>
+<script src="js/jquery-2.2.3.js"></script>
+<style type="text/css">
+#main {
+	width: 800px;
+	height: 500px;
+	border: 1px solid #ccc;
+	margin: 30px;
+}
+</style>
+</head>
+
+<body>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="main"></div>
+
+<script type="text/javascript">
+// 基于准备好的dom，初始化echarts实例
+var myChart = echarts.init(document.getElementById("main"));
+option = {
+    series: [{
+            type: 'gauge',
+            center: ["50%", "60%"],
+            startAngle: 200,
+            endAngle: -20,
+            min: 0, // 范围最小值
+            max: 160, // 范围最大值 data.C0
+            splitNumber: 20,
+            itemStyle: {
+                color: '#FFAB91'
+            },
+            progress: {
+                show: true,
+                width: 30
+            },
+
+            pointer: {
+                show: false,
+            },
+            // axisLine: {
+            //     lineStyle: {
+            //         width: 30,
+            //     }
+            // },
+            axisLine:{
+                show : true,// 是否显示仪表盘轴线(轮廓线),默认 true。
+                lineStyle : { // 属性lineStyle控制线条样式
+                shadowBlur: 10,             //(发光效果)图形阴影的模糊大小。该属性配合 shadowColor,shadowOffsetX, shadowOffsetY 一起设置图形的阴影效果。 
+                shadowColor: "#fff",        //阴影颜色。支持的格式同color。
+                // color : [ //表盘颜色
+                //     [ 0.5, "#DA462C" ],//0-50%处的颜色
+                //   [ 0.7, "#FF9618" ],//51%-70%处的颜色
+                //   [ 0.9, "#FFED44" ],//70%-90%处的颜色
+                //   [ 1,"#20AE51" ]//90%-100%处的颜色
+                // ],
+                width : 15//表盘宽度
+            },
+            axisTick: {
+                show: true,
+                distance: 10,
+                splitNumber: 5,
+                lineStyle: {
+                    width: 2,
+                    color: '#999'
+                }
+            },
+            splitLine: {
+                show: false,
+                distance: -42,
+                length: 14,
+                lineStyle: {
+                    width: 3,
+                    color: '#999'
+                }
+            },
+            axisLabel: {
+                show: false, 
+                distance: -20,
+                color: '#000',
+                fontSize: 20
+            },
+            anchor: {
+                show: false
+            },
+            title: {
+                show: false,
+            },
+            detail: {
+                valueAnimation: true,
+                width: '60%',
+                lineHeight: 40,
+                height: '15%',
+                borderRadius: 8,
+                offsetCenter: [0, '-15%'],
+                fontSize: 100,
+                fontWeight: 'bolder',
+                formatter: '{value}',
+                color: 'auto'
+            },
+            data: [{
+                value: 20
+            }]
+        },
+
+        {
+            type: 'gauge',
+            center: ["50%", "60%"],
+            startAngle: 200,
+            endAngle: -20,
+            min: 0,
+            max: 60,
+            itemStyle: {
+                color: '#FD7347',
+            },
+            progress: {
+                show: false,
+                width: 8
+            },
+
+            pointer: {
+                show: false
+            },
+            axisLine: {
+                show: false
+            },
+            axisTick: {
+                show: false
+            },
+            splitLine: {
+                show: false
+            },
+            axisLabel: {// 刻度数字
+                show: false
+            },
+            detail: {
+                show: true
+            },
+            data: [{
+                value: '营业收入'
+            }]
+
+        }
+    ],
+};
+
+setInterval(function() {
+    let random = (Math.random() * 60).toFixed(2) - 0;
+    option.series[0].data[0].value = random;
+    // option.series[1].data[0].value = random;
+    myChart.setOption(option, true);
+}, 2000);
+
+myChart.setOption(option);
+
+</script>
+</body>
+
+</html>

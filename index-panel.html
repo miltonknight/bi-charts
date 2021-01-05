@@ -20,10 +20,10 @@
 // 基于准备好的dom，初始化echarts实例
 var myChart = echarts.init(document.getElementById("main"));
 
-var dataArr = 44;
+var dataArr = 54;
 var colorSet = {
 	// color: '#468EFD'
-	color: "red", // 进度颜色、仪表盘刻度颜色
+	color: "#2fe1ff", // 进度颜色、仪表盘刻度颜色
 };
 option = {
 	backgroundColor: "#2a2d46",
@@ -31,20 +31,49 @@ option = {
 		formatter: "{a} <br/>{b} : {c}%",
 	},
 
-	series: [{
+	series: [
+		{
 			name: "内部进度条",
 			type: "gauge",
 			// center: ['20%', '50%'],
 			radius: "70%",
-
+			startAngle: 180, // 起始角度
+            endAngle: 0, // 结束角度
 			splitNumber: 10,
 			axisLine: {
 				lineStyle: {
+					// color: [
+					// 	[dataArr / 100, '#0065ff'],
+					// 	// [1, "#00b5c3"], // 表盘背景色
+					// 	[1, '#00b5c3']
+					// ],
 					color: [
-						[dataArr / 100, colorSet.color],
-						[1, "#111F42"],
+						[0.1, 'red'],
+						[0.3, new echarts.graphic.LinearGradient(
+							0, 1, 0, 0,
+							[{
+								offset: 0,
+								color: 'red'
+							}, {
+								offset: 0.8,
+								color: 'rgb(235,205,6)'
+							}]
+						)],
+						[0.7, 'rgb(235,205,6)'],
+						[0.9, new echarts.graphic.LinearGradient(
+							0, 1, 0, 0,
+							[{
+								offset: 0,
+								color: 'rgb(13,211,97)'
+							}, {
+								offset: 0.6,
+								color: 'rgb(235,205,6)'
+							}]
+						)],
+						[1, 'rgb(13,211,97)']
 					],
-					width: 8,
+
+					width: 15,
 				},
 			},
 			axisLabel: {
@@ -63,36 +92,35 @@ option = {
 				formatter: function (value) {
 					if (value !== 0) {
 						var num = Math.round(value);
-						return parseInt(num).toFixed(0) + "%";
+						return parseInt(num).toFixed(0);
 					} else {
 						return 0;
 					}
 				},
-				offsetCenter: [0, 82],
+				offsetCenter: [0, -40], // 文字显示位置
 				textStyle: {
 					padding: [0, 0, 0, 0],
-					fontSize: 18,
+					fontSize: 50,
 					fontWeight: "700",
 					color: colorSet.color,
 				},
 			},
 			title: {
-				// 标题
+				// 标题（汉字）
 				show: true,
-				offsetCenter: [0, 46], // x, y，单位px
+				offsetCenter: [0, 20], // x, y，单位px
 				textStyle: {
-					color: "#fff",
-					fontSize: 16, // 表盘上的标题文字大小
+					color: "#2fe1ff",
+					fontSize: 32, // 表盘上的标题文字大小
 					fontWeight: 400,
-					fontFamily: "PingFangSC",
 				},
 			},
 			data: [{
 				name: "仪表数据",
 				value: dataArr,
-			}, ],
-			pointer: {
-				show: true,
+			}],
+			pointer: { // 指针
+				show: false,
 				length: "85%",
 				radius: "10%",
 				width: 5, //指针粗细
@@ -100,15 +128,15 @@ option = {
 			animationDuration: 4000,
 		},
 		{
-			name: "外部刻度",
+			name: "刻度",
 			type: "gauge",
 			//  center: ['20%', '50%'],
-			radius: "50%",
+			radius: "55%",
+			startAngle: 180, // 起始角度
+            endAngle: 0, // 结束角度
 			min: 0, //最小刻度
 			max: 100, //最大刻度
 			splitNumber: 10, //刻度数量
-			startAngle: 225,
-			endAngle: -45,
 			axisLine: {
 				show: true,
 				lineStyle: {
@@ -117,9 +145,9 @@ option = {
 						[1, "rgba(0,0,0,0)"]
 					],
 				},
-			}, //仪表盘轴线
-			axisLabel: {
-				show: true,
+			},
+			axisLabel: { // 内部刻度数字
+				show: false,
 				color: "red", // 仪表数字颜色
 				distance: 25,
 				formatter: function (v) {
@@ -148,9 +176,11 @@ option = {
 							return "100";
 					}
 				},
-			}, //刻度标签。
-			axisTick: {
+			}, 
+			axisTick: { //刻度标签。
 				show: true,
+				startAngle: 180, // 起始角度
+            	endAngle: 0, // 结束角度
 				splitNumber: 7,
 				lineStyle: {
 					color: colorSet.color, //用颜色渐变函数不起作用
@@ -159,7 +189,7 @@ option = {
 				length: -8,
 			}, //刻度样式
 			splitLine: {
-				show: true,
+				show: false,
 				length: -20,
 				lineStyle: {
 					color: colorSet.color, //用颜色渐变函数不起作用
