@@ -14,22 +14,42 @@
 }
 .box {
     width: 100%;
-
+    clear: both;
+    overflow: hidden;
 }
-.box div {
+.box .stone {
+    width: 100px;
+    height: 80px;
+    float: left;
+    text-align: center;
+    margin: 0 10px 10px 0;
+}
+.stone p {
+    margin: 5px 0 0;
+    font-size: 14px;
+}
+.box .sect {
     width: 100px;
     height: 30px;
     line-height: 30px;
     border: 1px solid #ccc;
     border-radius: 3px;
-    margin: 0 10px 10px 0;
     background: rgb(235, 200, 4);
-    float: left;
     text-align: center;
 }
-.box div.done {
+.box .done {
     color: #fff;
     background: rgb(3, 146, 139);
+}
+.imgbox {
+    width: 300px;
+    height: 150px;
+    border: 1px solid #ccc;
+    margin: 20px;
+    overflow: hidden;
+}
+.imgbox img {
+    width: 100%;
 }
 </style>
 </head>
@@ -40,18 +60,20 @@
 <pre>
     <code>
         var tData = [
-            {name: "step1", status: 1},
-            {name: "step2", status: 1},
-            {name: "step3", status: 1},
-            {name: "step4", status: 0},
-            {name: "step5", status: 0},
-            {name: "step6", status: 0},
+            {name: "step1", status: 1, time:"2018-10-22"},
+            {name: "step2", status: 1, time:"2018-12-22"},
+            {name: "step3", status: 1, time:"2019-02-14"},
+            {name: "step4", status: 0, time:"2019-08-09"},
+            {name: "step5", status: 0, time:"2020-03-15"},
+            {name: "step6", status: 0, time:"2020-11-22"},
         ]
     </code>
 </pre>
 
-<div class="box" id="box">
+<div class="box" id="box"></div>
 
+<div class="imgbox" id="imgbox">
+    <img src="" alt="">
 </div>
 <!-- <div id="p1">321321</div>
 
@@ -78,26 +100,37 @@
 //     }
 // }
 var tData = [
-    {name: "step1", status: 1},
-    {name: "step2", status: 1},
-    {name: "step3", status: 1},
-    {name: "step4", status: 0},
-    {name: "step5", status: 0},
-    {name: "step6", status: 0},
+    {name: "step1", status: 1, time:"2019-10-22"},
+    {name: "step2", status: 1, time:"2018-12-22"},
+    {name: "step3", status: 1, time:"2017-02-14"},
+    {name: "step4", status: 0, time:"2019-08-09"},
+    {name: "step5", status: 0, time:"2014-03-15"},
+    {name: "step6", status: 0, time:"2020-11-22"},
+    
 ]
 // var obj = document.getElementById("box");
 var str = '';
 for(var i = 0; i<tData.length; i++) {
+    str += '<div class="stone">';
     if(tData[i].status == 1) {
-        str += "<div class=' done'>";
+        str += "<div class='sect done'>";
     }
     else {
-        str += "<div class=''>";
+        str += "<div class='sect'>";
     }
     str += tData[i].name + "</div>";
+    str += "<p>" + tData[i].time + "</p>";
+    str += "</div>";
 }
 console.log("str ", str);
 $("#box").append(str);
+
+var imgSrc = './img/test.png';
+window.onload=function(){
+    var bb = document.getElementById("imgbox").getElementsByTagName("img");
+    console.log(bb);
+    bb[0].src = imgSrc;
+}
 
 </script>
 </body>
