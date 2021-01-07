@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>金字塔-</title>
+<script src="./js/jquery-2.2.3.min.js"></script>
+<style>
+* {
+	margin: 0;
+	padding: 0;
+}
+
+/* .echarts {
+	margin: 100px auto;
+	background: #000;
+	width: 500px;
+	height: 500px;
+} */
+.jzt-box {
+	width: 500px;
+	height: 250px;
+	clear: both;
+	overflow: hidden;
+	border: 1px solid #ccc;
+}
+.jzt-img {
+	width: 50%;
+	height: 100%;
+	display: block;
+	float: left;
+}
+.jzt-img img {
+	width: 300px;
+	height: 300px;
+}
+.jzt-tip {
+	width: 50%;
+	height: 100%;
+	float: left;
+	padding: 10% 0;
+}
+.jzt-tip-detail {
+	width: 100%;
+	height: 16%;
+	display: flex;
+}
+.jzt-tip-detail.five {
+	height: 12%;	
+}
+.jzt-tip-title {
+	text-align: right;
+	width: 50%;
+}
+.jzt-tip-number {
+	width: 25%;
+	text-align: center;
+}
+.jzt-tip-color {
+	display: block; 
+	width: 1.4em;
+	height: 1.4em;
+	background-color: #000000;
+}
+</style>
+</head>
+
+<body>
+<div id="echarts" class="echarts"></div>
+
+<!-- <div class="jzt-box">
+	<div class="jzt-img">
+		<img src="./img/jzt.png" alt="">
+	</div>
+	<div class="jzt-tip">
+		<div class="jzt-tip-detail">
+			<div class="jzt-tip-title">教授啊教授</div>
+			<div class="jzt-tip-number">89人</div>
+			<div class="jzt-tip-color"></div>
+		</div>
+		<div class="jzt-tip-detail">
+			<div class="jzt-tip-title">教授啊教授</div>
+			<div class="jzt-tip-number">89人</div>
+			<div class="jzt-tip-color"></div>
+		</div>
+		<div class="jzt-tip-detail">
+			<div class="jzt-tip-title">教授啊教授</div>
+			<div class="jzt-tip-number">89人</div>
+			<div class="jzt-tip-color"></div>
+		</div>
+		<div class="jzt-tip-detail">
+			<div class="jzt-tip-title">教授啊教授</div>
+			<div class="jzt-tip-number">89人</div>
+			<div class="jzt-tip-color"></div>
+		</div>
+	</div>
+</div> -->
+</body>
+
+<script>
+var color = ["#76f3a5", "#76f3e5", "#4beaff", "#52a4f0", "#52a4f0"];
+var data = [
+	{title: "特技师级", number: 50},
+	{title: "高级师级", number: 40},
+	{title: "师级", number: 30},
+	{title: "员/工级", number: 20},
+	{title: "啥也不是", number: 10},
+];
+data.c0 = ["特技师级","高级师级","师级","员/工级","啥也不是"];
+data.c1 = [50,40,30,20,10];
+
+window.onload = function() {
+	makeFunnel();
+}
+
+function makeFunnel() {
+	// console.log(123);
+	var str = '';
+	str += '<div class="jzt-box">';
+	str += '<div class="jzt-img">';
+	if(data.c0.length === 4) {
+		str += '<img src="./img/jzt.png" alt="">';  // 4层
+	} else {
+		str += '<img src="./img/jzt.png" alt="">';  // 5层
+	}
+	str += '</div>';
+	str += '<div class="jzt-tip">'
+    for(var i=0; i<data.length; i++) {
+		console.log("i::",i)
+		if(data.c0.length === 4) {
+			str += '<div class="jzt-tip-detail">';
+		} else {
+			str += '<div class="jzt-tip-detail five">';
+		}
+		str += '<div class="jzt-tip-title">' + data.c0[i] + '</div>'
+		str += '<div class="jzt-tip-number">' + data.c1[i] + '人</div>'
+		str += '<div class="jzt-tip-color" style="background-color:'+ color[i] +'"></div>'
+		str += '</div>'
+	}
+	str += '</div>';
+	str += '</div>';
+	console.log(str);
+	$('body').append(str);
+}
+
+</script>
+</html>

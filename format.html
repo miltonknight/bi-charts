@@ -1,48 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>仪表盘-1</title>
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-    }
-
-    .PolarGauge {
-        margin: 100px auto;
-        background: #000;
-        width: 400px;
-        height: 400px;
-    }
-</style>
-<script src="js/echarts.js"></script>
-</head>
-
+<html>
+<head></head>
 <body>
-    <div id="PolarGauge" class="PolarGauge"></div>
-</body>
+	
 
 <script>
+/*
+* 请将html添加到body中
+* 如：
+* var div = document.createElement("div");
+* div.textContent = "我将被添加到body中";
+* body.appendChild(div);
+* ***********jQuery写法*********
+* $(body).append("<div>我将被添加到body中</div>");
+*/
+var body = global.body;
+//外部参数，如筛选器，联动参数，形如：[{name:'age',value:23}]
+var params = global.params;
+
+/**
+ * 初始化节点数据时触发
+* @param {Object} data
+*/
 var chart, option, sData, max;
-var data = {
-	c0:'仪表名字', // 表盘名称
-	c1:'100', // 计划值
-	c2:'75', // 完成值
-}
-window.onload = function init() {
+global.init = function(data) {
+    console.log(1111111111)
+    console.log(data);
+    console.log("c0"+data.c0[0]);
+  	console.log("c1"+data.c1[0]);
+  	console.log("c2"+data.c2[0]);
+    var PolarGauge = document.getElementById("PolarGauge")
+	chart = echarts.init(PolarGauge); //初始化chart容器
     sData = { //显示的数据
-        "name": data.c0,
-        "num": data.c2
+        "name": data.c0[0],
+        "num": data.c2[0]
     }
-    max = data.c1 //最大数值
-    chart = echarts.init(PolarGauge); //初始化chart容器
+    max = data.c1[0] //最大数值
+    console.log("max：" + max);
     createPolarGauge() //配置chart
+    
 }
 
 function createPolarGauge() {
+    console.log("creat")
     option = {
         angleAxis: {
             show: false,
@@ -153,7 +152,7 @@ function createPolarGauge() {
                 },
                 detail: { //仪表盘数值
                     formatter: function (params) {
-                        var name = sData.num.toString()
+                        var name = sData.name.toString()
                         var list = ''
                         for (var i = 0; i < name.length; i++) {
                             list += '{value|' + name[i] + '}' //每个数字用border隔开
@@ -188,21 +187,50 @@ function createPolarGauge() {
                 },
                 data: [{
                     value: sData.num,
-                    name: sData.name
+					//value: data.c0[0],
+                    name: sData.name,
+					//name: data.c0[0]
                 }]
             }
         ]
     }
-    // timeTick()
+    console.log(22222)
     chart.setOption(option)
 }
-
 function setOption() { //更新数据
     // sData.num = parseInt(Math.random() * max)
     option.series[2].data[0].value = sData.num
     option.series[0].data[0].value = sData.num
+    console.log(333333333)
+    console.log(option.series[2].data[0].value);
     chart.setOption(option)
 }
+/**
+ * 更新节点数据时触发
+ * @param {Object} data
+ * @param {Object} param
+ */
+global.update = function(data, param) {
+    params = param;
+	chart.setOption(option)
+}
 
+/**
+ * 窗口大小改变的时候触发
+* @param {Event} e
+*/
+global.resize = function(e) {
+
+}
+
+/**
+ * 设备横屏竖屏切换时触发
+ * @param {Object} e
+ */
+global.orientationchange = function(e) {
+
+}
 </script>
+
+</body>
 </html>
