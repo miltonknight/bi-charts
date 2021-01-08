@@ -17,12 +17,16 @@
 	width: 500px;
 	height: 500px;
 } */
+body {
+	/* background-color: #000000; */
+}
 .jzt-box {
-	width: 500px;
-	height: 250px;
+	width: 100%;
 	clear: both;
 	overflow: hidden;
 	border: 1px solid #ccc;
+	margin: 20px;
+	padding: 20px;
 }
 .jzt-img {
 	width: 50%;
@@ -31,22 +35,24 @@
 	float: left;
 }
 .jzt-img img {
-	width: 300px;
-	height: 300px;
+	max-width: 100%;
 }
 .jzt-tip {
-	width: 50%;
+	width: 45%;
 	height: 100%;
 	float: left;
-	padding: 10% 0;
 }
 .jzt-tip-detail {
 	width: 100%;
-	height: 16%;
+	margin-bottom: 12%;
 	display: flex;
+	/* color: #fff; */
 }
 .jzt-tip-detail.five {
-	height: 12%;	
+	margin-bottom: 6.5%;
+}
+.jzt-tip-detail.six {
+	margin-bottom: 2.5%;
 }
 .jzt-tip-title {
 	text-align: right;
@@ -60,8 +66,10 @@
 	display: block; 
 	width: 1.4em;
 	height: 1.4em;
-	background-color: #000000;
+	border-radius: 0.7em;
+	background-color: #fff;
 }
+
 </style>
 </head>
 
@@ -95,52 +103,67 @@
 		</div>
 	</div>
 </div> -->
+
+<div class="jzt-box"></div>
+
 </body>
 
 <script>
-var color = ["#76f3a5", "#76f3e5", "#4beaff", "#52a4f0", "#52a4f0"];
+// 色块(从上到下)
+var color = ["#76f3a5", "#76f3e5", "#4beaff", "#52a4f0", "#2076c7", "#044e94"];
 var data = [
 	{title: "特技师级", number: 50},
 	{title: "高级师级", number: 40},
 	{title: "师级", number: 30},
 	{title: "员/工级", number: 20},
-	{title: "啥也不是", number: 10},
+	{title: "啥也不是", number: 10}
 ];
-data.c0 = ["特技师级","高级师级","师级","员/工级","啥也不是"];
-data.c1 = [50,40,30,20,10];
+// 传参顺序
+data.c0 = ["特技师级","高级师级","师级","员/工级","啥也不是","也不是啥"];
+data.c1 = [50, 40, 30, 20, 10, 10];
 
 window.onload = function() {
 	makeFunnel();
 }
 
+
 function makeFunnel() {
 	// console.log(123);
 	var str = '';
-	str += '<div class="jzt-box">';
+	// str += '<div class="jzt-box">';
 	str += '<div class="jzt-img">';
-	if(data.c0.length === 4) {
-		str += '<img src="./img/jzt.png" alt="">';  // 4层
-	} else {
-		str += '<img src="./img/jzt.png" alt="">';  // 5层
+	// if(data.c0.length === 4) {
+	// 	str += '<img src="http//172.17.62.206:8080/tempo/picture/KVB9.png" alt="">';  // 4层
+	// } 
+	// if(data.c0.length === 5) {
+	// 	str += '<img src="http//172.17.62.206:8080/tempo/picture/KVB10.png" alt="">';  // 5层
+	// }
+	// if(data.c0.length === 6) {
+	// 	str += '<img src="http//172.17.62.206:8080/tempo/picture/KVB11.png" alt="">';  // 6层
+	// }
+	if(data.c0.length) {
+		str += '<img src="./img/' + data.c0.length + 'floors.png" alt="">';  // 5层
 	}
-	str += '</div>';
+	str += '</div>'; // 左侧图片封口
 	str += '<div class="jzt-tip">'
-    for(var i=0; i<data.length; i++) {
-		console.log("i::",i)
+    for(var i=0; i<data.c0.length; i++) {
 		if(data.c0.length === 4) {
 			str += '<div class="jzt-tip-detail">';
-		} else {
+		} 
+		if(data.c0.length === 5) {
 			str += '<div class="jzt-tip-detail five">';
+		}
+		if(data.c0.length === 6) {
+			str += '<div class="jzt-tip-detail six">';
 		}
 		str += '<div class="jzt-tip-title">' + data.c0[i] + '</div>'
 		str += '<div class="jzt-tip-number">' + data.c1[i] + '人</div>'
 		str += '<div class="jzt-tip-color" style="background-color:'+ color[i] +'"></div>'
 		str += '</div>'
 	}
-	str += '</div>';
-	str += '</div>';
-	console.log(str);
-	$('body').append(str);
+	str += '</div>'; // 左侧文字封口
+	// str += '</div>'; // 整体封口
+	$('.jzt-box').append(str);
 }
 
 </script>
