@@ -11,8 +11,7 @@
         padding: 0;
     }
 
-    .PolarGauge {
-        margin: 100px auto;
+    .echarts {
         background: #000;
         width: 400px;
         height: 400px;
@@ -22,7 +21,7 @@
 </head>
 
 <body>
-    <div id="PolarGauge" class="PolarGauge"></div>
+    <div id="echarts" class="echarts"></div>
 </body>
 
 <script>
@@ -33,21 +32,21 @@ var data = {
 	c2:'75', // 完成值
 }
 window.onload = function init() {
-    sData = { //显示的数据
-        "name": data.c0,
-        "num": data.c2
-    }
-    max = data.c1 //最大数值
-    chart = echarts.init(PolarGauge); //初始化chart容器
-    createPolarGauge() //配置chart
+    // sData = { //显示的数据
+    //     "name": data.c0,
+    //     "num": data.c2
+    // }
+    // max = data.c1 //最大数值
+    chart = echarts.init(document.getElementById("echarts")); //初始化chart容器
+    createPolarGauge(data) //配置chart
 }
 
-function createPolarGauge() {
+function createPolarGauge(data) {
     option = {
         angleAxis: {
             show: false,
             // max: max * 3 / 2, //这里将极坐标最大值转换成仪表盘的最大值，(360度除以240度)
-            max: max * 2 / 1, //这里将极坐标最大值转换成仪表盘的最大值，(360度除以240度)
+            max: data.c1 * 2 / 1, //这里将极坐标最大值转换成仪表盘的最大值，(360度除以240度)
             type: 'value',
             startAngle: 180, //极坐标初始角度，从第一象限算起，大约在7-8点钟角度之间
             endAngle: 0,
@@ -55,7 +54,7 @@ function createPolarGauge() {
                 show: false //隐藏坐标
             }
         },
-        barMaxWidth: 18, //圆环宽度
+        barMaxWidth: 10, //圆环宽度
         radiusAxis: { //隐藏坐标
             show: false,
             type: 'category',
@@ -67,7 +66,7 @@ function createPolarGauge() {
         series: [{
                 type: 'bar',
                 data: [{ //上层圆环，用于显示真实数据
-                    value: sData.num,
+                    value: data.c2,
                     itemStyle: {
                         color: { //图形渐变颜色方法，四个数字分别代表，右，下，左，上，offset表示0%到100%
                             type: 'linear',
@@ -78,11 +77,11 @@ function createPolarGauge() {
                             colorStops: [{
                                 offset: 0,
                                 // color: '#CD48AE' // 0% 处的颜色
-                                color: '#0061ff' // 0% 处的颜色 [0].#0061ff [1].#4bd867 [2].#0a3b6d
+                                color: '#0a3b6d' // 0% 处的颜色 [0].#0061ff [1].#4bd867 [2].#0a3b6d
                             }, {
                                 offset: 1,
                                 // color: '#2CABFC' // 100% 处的颜色
-                                color: '#03fcff' // 100% 处的颜色 [0].#03fcff [1].#f1e67b [2].#06ff81
+                                color: '#06ff81' // 100% 处的颜色 [0].#03fcff [1].#f1e67b [2].#06ff81
                             }],
                             globalCoord: false // 缺省为 false
                         },
@@ -97,9 +96,9 @@ function createPolarGauge() {
             }, { //下层圆环，用于显示最大值
                 type: 'bar',
                 data: [{
-                    value: max,
+                    value: data.c1,
                     itemStyle: {
-                        color: '#193791', // 背景色
+                        color: '#03b5c3', // 背景色
                         shadowColor: 'rgba(0, 0, 0, 0.2)', //加白色阴影产生高亮效果
                         shadowBlur: 5,
                         shadowOffsetY: 2
@@ -111,11 +110,19 @@ function createPolarGauge() {
                 z: 1 //圆环层级，和zindex相似
             },
             { //仪表盘
+                title: { //标题，显示仪表盘标题
+                    textStyle: {
+                        color: '#fff',
+                        shadowColor: '#fff',
+                        fontSize: 34
+                    },
+                    offsetCenter: ["0", '25%'] //位置偏移
+                },
                 type: 'gauge',
                 radius: '66%', // 调整数值改变刻度圈大小
                 startAngle: 180, //起始角度，同极坐标
                 endAngle: 0, //终止角度，同极坐标
-                max: max,
+                max: data.c1,
                 splitNumber: 5, //分割线个数（除原点外）
                 axisLine: { // 坐标轴线
                     show: false
@@ -143,17 +150,9 @@ function createPolarGauge() {
                         width: 1,
                     }
                 },
-                title: { //标题，显示仪表盘标题
-                    textStyle: {
-                        color: '#fff',
-                        shadowColor: '#fff',
-                        fontSize: 34
-                    },
-                    offsetCenter: ["0", '25%'] //位置偏移
-                },
                 detail: { //仪表盘数值
                     formatter: function (params) {
-                        var name = sData.num.toString()
+                        var name = data.c2.toString()
                         var list = ''
                         for (var i = 0; i < name.length; i++) {
                             list += '{value|' + name[i] + '}' //每个数字用border隔开
@@ -172,7 +171,7 @@ function createPolarGauge() {
                             // borderWidth: 2,
                             // borderRadius: 5,
                             lineHeight: 1000,
-                            fontSize: 50,
+                            fontSize: '300%',
                             fontWeight: 'bold',
                             // padding: [0, 0, 4, 0],
                             color: '#2ddeff',
@@ -187,21 +186,20 @@ function createPolarGauge() {
 
                 },
                 data: [{
-                    value: sData.num,
-                    name: sData.name
+                    value: data.c2,
+                    name: data.c0
                 }]
             }
         ]
     }
-    // timeTick()
     chart.setOption(option)
 }
 
 function setOption() { //更新数据
     // sData.num = parseInt(Math.random() * max)
-    option.series[2].data[0].value = sData.num
-    option.series[0].data[0].value = sData.num
-    chart.setOption(option)
+    // option.series[2].data[0].value = data.c2
+    // option.series[0].data[0].value = data.c22
+    // chart.setOption(option)
 }
 
 </script>
