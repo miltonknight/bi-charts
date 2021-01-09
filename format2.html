@@ -37,6 +37,7 @@ function renderChart(data){
 	}
 	max = data.c1[0] //最大数值
 	chart.setOption({
+		// change above**************
 		angleAxis: {
 			show: false,
 			// max: max * 3 / 2, //这里将极坐标最大值转换成仪表盘的最大值，(360度除以240度)
@@ -187,7 +188,8 @@ function renderChart(data){
 					//name: data.c0[0]
 				}]
 			}
-		]
+		],
+		// change above**************
 	})
 }
 /**
