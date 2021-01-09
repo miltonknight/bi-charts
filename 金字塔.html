@@ -18,10 +18,10 @@
 	height: 500px;
 } */
 body {
-	/* background-color: #000000; */
+	background-color: #000;
 }
 .jzt-box {
-	width: 100%;
+	width: 1000px;
 	clear: both;
 	overflow: hidden;
 	border: 1px solid #ccc;
@@ -29,7 +29,7 @@ body {
 	padding: 20px;
 }
 .jzt-img {
-	width: 50%;
+	width: 540px;
 	height: 100%;
 	display: block;
 	float: left;
@@ -38,34 +38,38 @@ body {
 	max-width: 100%;
 }
 .jzt-tip {
-	width: 45%;
+	width: 35%;
 	height: 100%;
 	float: left;
+	color: #fff;
 }
 .jzt-tip-detail {
 	width: 100%;
-	margin-bottom: 12%;
+	margin-bottom: 10%;
 	display: flex;
+	font-size: 30px;
 	/* color: #fff; */
 }
 .jzt-tip-detail.five {
-	margin-bottom: 6.5%;
+	margin-bottom: 4%;
 }
 .jzt-tip-detail.six {
-	margin-bottom: 2.5%;
+	margin-bottom: 4%;
+	font-size: 26px;
 }
 .jzt-tip-title {
 	text-align: right;
 	width: 50%;
 }
 .jzt-tip-number {
-	width: 25%;
-	text-align: center;
+	width: 35%;
+	text-align: right;
 }
 .jzt-tip-color {
 	display: block; 
 	width: 1.4em;
 	height: 1.4em;
+	margin-left: 10%;
 	border-radius: 0.7em;
 	background-color: #fff;
 }
@@ -119,8 +123,14 @@ var data = [
 	{title: "啥也不是", number: 10}
 ];
 // 传参顺序
-data.c0 = ["特技师级","高级师级","师级","员/工级","啥也不是","也不是啥"];
-data.c1 = [50, 40, 30, 20, 10, 10];
+data.c0 = ["特技师级","高级师级","师级","员/工级",
+"啥也不是",
+"也不是啥",
+];
+data.c1 = [50, 40, 30, 210,
+ 10, 
+ 10
+ ];
 
 window.onload = function() {
 	makeFunnel();
@@ -142,7 +152,7 @@ function makeFunnel() {
 	// 	str += '<img src="http//172.17.62.206:8080/tempo/picture/KVB11.png" alt="">';  // 6层
 	// }
 	if(data.c0.length) {
-		str += '<img src="./img/' + data.c0.length + 'floors.png" alt="">';  // 5层
+		str += '<img src="./img/LV'+ data.c0.length + '.png" alt="">';  // n层
 	}
 	str += '</div>'; // 左侧图片封口
 	str += '<div class="jzt-tip">'
