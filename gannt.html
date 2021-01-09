@@ -6,7 +6,7 @@
 <script src="js/echarts.js"></script>
 <script src="js/jquery-2.2.3.js"></script>
 <style type="text/css">
-#main {
+#echarts {
 	width: 800px;
 	height: 500px;
 	border: 1px solid #ccc;
@@ -17,27 +17,35 @@
 
 <body>
 <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-<div id="main"></div>
+<div id="echarts" class="echarts"></div>
 
 <script type="text/javascript">
-// 基于准备好的dom，初始化echarts实例
-var myChart = echarts.init(document.getElementById("main"));
+	
+var myChart = echarts.init(document.getElementById("echarts"));
 
 var data = [];
-var dataCount = 10;
+var dataCount = 7;
 var startTime = +new Date();
 var categories = ['categoryA', 'categoryB', 'categoryC'];
 var types = [
-    {name: 'JS Heap', color: '#7b9ce1'},
-    {name: 'Documents', color: '#bd6d6c'},
-    {name: 'Nodes', color: '#75d874'},
-    {name: 'Listeners', color: '#e0bc78'},
-    {name: 'GPU Memory', color: '#dc77dc'},
-    {name: 'GPU', color: '#72b362'}
+    {name: '组合件', color: '#cbc344', startTime: '2018-6-1', endTime: '2018-8-12'},
+    {name: '段件', color: '#3a5aff', startTime: '2018-8-13', endTime: '2018-10-12'},
+    {name: '部装', color: '#8d2a35', startTime: '2018-10-13', endTime: '2019-2-1'},
+    {name: '预总装', color: '#c59bff', startTime: '2019-2-2', endTime: '2019-6-15'},
+    {name: '总装', color: '#379b3a', startTime: '2019-6-16', endTime: '2019-12-10'},
+	{name: '喷漆', color: '#39c8c4', startTime: '2019-12-11', endTime: '2020-2-18'},
+    {name: '试飞', color: '#c93c3c', startTime: '2020-2-19', endTime: '2020-4-28'}
 ];
 
+// 预整合数据项
+//组合件: #cbc344， 段件:#3a5aff，部装：#8d2a35，预总装：#c59bff，总装：#379b3a，喷漆：#39c8c4，试飞：#c93c3c
+var pModels = ['KJ-J15', 'KJ-J20', 'KJ-J35', 'HJ-J15', 'HJ-J20', 'HJ-J35'];
+var steps = ["组合件", "段件", "部装", "预总装", "总装", "喷漆", "试飞"]
+var color = ["#cbc344", "#3a5aff", "#8d2a35", "#c59bff", "#379b3a", "#39c8c4", "#c93c3c"];
+var yearMonth = ['2020-01','2020-02','2020-03','2020-04','2020-05','2020-06','2020-07','2020-08','2020-09','2020-10','2020-11','2020-12',]
+
 // Generate mock data
-echarts.util.each(categories, function (category, index) {
+echarts.util.each(pModels, function (category, index) {
     var baseTime = startTime;
     for (var i = 0; i < dataCount; i++) {
         // var typeItem = types[Math.round(Math.random() * (types.length - 1))];
@@ -54,12 +62,14 @@ echarts.util.each(categories, function (category, index) {
             ],
             itemStyle: {
                 normal: {
-                    color: typeItem.color
+                    color: typeItem.color,
+					// color: color
                 }
             }
         });
         baseTime += Math.round(Math.random() * 2000);
     }
+	console.log(data);
 });
 
 function renderItem(params, api) {
@@ -87,38 +97,38 @@ function renderItem(params, api) {
     };
 }
 
-
 option = {
     tooltip: {
         formatter: function (params) {
-            return params.marker + params.name + ': ' + params.value[3] + ' ms';
+            // return params.marker + params.name + ': ' + params.value[3] + ' ms';
+			return params.marker + params.name + ': ' + (params.endTime-params.startTime) + ' ms';
         }
     },
     title: {
-        text: 'Gannt Test',
+        text: '主进度计划',
         left: 'center'
     },
-    dataZoom: [{
-        type: 'slider',
-        filterMode: 'weakFilter',
-        showDataShadow: false,
-        top: 400,
-        height: 10,
-        borderColor: 'transparent',
-        backgroundColor: '#e2e2e2',
-        handleIcon: 'M10.7,11.9H9.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4h1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7v-1.2h6.6z M13.3,22H6.7v-1.2h6.6z M13.3,19.6H6.7v-1.2h6.6z', // jshint ignore:line
-        handleSize: 20,
-        handleStyle: {
-            shadowBlur: 6,
-            shadowOffsetX: 1,
-            shadowOffsetY: 2,
-            shadowColor: '#aaa'
-        },
-        labelFormatter: ''
-    }, {
-        type: 'inside',
-        filterMode: 'weakFilter'
-    }],
+    // dataZoom: [{
+    //     type: 'slider',
+    //     filterMode: 'weakFilter',
+    //     showDataShadow: false,
+    //     top: 400,
+    //     height: 10,
+    //     borderColor: 'transparent',
+    //     backgroundColor: '#e2e2e2',
+    //     handleIcon: 'M10.7,11.9H9.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4h1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7v-1.2h6.6z M13.3,22H6.7v-1.2h6.6z M13.3,19.6H6.7v-1.2h6.6z', // jshint ignore:line
+    //     handleSize: 20,
+    //     handleStyle: {
+    //         shadowBlur: 6,
+    //         shadowOffsetX: 1,
+    //         shadowOffsetY: 2,
+    //         shadowColor: '#aaa'
+    //     },
+    //     labelFormatter: ''
+    // }, {
+    //     type: 'inside',
+    //     filterMode: 'weakFilter'
+    // }],
     grid: {
         height: 300
     },
@@ -129,10 +139,10 @@ option = {
             formatter: function (val) {
                 return Math.max(0, val - startTime) + ' ms';
             }
-        }
+        },
     },
     yAxis: {
-        data: categories
+        data: pModels
     },
     series: [{
         type: 'custom',
