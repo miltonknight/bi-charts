@@ -28,107 +28,55 @@ var dataCount = 7;
 var startTime = +new Date();
 var categories = ['categoryA', 'categoryB', 'categoryC'];
 var types = [
-    {name: '组合件', color: '#cbc344', startTime: '2018.6.1', endTime: '2018.8.12'},
-    {name: '段件', color: '#3a5aff', startTime: '2018.8.13', endTime: '2018.10.12'},
-    {name: '部装', color: '#8d2a35', startTime: '2018.10.13', endTime: '2019.2.1'},
-    {name: '预总装', color: '#c59bff', startTime: '2019.2.2', endTime: '2019.6.15'},
-    {name: '总装', color: '#379b3a', startTime: '2019.6.16', endTime: '2019.12.10'},
-	{name: '喷漆', color: '#39c8c4', startTime: '2019.12.11', endTime: '2020.2.18'},
-    {name: '试飞', color: '#c93c3c', startTime: '2020.2.19', endTime: '2020.4.28'}
+	
+    {step: '组合件', color: '#cbc344', startTime: '2018.6.1', endTime: '2018.8.12', type: 0},
+    {step: '段件', color: '#3a5aff', startTime: '2018.8.13', endTime: '2018.10.12', type: 0},
+    {step: '部装', color: '#8d2a35', startTime: '2018.10.13', endTime: '2019.2.1', type: 0},
+    {step: '预总装', color: '#c59bff', startTime: '2019.2.2', endTime: '2019.6.15', type: 0},
+    {step: '总装', color: '#379b3a', startTime: '2019.6.16', endTime: '2019.12.10', type: 0},
+	{step: '喷漆', color: '#39c8c4', startTime: '2019.12.11', endTime: '2020.2.18', type: 0},
+    {step: '试飞', color: '#c93c3c', startTime: '2020.2.19', endTime: '2020.4.28', type: 0},
+	 
+	// [
+	{step: '组合件', color: '#cbc344', startTime: '2018.6.10', endTime: '2018.8.22', type: 1},
+	{step: '段件', color: '#3a5aff', startTime: '2018.8.23', endTime: '2018.10.22', type: 1},
+	{step: '部装', color: '#8d2a35', startTime: '2018.10.23', endTime: '2019.2.10', type: 1},
+	{step: '预总装', color: '#c59bff', startTime: '2019.2.11', endTime: '2019.6.25', type: 1},
+	{step: '总装', color: '#379b3a', startTime: '2019.6.26', endTime: '2019.12.20', type: 1},
+	{step: '喷漆', color: '#39c8c4', startTime: '2019.12.21', endTime: '2020.2.26', type: 1},
+	{step: '试飞', color: '#c93c3c', startTime: '2020.2.27', endTime: '2020.5.10', type: 1},
+	// ]
 ];
 
-var sample = [{	
-		name: "组合件",
-    	itemStyle: {
-    		normal: {
-    			color: '#cbc344'
-    		}
-    	},
-    	value: {
-    		index: 0,
-    		startTime: '2018.6.1',
-    		endTime: '2018.8.12', 
-    		duration:"72"
-    	}
-    }, {	
-    	name: "段件",
-    	itemStyle: {
-    		normal: {
-    			color: '#3a5aff'
-    		}
-    	},
-    	value: {
-    		index: 1,
-	    	startTime: '2018.8.13', 
-	    	endTime: '2018.10.12', 
-	    	duration:"60"
-	    }
-    }, {
-    	name: "部装", 
-    	itemStyle: {
-    		normal: {
-    			color: '#8d2a35'
-    		}
-    	},
-    	value: {
-    		index: 2,
-	    	startTime: '2018.10.13', 
-	    	endTime: '2019.2.1',
-	    	duration: '111'
-	    }
-    }, {
-    	name: "预总装", 
-    	itemStyle: {
-    		normal: {
-    			color: '#c59bff'
-    		}
-    	},
-    	value: {
-    		index: 3,
-	    	startTime: '2019.2.2', 
-	    	endTime: '2019.6.15',
-	    	duration: '133'
-	    }
-    }, {
-    	name: "总装", 
-    	itemStyle: {
-    		normal: {
-    			color: '#379b3a'
-    		}
-    	},
-    	value: {
-    		index: 4,
-	    	startTime: '2019.6.16', 
-	    	endTime: '2019.12.10',
-	    	duration: '177'
-	    }
-    }, {
-    	name: "喷漆", 
-    	itemStyle: {
-    		normal: {
-    			color: '#39c8c4'
-    		}
-    	},
-    	value: {
-    		index: 5,
-	    	startTime: '2019.12.11', 
-	    	endTime: '2020.2.18',
-	    	duration: '69'
-	    }
-    }, {
-    	name: "试飞", 
-    	itemStyle: {
-    		normal: {
-    			color: '#c93c3c'
-    		}
-    	},
-    	value: {
-    		index: 6,
-	    	startTime: '2020.2.19', 
-	    	endTime: '2020.4.28',
-	    	duration: '69'
-	    }
-    },
+var sample = [{
+		step: "组合件", 
+		itemStyle: {normal: {color: '#cbc344'}}, 
+		value: {index: 0, startTime: '2018.6.1', endTime: '2018.8.12', duration:"72"},
+	}, {
+		step: "段件", 
+		itemStyle: {normal: {color: '#3a5aff'}}, 
+		value: {index: 1, startTime: '2018.8.13', endTime: '2018.10.12', duration:"60"},
+	}, {
+		step: "部装", 
+		itemStyle: {normal: {color: '#8d2a35'}}, 
+		value: {index: 2, startTime: '2018.10.13', endTime: '2019.2.1', duration: '111'},
+	}, {
+		step: "预总装", 
+		itemStyle: {normal: {color: '#c59bff'}}, 
+		value: {index: 3, startTime: '2019.2.2', endTime: '2019.6.15', duration: '133'},
+	}, {
+		step: "总装",  
+		itemStyle: {normal: {color: '#379b3a'}}, 
+		value: {index: 4, startTime: '2019.6.16', endTime: '2019.12.10', duration: '177'},
+	}, {
+		step: "喷漆",  
+		itemStyle: {normal: {color: '#39c8c4'}}, 
+		value: {index: 5, startTime: '2019.12.11', endTime: '2020.2.18', duration: '69'},
+	}, {
+		step: "试飞",  
+		itemStyle: {normal: {color: '#c93c3c'}}, 
+		value: {index: 6, startTime: '2020.2.19', endTime: '2020.4.28', duration: '69'},
+	},
 ];
 
 // 时间格式化
@@ -165,50 +113,66 @@ function timeDiff(startTime, endTime) {
 	var xx = parseInt((eTime.getTime()-sTime.getTime())/parseInt(1000*3600*24));
 	var xx = parseInt((eTime.getTime()-sTime.getTime()));
 	console.log(xx)
-//	return startTime;
-//	return endTime;
 	return xx;
 }
 
+// 日期e.g.2020.1.1 转毫秒时间戳
 function timeFormat(sTime) {
 	var sTime = sTime.replace(/\./g,"/"); // 系统分隔符'.'转换为'/'
 	sTime = new Date(sTime); // 转为标准时间格式
-	sTime = sTime.getTime(); // 转为毫秒格式显示，分钟:/1000, 小时:/1000/60, 天:/1000/60/24
+	sTime = sTime.getTime(); // 转为毫秒格式显示，分钟:/1000/60, 小时:/1000/60/60, 天:/1000/60/60/24
 	console.log("sTime::", sTime);
 	return sTime;
 }
 
+// 标准时间转 yyyy-mm-dd
+function timeLabel(strTime) {
+	var curTime = new Date(strTime);
+	var Y = curTime.getFullYear();
+	var M = curTime.getMonth()+1;
+	var D = curTime.getDate();
+	var timeLabel = Y + '-'+ M + '-' + D;
+	console.log("timeLabel", timeLabel);
+	return timeLabel;
+}
+
+// 毫秒时间戳转日期
+function whatTime(val) {
+	var mTime = new Date();
+	mTime.setTime(val);
+	console.log("whatTime---", mTime)
+	return mTime;
+}
 
 // 预整合数据项
 //组合件: #cbc344， 段件:#3a5aff，部装：#8d2a35，预总装：#c59bff，总装：#379b3a，喷漆：#39c8c4，试飞：#c93c3c
-var pModels = ['KJ-J15', 'KJ-J20', 'KJ-J35', 'HJ-J15', 'HJ-J20', 'HJ-J35'];
+var pModels = ['KJ-J15', /*'KJ-J20', 'KJ-J35', 'HJ-J15', 'HJ-J20', 'HJ-J35'*/];
 var steps = ["组合件", "段件", "部装", "预总装", "总装", "喷漆", "试飞"]
 var color = ["#cbc344", "#3a5aff", "#8d2a35", "#c59bff", "#379b3a", "#39c8c4", "#c93c3c"];
 var yearMonth = ['2020-01','2020-02','2020-03','2020-04','2020-05','2020-06','2020-07','2020-08','2020-09','2020-10','2020-11','2020-12',]
 
 // Generate mock data
-echarts.util.each(pModels, function (category, index) {
-    var baseTime = startTime;
-//  for (var i = 0; i < dataCount; i++) {
-	for (var i = 0; i < 7; i++) {
-        // var typeItem = types[Math.round(Math.random() * (types.length - 1))];
+echarts.util.each(categories, function (category, index) {
+    // var baseTime = startTime;
+	var baseTime = 1527782400000; // 2018.6.1
+	console.log("baseTime:::::>>>", baseTime);
+	for (var i = 0; i < types.length; i++) {
         var typeItem = types[i];
-//      var duration = Math.round(Math.random() * 10000);
         var duration = timeDiff(typeItem.startTime, typeItem.endTime);
         var StartTime = timeFormat(typeItem.startTime);
         var EndTime = timeFormat(typeItem.endTime);
-        console.log("StartTimeStartTime", StartTime);
-        console.log("EndTimeEndTime", EndTime)
-        console.log("durationduration", duration)
+        console.log("StartTime------", StartTime);
+        console.log("EndTime--------", EndTime)
+        console.log("duration-------", duration)
+		console.log("baseTime-------", baseTime)
         data.push({
-            name: typeItem.name,
+            step: typeItem.step,
             value: [
                 index,
-                baseTime,
-                baseTime += duration,
-//              duration
-//				StartTime,
-//				EndTime,
+                // baseTime,
+                // baseTime += duration,
+				StartTime,
+				EndTime,
 				duration ,
             ],
             itemStyle: {
@@ -217,18 +181,18 @@ echarts.util.each(pModels, function (category, index) {
                 }
             }
         });
-        console.log("why data::::::::", data)
-          baseTime += Math.round(Math.random() * 2000);
+        console.log(":::baseTime:::", baseTime)
+          // baseTime += StartTime;
     }
-	console.log(data);
 });
-
+console.log("total data::::::::", data)
 
 function renderItem(params, api) {
     var categoryIndex = api.value(0);
     var start = api.coord([api.value(1), categoryIndex]);
     var end = api.coord([api.value(2), categoryIndex]);
-    var height = api.size([0, 1])[1] * 0.6;
+	console.log("api:::", api)
+    var height = api.size([0, 1])[1] * 0.2;
 
     var rectShape = echarts.graphic.clipRectByRect({
         x: start[0],
@@ -252,44 +216,51 @@ function renderItem(params, api) {
 option = {
     tooltip: {
         formatter: function (params) {
-               return params.marker + params.name + ': ' + params.value[3]/1000/60/24 + ' 天';
-//			return params.marker + params.name + ': ' + (params.endTime-params.startTime) + ' ms';
+            // return params.marker + params.name + ': ' + (params.value[3]/1000/60/24 - new Date('1970/1/1').getTime()/1000/60/24) + ' 天';
+			// return params.marker + params.step + ': ' + (params.value[3]/1000/60/60/24) + ' 天';
+			var stc = params.marker + params.data.step + ':<br>';
+			stc += "开始时间: " + timeLabel(params.value[1]) + "<br>";
+			stc += "结束时间: " + timeLabel(params.value[2]) + "<br>";
+			stc += "共计: " + (params.value[3]/1000/60/60/24) + " 天";
+			return stc;
         }
     },
     title: {
         text: '主进度计划',
         left: 'center'
     },
-    // dataZoom: [{
-    //     type: 'slider',
-    //     filterMode: 'weakFilter',
-    //     showDataShadow: false,
-    //     top: 400,
-    //     height: 10,
-    //     borderColor: 'transparent',
-    //     backgroundColor: '#e2e2e2',
-    //     handleIcon: 'M10.7,11.9H9.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4h1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7v-1.2h6.6z M13.3,22H6.7v-1.2h6.6z M13.3,19.6H6.7v-1.2h6.6z', // jshint ignore:line
-    //     handleSize: 20,
-    //     handleStyle: {
-    //         shadowBlur: 6,
-    //         shadowOffsetX: 1,
-    //         shadowOffsetY: 2,
-    //         shadowColor: '#aaa'
-    //     },
-    //     labelFormatter: ''
-    // }, {
-    //     type: 'inside',
-    //     filterMode: 'weakFilter'
-    // }],
+    dataZoom: [{
+        type: 'slider',
+        filterMode: 'weakFilter',
+        showDataShadow: false,
+        top: 400,
+        height: 10,
+        borderColor: 'transparent',
+        backgroundColor: '#e2e2e2',
+        handleIcon: 'M10.7,11.9H9.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4h1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7v-1.2h6.6z M13.3,22H6.7v-1.2h6.6z M13.3,19.6H6.7v-1.2h6.6z', // jshint ignore:line
+        handleSize: 20,
+        handleStyle: {
+            shadowBlur: 6,
+            shadowOffsetX: 1,
+            shadowOffsetY: 2,
+            shadowColor: '#aaa'
+        },
+        labelFormatter: ''
+    }, {
+        type: 'inside',
+        filterMode: 'weakFilter'
+    }],
     grid: {
         height: 300
     },
     xAxis: {
-        min: startTime,
+        // min: baseTime,
         scale: true,
         axisLabel: {
             formatter: function (val) {
-                return Math.max(0, val - startTime) + ' ms';
+                // return Math.max(0, val - startTime) + ' ms';
+				// 毫秒时间转 yyyy-mm-dd 
+				return timeLabel(whatTime(val))
             }
         },
     },
@@ -297,6 +268,17 @@ option = {
         data: pModels
     },
     series: [{
+        type: 'custom',
+        renderItem: renderItem,
+        itemStyle: {
+            opacity: 0.8
+        },
+        encode: {
+            x: [1, 2], //2 3列映射到X轴
+            y: 0 //1列映射到Y轴
+        },
+        data: data
+    },{
         type: 'custom',
         renderItem: renderItem,
         itemStyle: {
