@@ -13,8 +13,10 @@
 
     .echarts {
         background: #000;
-        width: 400px;
-        height: 400px;
+        /* width: 400px;
+        height: 400px; */
+		width: 400px;
+		height: 400px;
     }
 </style>
 <script src="js/echarts.js"></script>
@@ -54,14 +56,14 @@ function createPolarGauge(data) {
                 show: false //隐藏坐标
             }
         },
-        barMaxWidth: 10, //圆环宽度
+        barMaxWidth: 20, //圆环宽度
         radiusAxis: { //隐藏坐标
             show: false,
             type: 'category',
         },
         polar: { //设置圆环位置和大小
             center: ['50%', '50%'],
-            radius: '296'
+            radius: '150%'
         },
         series: [{
                 type: 'bar',
@@ -119,7 +121,7 @@ function createPolarGauge(data) {
                     offsetCenter: ["0", '25%'] //位置偏移
                 },
                 type: 'gauge',
-                radius: '66%', // 调整数值改变刻度圈大小
+                radius: '65%', // 调整数值改变刻度圈大小
                 startAngle: 180, //起始角度，同极坐标
                 endAngle: 0, //终止角度，同极坐标
                 max: data.c1,
