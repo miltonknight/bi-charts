@@ -1,48 +1,80 @@
-var times=[['2018/5/13', "ItemA"], ['2018/10/15', "ItemA"], 
-['2018/11/21', "ItemA"], ['2019/3/25', "ItemA"],['2019/7/27', "ItemA"], ['2019/11/28', "ItemA"],
-['2020/3/13', "ItemA"]];
-var times2=[['2018/5/15', "ItemA"], ['2018/10/17', "ItemA"], 
-['2018/11/21', "ItemA"], ['2019/3/25', "ItemA"],['2019/7/27', "ItemA"], ['2019/11/28', "ItemA"],
-['2020/3/13', "ItemA"]];
-
-option = {
-    title: {
-        text: '动态数据 + 时间坐标轴'
-    },
-    tooltip: {
-        trigger: 'axis',
-    },
-    xAxis: {
-        type: 'time',
-        axisLabel: {
-            rotate: 45, // rotate=倾斜角度
-            top:10
-            
-        },
-        splitLine: {
-            show: false
-        }
-    },
-    yAxis: {
-        type: 'category',
-        boundaryGap: [0, '100%'],
-        splitLine: {
-            show: false
-        }
-    },
-    series: [{
-        name: '模拟数据',
-        type: 'line',
-        showSymbol: false,
-        hoverAnimation: false,
-        data: times
-    },
-    {
-        name: '模拟数据2',
-        type: 'line',
-        showSymbol: false,
-        hoverAnimation: false,
-        data: times2
-    }
-    ]
-};
+//*****
+//  project_name: yAxisLabel
+	step: 阶段名称
+	color: 矩形颜色
+	type: 0,1 0=计划，1=实际 
+*****//
+{
+	"data": [{
+			"name": "项目A",
+			"detail": [{
+					"step": "组合件",
+					"color": "fff",
+					"start_time": "2020-12-09",
+					"end_time": "2021-12-09",
+					"type": 0
+				},
+				{
+					"step": "段件",
+					"color": "fff",
+					"start_time": "2020-12-09",
+					"end_time": "2021-12-09",
+					"type": 1
+				},
+				{
+					"step": "部装",
+					"color": "fff",
+					"start_time": "2020-12-09",
+					"end_time": "2021-12-09",
+					"type": 1
+				},
+				{
+					"step": "预总装",
+					"color": "fff",
+					"start_time": "2020-12-09",
+					"end_time": "2021-12-09",
+					"type": 1
+				},
+				{
+					"step": "总装",
+					"color": "fff",
+					"start_time": "2020-12-09",
+					"end_time": "2021-12-09",
+					"type": 1
+				},
+				{
+					"step": "喷漆",
+					"color": "fff",
+					"start_time": "2020-12-09",
+					"end_time": "2021-12-09",
+					"type": 1
+				},
+				{
+					"step": "试飞",
+					"color": "fff",
+					"start_time": "2020-12-09",
+					"end_time": "2021-12-09",
+					"type": 1
+				}
+			]
+		},
+		{
+			"project_name": "项目B",
+			"detail": [{
+					"step": "1",
+					"color": "fff",
+					"start_time": "2020-12-09",
+					"end_time": "2021-12-09",
+					"type": 0
+				},
+				{
+					"step": "1",
+					"color": "fff",
+					"start_time": "2020-12-09",
+					"end_time": "2021-12-09",
+					"type": 1
+				}
+			]
+		}
+	]
+}
