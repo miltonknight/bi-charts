@@ -24,10 +24,11 @@
 var myChart = echarts.init(document.getElementById("echarts"));
 
 var data = [];
+var data2 = [];
 var dataCount = 7;
 var startTime = +new Date();
 var categories = ['categoryA', 'categoryB', 'categoryC'];
-var types = [
+var mockData = [
 	
     {step: '组合件', color: '#cbc344', startTime: '2018.6.1', endTime: '2018.8.12', type: 0},
     {step: '段件', color: '#3a5aff', startTime: '2018.8.13', endTime: '2018.10.12', type: 0},
@@ -38,45 +39,24 @@ var types = [
     {step: '试飞', color: '#c93c3c', startTime: '2020.2.19', endTime: '2020.4.28', type: 0},
 	 
 	// [
-	{step: '组合件', color: '#cbc344', startTime: '2018.6.10', endTime: '2018.8.22', type: 1},
-	{step: '段件', color: '#3a5aff', startTime: '2018.8.23', endTime: '2018.10.22', type: 1},
-	{step: '部装', color: '#8d2a35', startTime: '2018.10.23', endTime: '2019.2.10', type: 1},
-	{step: '预总装', color: '#c59bff', startTime: '2019.2.11', endTime: '2019.6.25', type: 1},
-	{step: '总装', color: '#379b3a', startTime: '2019.6.26', endTime: '2019.12.20', type: 1},
-	{step: '喷漆', color: '#39c8c4', startTime: '2019.12.21', endTime: '2020.2.26', type: 1},
-	{step: '试飞', color: '#c93c3c', startTime: '2020.2.27', endTime: '2020.5.10', type: 1},
+	// {step: '组合件', color: '#cbc344', startTime: '2018.6.10', endTime: '2018.8.22', type: 1},
+	// {step: '段件', color: '#3a5aff', startTime: '2018.8.23', endTime: '2018.10.22', type: 1},
+	// {step: '部装', color: '#8d2a35', startTime: '2018.10.23', endTime: '2019.2.10', type: 1},
+	// {step: '预总装', color: '#c59bff', startTime: '2019.2.11', endTime: '2019.6.25', type: 1},
+	// {step: '总装', color: '#379b3a', startTime: '2019.6.26', endTime: '2019.12.20', type: 1},
+	// {step: '喷漆', color: '#39c8c4', startTime: '2019.12.21', endTime: '2020.2.26', type: 1},
+	// {step: '试飞', color: '#c93c3c', startTime: '2020.2.27', endTime: '2020.5.10', type: 1},
 	// ]
 ];
-
-var sample = [{
-		step: "组合件", 
-		itemStyle: {normal: {color: '#cbc344'}}, 
-		value: {index: 0, startTime: '2018.6.1', endTime: '2018.8.12', duration:"72"},
-	}, {
-		step: "段件", 
-		itemStyle: {normal: {color: '#3a5aff'}}, 
-		value: {index: 1, startTime: '2018.8.13', endTime: '2018.10.12', duration:"60"},
-	}, {
-		step: "部装", 
-		itemStyle: {normal: {color: '#8d2a35'}}, 
-		value: {index: 2, startTime: '2018.10.13', endTime: '2019.2.1', duration: '111'},
-	}, {
-		step: "预总装", 
-		itemStyle: {normal: {color: '#c59bff'}}, 
-		value: {index: 3, startTime: '2019.2.2', endTime: '2019.6.15', duration: '133'},
-	}, {
-		step: "总装",  
-		itemStyle: {normal: {color: '#379b3a'}}, 
-		value: {index: 4, startTime: '2019.6.16', endTime: '2019.12.10', duration: '177'},
-	}, {
-		step: "喷漆",  
-		itemStyle: {normal: {color: '#39c8c4'}}, 
-		value: {index: 5, startTime: '2019.12.11', endTime: '2020.2.18', duration: '69'},
-	}, {
-		step: "试飞",  
-		itemStyle: {normal: {color: '#c93c3c'}}, 
-		value: {index: 6, startTime: '2020.2.19', endTime: '2020.4.28', duration: '69'},
-	},
+var mockData2 = [
+	
+	{step: '组合件', color: '#cbc344', startTime: '2018.7.10', endTime: '2018.9.22', type: 1},
+	{step: '段件', color: '#3a5aff', startTime: '2018.9.23', endTime: '2018.11.22', type: 1},
+	{step: '部装', color: '#8d2a35', startTime: '2018.11.23', endTime: '2019.3.10', type: 1},
+	{step: '预总装', color: '#c59bff', startTime: '2019.3.11', endTime: '2019.7.25', type: 1},
+	{step: '总装', color: '#379b3a', startTime: '2019.7.26', endTime: '2020.1.20', type: 1},
+	{step: '喷漆', color: '#39c8c4', startTime: '2020.1.21', endTime: '2020.3.26', type: 1},
+	{step: '试飞', color: '#c93c3c', startTime: '2020.3.27', endTime: '2020.6.10', type: 1},
 ];
 
 // 时间格式化
@@ -121,7 +101,7 @@ function timeFormat(sTime) {
 	var sTime = sTime.replace(/\./g,"/"); // 系统分隔符'.'转换为'/'
 	sTime = new Date(sTime); // 转为标准时间格式
 	sTime = sTime.getTime(); // 转为毫秒格式显示，分钟:/1000/60, 小时:/1000/60/60, 天:/1000/60/60/24
-	console.log("sTime::", sTime);
+	// console.log("sTime::", sTime);
 	return sTime;
 }
 
@@ -132,7 +112,7 @@ function timeLabel(strTime) {
 	var M = curTime.getMonth()+1;
 	var D = curTime.getDate();
 	var timeLabel = Y + '-'+ M + '-' + D;
-	console.log("timeLabel", timeLabel);
+	// console.log("timeLabel", timeLabel);
 	return timeLabel;
 }
 
@@ -140,46 +120,49 @@ function timeLabel(strTime) {
 function whatTime(val) {
 	var mTime = new Date();
 	mTime.setTime(val);
-	console.log("whatTime---", mTime)
+	// console.log("whatTime---", mTime)
 	return mTime;
 }
 
 // 预整合数据项
 //组合件: #cbc344， 段件:#3a5aff，部装：#8d2a35，预总装：#c59bff，总装：#379b3a，喷漆：#39c8c4，试飞：#c93c3c
-var pModels = ['KJ-J15', /*'KJ-J20', 'KJ-J35', 'HJ-J15', 'HJ-J20', 'HJ-J35'*/];
+var pModels = ['KJ-J15', 'KJ-J20', 'KJ-J35', /*'HJ-J15', 'HJ-J20', 'HJ-J35'*/];
 var steps = ["组合件", "段件", "部装", "预总装", "总装", "喷漆", "试飞"]
 var color = ["#cbc344", "#3a5aff", "#8d2a35", "#c59bff", "#379b3a", "#39c8c4", "#c93c3c"];
 var yearMonth = ['2020-01','2020-02','2020-03','2020-04','2020-05','2020-06','2020-07','2020-08','2020-09','2020-10','2020-11','2020-12',]
 
 // Generate mock data
-echarts.util.each(categories, function (category, index) {
+// echarts.util.each(categories, function (category, index) {
+echarts.util.each(pModels, function (pModel, index) {
     // var baseTime = startTime;
 	var baseTime = 1527782400000; // 2018.6.1
 	console.log("baseTime:::::>>>", baseTime);
-	for (var i = 0; i < types.length; i++) {
-        var typeItem = types[i];
-        var duration = timeDiff(typeItem.startTime, typeItem.endTime);
-        var StartTime = timeFormat(typeItem.startTime);
-        var EndTime = timeFormat(typeItem.endTime);
-        console.log("StartTime------", StartTime);
-        console.log("EndTime--------", EndTime)
-        console.log("duration-------", duration)
-		console.log("baseTime-------", baseTime)
+	for (var i = 0; i < mockData.length; i++) {
+        var setItem = mockData[i];
+        var duration = timeDiff(setItem.startTime, setItem.endTime);
+        var StartTime = timeFormat(setItem.startTime);
+        var EndTime = timeFormat(setItem.endTime);
+        console.log("StartTime[" + i + "]------", StartTime);
+        console.log("EndTime[" + i + "]--------", EndTime)
+        console.log("duration[" + i + "]-------", duration)
+		console.log("baseTime[" + i + "]-------", baseTime)
         data.push({
-            step: typeItem.step,
-            value: [
-                index,
+			name: pModel, // 标题名称
+            step: setItem.step, // 阶段名
+            value: [ 
+                index, // index未发现做用
                 // baseTime,
                 // baseTime += duration,
-				StartTime,
-				EndTime,
-				duration ,
+				StartTime, // 开始时间 mm时间戳
+				EndTime, // 结束时间 mm时间戳
+				duration , // 持续时间 mm时间戳
             ],
             itemStyle: {
-                normal: {
-                    color: typeItem.color,
+                normal: { // 设置矩形颜色
+                    color: setItem.color,
                 }
-            }
+            },
+			type: setItem.type // 类型: 计划 or 完成
         });
         console.log(":::baseTime:::", baseTime)
           // baseTime += StartTime;
@@ -191,7 +174,7 @@ function renderItem(params, api) {
     var categoryIndex = api.value(0);
     var start = api.coord([api.value(1), categoryIndex]);
     var end = api.coord([api.value(2), categoryIndex]);
-	console.log("api:::", api)
+	// console.log("api:::", api)
     var height = api.size([0, 1])[1] * 0.2;
 
     var rectShape = echarts.graphic.clipRectByRect({
