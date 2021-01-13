@@ -127,9 +127,26 @@ function whatTime(val) {
 // 预整合数据项
 //组合件: #cbc344， 段件:#3a5aff，部装：#8d2a35，预总装：#c59bff，总装：#379b3a，喷漆：#39c8c4，试飞：#c93c3c
 var pModels = ['KJ-J15', 'KJ-J20', 'KJ-J35', /*'HJ-J15', 'HJ-J20', 'HJ-J35'*/];
+var pModels2 = ['KJ-J15-1', 'KJ-J20-1', 'KJ-J35-1', /*'HJ-J15', 'HJ-J20', 'HJ-J35'*/];
 var steps = ["组合件", "段件", "部装", "预总装", "总装", "喷漆", "试飞"]
 var color = ["#cbc344", "#3a5aff", "#8d2a35", "#c59bff", "#379b3a", "#39c8c4", "#c93c3c"];
-var yearMonth = ['2020-01','2020-02','2020-03','2020-04','2020-05','2020-06','2020-07','2020-08','2020-09','2020-10','2020-11','2020-12',]
+
+var yLabelItems = [];
+pModels,pModels2
+
+//echarts.util.each(pModels, pModels2, function(item, index) {
+//function labels(){
+
+	for(var j=0; j<pModels.length; j++) {
+		var temp = pModels[j];
+		yLabelItems.push(temp);
+		temp = pModels2[j];
+		yLabelItems.push(temp);
+	}
+	console.log("labels::", yLabelItems)
+//};
+
+
 
 // Generate mock data
 // echarts.util.each(categories, function (category, index) {
@@ -150,7 +167,7 @@ echarts.util.each(pModels, function (pModel, index) {
 			name: pModel, // 标题名称
             step: setItem.step, // 阶段名
             value: [ 
-                index, // index未发现做用
+                index = pModel, // index未发现做用
                 // baseTime,
                 // baseTime += duration,
 				StartTime, // 开始时间 mm时间戳
@@ -170,12 +187,51 @@ echarts.util.each(pModels, function (pModel, index) {
 });
 console.log("total data::::::::", data)
 
+echarts.util.each(pModels2, function (pModel2, index2) {
+	console.log("index2:-----------------------------------", index2)
+    // var baseTime = startTime;
+	var baseTime2 = 1527782400000; // 2018.6.1
+	console.log("baseTime:::::>>>", baseTime2);
+	for (var i = 0; i < mockData2.length; i++) {
+        var setItem2 = mockData2[i];
+        var duration2 = timeDiff(setItem2.startTime, setItem2.endTime);
+        var StartTime2 = timeFormat(setItem2.startTime);
+        var EndTime2 = timeFormat(setItem2.endTime);
+        console.log("StartTime[" + i + "]------", StartTime2);
+        console.log("EndTime[" + i + "]--------", EndTime2)
+        console.log("duration[" + i + "]-------", duration2)
+		console.log("baseTime[" + i + "]-------", baseTime2)
+        data2.push({
+			name: pModel2, // 标题名称
+            step: setItem2.step, // 阶段名
+            value: [ 
+                index2 = pModel2, // index未发现做用
+                // baseTime,
+                // baseTime += duration,
+				StartTime2, // 开始时间 mm时间戳
+				EndTime2, // 结束时间 mm时间戳
+				duration2 , // 持续时间 mm时间戳
+            ],
+            itemStyle: {
+                normal: { // 设置矩形颜色
+                    color: setItem2.color,
+                }
+            },
+			type: setItem2.type // 类型: 计划 or 完成
+        });
+        console.log(":::baseTime:::", baseTime2)
+          // baseTime += StartTime;
+    }
+});
+console.log("total data::::::::", data2)
+
+
 function renderItem(params, api) {
     var categoryIndex = api.value(0);
     var start = api.coord([api.value(1), categoryIndex]);
     var end = api.coord([api.value(2), categoryIndex]);
 	// console.log("api:::", api)
-    var height = api.size([0, 1])[1] * 0.2;
+    var height = api.size([0, 1])[1] * 0.3;
 
     var rectShape = echarts.graphic.clipRectByRect({
         x: start[0],
@@ -195,6 +251,33 @@ function renderItem(params, api) {
         style: api.style()
     };
 }
+
+function renderItem2(params, api) {
+    var categoryIndex = api.value(0);
+    var start = api.coord([api.value(1), categoryIndex]);
+    var end = api.coord([api.value(2), categoryIndex]);
+	// console.log("api:::", api)
+    var height = api.size([0, 1])[1] * 0.1;
+
+    var rectShape = echarts.graphic.clipRectByRect({
+        x: start[0],
+        y: start[1] - height / 2,
+        width: end[0] - start[0],
+        height: height
+    }, {
+        x: params.coordSys.x,
+        y: params.coordSys.y,
+        width: params.coordSys.width,
+        height: params.coordSys.height
+    });
+
+    return rectShape && {
+        type: 'rect',
+        shape: rectShape,
+        style: api.style()
+    };
+}
+
 
 option = {
     tooltip: {
@@ -244,12 +327,13 @@ option = {
                 // return Math.max(0, val - startTime) + ' ms';
 				// 毫秒时间转 yyyy-mm-dd 
 				return timeLabel(whatTime(val))
-            }
+            },
         },
     },
-    yAxis: {
-        data: pModels
-    },
+    yAxis: [{
+        	data: yLabelItems,
+    	}
+    ],
     series: [{
         type: 'custom',
         renderItem: renderItem,
@@ -263,15 +347,16 @@ option = {
         data: data
     },{
         type: 'custom',
-        renderItem: renderItem,
+        renderItem: renderItem2,
         itemStyle: {
-            opacity: 0.8
+            opacity: 0.8,
+            padding: [35,5,5,5]
         },
         encode: {
             x: [1, 2], //2 3列映射到X轴
             y: 0 //1列映射到Y轴
         },
-        data: data
+        data: data2
     }]
 };
 
