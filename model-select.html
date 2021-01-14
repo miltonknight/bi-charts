@@ -1,0 +1,212 @@
+<html>
+
+<head>
+<meta charset="utf-8" />
+<title>筛选器</title>
+<script src="js/echarts.js"></script>
+<script src="./js/jquery-2.2.3.min.js"></script>
+<style type="text/css">
+#main {
+	width: 800px;
+	height: 700px;
+	border: 1px solid #ccc;
+	margin: 30px;
+}
+
+</style>
+</head>
+
+<body>
+<pre>
+    <code>
+        
+    </code>
+</pre>
+
+<div class="echarts" id="echarts"></div>
+
+<script type="text/javascript">
+
+var mData = [
+	{
+		"model": "KJ-J15",
+		"detail": [{
+				"step": "组合件",
+				"color": "#cbc344",
+				"planStartTime": "2020.1.09",
+				"planEndTime": "2020.2.10",
+				"realStartTime": "2020.1.19",
+				"realEndTime": "2020.2.20",
+			},
+			{
+				"step": "段件",
+				"color": "#3a5aff",
+				"planStartTime": "2020.2.21",
+				"planEndTime": "2020.3.20",
+				"realStartTime": "2020.2.19",
+				"realEndTime": "2020.3.20",
+			},
+			{
+				"step": "部装",
+				"color": "#8d2a35",
+				"planStartTime": "2020.3.11",
+				"planEndTime": "2020.4.15",
+				"realStartTime": "2020.3.21",
+				"realEndTime": "2020.5.25",
+			},
+			{
+				"step": "预总装",
+				"color": "#c59bff",
+				"planStartTime": "2020.4.16",
+				"planEndTime": "2020.6.18",
+				"realStartTime": "2020.4.19",
+				"realEndTime": "2020.6.28",
+			},
+			{
+				"step": "总装",
+				"color": "#379b3a",
+				"planStartTime": "2020.6.17",
+				"planEndTime": "2020.6.27",
+				"realStartTime": "2020.6.29",
+				"realEndTime": "2020.7.8",
+			},
+			{
+				"step": "喷漆",
+				"color": "#39c8c4",
+				"planStartTime": "2020.6.28",
+				"planEndTime": "2020.7.15",
+				"realStartTime": "2020.7.9",
+				"realEndTime": "2020.7.29",
+			},
+			{
+				"step": "试飞",
+				"color": "#c93c3c",
+				"planStartTime": "2020.7.16",
+				"planEndTime": "2020.9.25",
+				"realStartTime": "2020.7.30",
+				"realEndTime": "2020.8.23",
+			},
+		]
+	},
+	{
+		"model": "KJ-J20",
+		"detail": [{
+				"step": "组合件",
+				"color": "#cbc344",
+				"planStartTime": "2020.1.09",
+				"planEndTime": "2020.2.10",
+				"realStartTime": "2020.1.19",
+				"realEndTime": "2020.2.20",
+			},
+			{
+				"step": "段件",
+				"color": "#3a5aff",
+				"planStartTime": "2020.2.21",
+				"planEndTime": "2020.3.20",
+				"realStartTime": "2020.2.19",
+				"realEndTime": "2020.3.20",
+			},
+			{
+				"step": "部装",
+				"color": "#8d2a35",
+				"planStartTime": "2020.3.11",
+				"planEndTime": "2020.4.15",
+				"realStartTime": "2020.3.21",
+				"realEndTime": "2020.5.25",
+			},
+			{
+				"step": "预总装",
+				"color": "#c59bff",
+				"planStartTime": "2020.4.16",
+				"planEndTime": "2020.6.18",
+				"realStartTime": "2020.4.19",
+				"realEndTime": "2020.6.28",
+			},
+			{
+				"step": "总装",
+				"color": "#379b3a",
+				"planStartTime": "2020.6.17",
+				"planEndTime": "2020.6.27",
+				"realStartTime": "2020.6.29",
+				"realEndTime": "2020.7.8",
+			},
+			{
+				"step": "喷漆",
+				"color": "#39c8c4",
+				"planStartTime": "2020.6.28",
+				"planEndTime": "2020.7.15",
+				"realStartTime": "2020.7.9",
+				"realEndTime": "2020.7.29",
+			},
+			{
+				"step": "试飞",
+				"color": "#c93c3c",
+				"planStartTime": "2020.7.16",
+				"planEndTime": "2020.9.25",
+				"realStartTime": "2020.7.30",
+				"realEndTime": "2020.8.23",
+			},
+		]
+	}
+	
+];
+
+var yLabels = [];
+var pData = [];
+var rData = [];
+
+for(var i=0; i<mData.length; i++) {
+	lables = mData[i].model;
+	console.log("yLabels::", lables)
+	yLabels.push(lables);
+	// var dModels = mData[i].detail.model;
+	// console.log("dModels:", dModels);
+	
+	for(var index in mData[i].detail) {
+		var dSteps = mData[i].detail[index].step;
+		var dColor = mData[i].detail[index].color;
+		var dpStartTime = mData[i].detail[index].planStartTime;
+		var dpEndTime = mData[i].detail[index].planEndTime;
+		var drStartTime = mData[i].detail[index].realStartTime;
+		var drEndTime = mData[i].detail[index].realEndTime;
+		pData.push({
+			model: lables, // 
+			step: dSteps, // 阶段名
+			value: [ 
+				index, // index未发现做用
+				dpStartTime, // 开始时间 mm时间戳
+				dpEndTime, // 结束时间 mm时间戳
+				// duration , // 持续时间 mm时间戳
+			],
+			itemStyle: {
+				normal: { // 设置矩形颜色
+					color: dColor,
+				}
+			},
+		});
+		rData.push({
+			model: lables, // 
+			step: dSteps, // 阶段名
+			value: [ 
+				index, // index未发现做用
+				drStartTime, // 开始时间 mm时间戳
+				drEndTime, // 结束时间 mm时间戳
+				// duration , // 持续时间 mm时间戳
+			],
+			itemStyle: {
+				normal: { // 设置矩形颜色
+					color: dColor,
+				}
+			},
+		});
+		console.log("planData::", pData)
+		console.log("realData::", rData)
+	}
+}
+
+
+
+</script>
+</body>
+
+</html>

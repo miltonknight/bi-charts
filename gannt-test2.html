@@ -59,37 +59,11 @@ var mockData2 = [
 	{step: '试飞', color: '#c93c3c', startTime: '2020.3.27', endTime: '2020.6.10', type: 1},
 ];
 
-// 时间格式化
-//var strTime= "2018.1.1";
-//var myDate = new Date(strTime);
-//console.log("1111111111",strTime.replace(/\./g,"-"));
-//console.log("myDate::", myDate)
-//var Y = myDate.getFullYear();
-//var M = myDate.getMonth()+1;
-//var D = myDate.getDate();
-//var curDay = Y + '-'+ M + '-' + D;
-//console.log(curDay);
-
-//function timeFormat() {
-//	var curTime = new Date(strTime);
-//	var Y = curTime.getFullYear();
-//	var M = curTime.getMonth()+1;
-//	var D = curTime.getDate();
-//	var formattedTime = Y + '-'+ M + '-' + D;
-//	console.log("formattedTime", formattedTime);
-//}
-//var startTime = "2017.6.1";
-//var endTime = "2018.1.4"
-
 function timeDiff(startTime, endTime) {
 	startTime = startTime.replace(/\./g,"/");
 	endTime = endTime.replace(/\./g,"/");
-//	console.log("111111", startTime);
-//	console.log("111111", endTime);
 	var sTime = new Date(startTime);    //开始时间-标准时间格式
 	var eTime = new Date(endTime);  //结束时间-标准时间格式
-//	console.log("111111", sTime);
-//	console.log("111111", eTime);
 	// var xx = parseInt((eTime.getTime()-sTime.getTime())/parseInt(1000*3600*24));
 	var xx = parseInt((eTime.getTime()-sTime.getTime())); //mm时间戳格式
 	console.log(xx)
@@ -126,8 +100,8 @@ function whatTime(val) {
 
 // 预整合数据项
 //组合件: #cbc344， 段件:#3a5aff，部装：#8d2a35，预总装：#c59bff，总装：#379b3a，喷漆：#39c8c4，试飞：#c93c3c
-var pModels = ['KJ-J15:计划',  /*'KJ-J20', 'KJ-J35','HJ-J15', 'HJ-J20', 'HJ-J35'*/];
-var pModels2 = ['KJ-J15:实际',  /*'KJ-J20-1', 'KJ-J35-1', 'HJ-J15', 'HJ-J20', 'HJ-J35'*/];
+var pModels = ['KJ-J15:计划', 'KJ-J20', 'KJ-J35', /*'HJ-J15', 'HJ-J20', 'HJ-J35'*/];
+var pModels2 = ['KJ-J15:实际', 'KJ-J20-1', 'KJ-J35-1', /*'HJ-J15', 'HJ-J20', 'HJ-J35'*/];
 var steps = ["组合件", "段件", "部装", "预总装", "总装", "喷漆", "试飞"]
 var color = ["#cbc344", "#3a5aff", "#8d2a35", "#c59bff", "#379b3a", "#39c8c4", "#c93c3c"];
 
@@ -222,192 +196,6 @@ echarts.util.each(pModels2, function (pModel2, index2) {
     }
 });
 console.log("total data::::::::", data2)
-
-/*************************** new make data *****************************/
-var yLabels = [];
-var pData = [];
-var rData = [];
-var mData = [
-	{
-		"model": "KJ-J15",
-		"detail": [{
-				"step": "组合件",
-				"color": "#cbc344",
-				"planStartTime": "2020.1.09",
-				"planEndTime": "2020.2.10",
-				"realStartTime": "2020.1.19",
-				"realEndTime": "2020.2.18",
-			},
-			{
-				"step": "段件",
-				"color": "#3a5aff",
-				"planStartTime": "2020.2.11",
-				"planEndTime": "2020.3.10",
-				"realStartTime": "2020.2.19",
-				"realEndTime": "2020.3.20",
-			},
-			{
-				"step": "部装",
-				"color": "#8d2a35",
-				"planStartTime": "2020.3.11",
-				"planEndTime": "2020.4.15",
-				"realStartTime": "2020.3.21",
-				"realEndTime": "2020.5.25",
-			},
-			{
-				"step": "预总装",
-				"color": "#c59bff",
-				"planStartTime": "2020.4.16",
-				"planEndTime": "2020.6.18",
-				"realStartTime": "2020.5.26",
-				"realEndTime": "2020.6.28",
-			},
-			{
-				"step": "总装",
-				"color": "#379b3a",
-				"planStartTime": "2020.6.19",
-				"planEndTime": "2020.6.27",
-				"realStartTime": "2020.6.29",
-				"realEndTime": "2020.7.8",
-			},
-			{
-				"step": "喷漆",
-				"color": "#39c8c4",
-				"planStartTime": "2020.6.28",
-				"planEndTime": "2020.7.15",
-				"realStartTime": "2020.7.9",
-				"realEndTime": "2020.7.29",
-			},
-			{
-				"step": "试飞",
-				"color": "#c93c3c",
-				"planStartTime": "2020.7.16",
-				"planEndTime": "2020.9.25",
-				"realStartTime": "2020.7.30",
-				"realEndTime": "2020.10.23",
-			},
-		]
-	},
-	// {
-	// 	"model": "KJ-J20",
-	// 	"detail": [{
-	// 			"step": "组合件",
-	// 			"color": "#cbc344",
-	// 			"planStartTime": "2020.1.09",
-	// 			"planEndTime": "2020.2.10",
-	// 			"realStartTime": "2020.1.19",
-	// 			"realEndTime": "2020.2.20",
-	// 		},
-	// 		{
-	// 			"step": "段件",
-	// 			"color": "#3a5aff",
-	// 			"planStartTime": "2020.2.21",
-	// 			"planEndTime": "2020.3.20",
-	// 			"realStartTime": "2020.2.19",
-	// 			"realEndTime": "2020.3.20",
-	// 		},
-	// 		{
-	// 			"step": "部装",
-	// 			"color": "#8d2a35",
-	// 			"planStartTime": "2020.3.11",
-	// 			"planEndTime": "2020.4.15",
-	// 			"realStartTime": "2020.3.21",
-	// 			"realEndTime": "2020.5.25",
-	// 		},
-	// 		{
-	// 			"step": "预总装",
-	// 			"color": "#c59bff",
-	// 			"planStartTime": "2020.4.16",
-	// 			"planEndTime": "2020.6.18",
-	// 			"realStartTime": "2020.4.19",
-	// 			"realEndTime": "2020.6.28",
-	// 		},
-	// 		{
-	// 			"step": "总装",
-	// 			"color": "#379b3a",
-	// 			"planStartTime": "2020.6.17",
-	// 			"planEndTime": "2020.6.27",
-	// 			"realStartTime": "2020.6.29",
-	// 			"realEndTime": "2020.7.8",
-	// 		},
-	// 		{
-	// 			"step": "喷漆",
-	// 			"color": "#39c8c4",
-	// 			"planStartTime": "2020.6.28",
-	// 			"planEndTime": "2020.7.15",
-	// 			"realStartTime": "2020.7.9",
-	// 			"realEndTime": "2020.7.29",
-	// 		},
-	// 		{
-	// 			"step": "试飞",
-	// 			"color": "#c93c3c",
-	// 			"planStartTime": "2020.7.16",
-	// 			"planEndTime": "2020.9.25",
-	// 			"realStartTime": "2020.7.30",
-	// 			"realEndTime": "2020.8.23",
-	// 		},
-	// 	]
-	// }
-	
-];
-for(var i=0; i<mData.length; i++) {
-	lables = mData[i].model;
-	console.log("yLabels::", lables)
-	yLabels.push(lables);
-	// var dModels = mData[i].detail.model;
-	// console.log("dModels:", dModels);
-	
-	for(var index in mData[i].detail) {
-		var dSteps = mData[i].detail[index].step;
-		var dColor = mData[i].detail[index].color;
-		// var duration2 = timeDiff(setItem2.startTime, setItem2.endTime);
-		// var StartTime2 = timeFormat(setItem2.startTime);
-		// var EndTime2 = timeFormat(setItem2.endTime);
-		var dpStartTime = timeFormat(mData[i].detail[index].planStartTime);
-		var dpEndTime = timeFormat(mData[i].detail[index].planEndTime);
-		var dpDuration = dpEndTime - dpStartTime;
-		var drStartTime = timeFormat(mData[i].detail[index].realStartTime);
-		var drEndTime = timeFormat(mData[i].detail[index].realEndTime);
-		var drDuration = drEndTime - drStartTime;
-		console.log("dpStartTime[" + i + "]------", whatTime(dpStartTime));
-		console.log("dpEndTime[" + i + "]--------", dpEndTime)
-		console.log("drStartTime[" + i + "]-------", drStartTime)
-		console.log("drEndTime[" + i + "]-------", drEndTime)
-		pData.push({
-			name: lables+"计划", // 
-			step: dSteps, // 阶段名
-			value: [ 
-				index, // index未发现做用
-				dpStartTime, // 开始时间 mm时间戳
-				dpEndTime, // 结束时间 mm时间戳
-				dpDuration , // 持续时间 mm时间戳
-			],
-			itemStyle: {
-				normal: { // 设置矩形颜色
-					color: dColor,
-				}
-			},
-		});
-		rData.push({
-			name: lables+"实际", // 
-			step: dSteps, // 阶段名
-			value: [ 
-				index, // index未发现做用
-				drStartTime, // 开始时间 mm时间戳
-				drEndTime, // 结束时间 mm时间戳
-				drDuration , // 持续时间 mm时间戳
-			],
-			itemStyle: {
-				normal: { // 设置矩形颜色
-					color: dColor,
-				}
-			},
-		});
-		console.log("planData::", pData)
-		console.log("realData::", rData)
-	}
-}
-/*************************** new make data done *****************************/
 
 function renderItem(params, api) {
     var categoryIndex = api.value(0);
