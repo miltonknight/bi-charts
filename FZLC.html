@@ -1,0 +1,137 @@
+<html>
+
+<head>
+<meta charset="utf-8" />
+<title>发展历程</title>
+<script src="js/echarts.js"></script>
+<script src="js/jquery-2.2.3.min.js"></script>
+<style type="text/css">
+#echarts {
+	/* width: 2000px;
+	height: 100px; */
+	border: 1px solid #ccc;
+	margin: 150px;
+	height: 800px;
+}
+.his-sect {
+	width: 317px;
+	height: 366px;
+	float: left;
+	font-size: 44px;
+	color: #0f1e93;
+	text-align: center;
+	padding-top: 148px;
+	box-sizing: border-box;
+	position: relative;
+}
+.his-sect:nth-child(odd) {
+	background: url(img/FZLC-ODD.png);
+}
+.his-sect:nth-child(even) {
+	background: url(img/FZLC-EVEN.png);
+}
+.his-tip {
+	width: 470px;
+	font-size: 24px;
+	text-align: left;
+	color: #fff;
+	position: absolute;
+	left: -76px;
+	text-align: justify;
+	text-indent: 2em;
+}
+.tip-top {
+	top: -158px;
+}
+.tip-bottom {
+	bottom: -153px;
+}
+.his-tip-top {
+	width: 470px;
+	height: 27px;
+	background: url(img/HISSECT-TOP.png);
+}
+.his-tip-body {
+	width: 400px;
+	padding: 10px 35px;
+	background: url(img/HISSECT-BODY.png);
+}
+.his-tip-foot {
+	width: 470px;
+	height: 18px;
+	background: url(img/HISSECT-BOTTOM.png);
+}
+</style>
+</head>
+
+<body>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="echarts" class="echarts">
+	<!-- <div class="his-sect">1900
+		<div class="his-tip">
+			<div class="his-tip-top"></div>
+			<div class="his-tip-body">1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。</div>
+			<div class="his-tip-foot"></div>
+		</div>
+	</div>
+	<div class="his-sect">1900
+		<div class="his-tip">
+			<div class="his-tip-top"></div>
+			<div class="his-tip-body">1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。</div>
+			<div class="his-tip-foot"></div>
+		</div>
+	</div> -->
+	
+</div>
+
+<script type="text/javascript">
+	
+var data = [];
+var mockData = [
+    {year: 1951, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "xxx.jpg"},
+	{year: 1956, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "xxx.jpg"},
+	{year: 1956, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "xxx.jpg"},
+	{year: 1958, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "xxx.jpg"},
+	{year: 1964, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "xxx.jpg"},
+	{year: 1964, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "xxx.jpg"},
+	{year: 1966, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "xxx.jpg"},
+	{year: 1969, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "xxx.jpg"},
+	{year: 1990, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "xxx.jpg"},
+	{year: 2002, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "xxx.jpg"},
+	{year: 2007, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "xxx.jpg"},
+	{year: 2012, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "xxx.jpg"},
+	{year: 2013, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "xxx.jpg"},
+	{year: 2018, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "xxx.jpg"},
+	{year: 2019, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "xxx.jpg"}
+];
+
+function devHistory() {
+	var str = '';
+	for(var i = 0; i < mockData.length; i++) {
+		console.log(mockData.length);
+		str += '<div class="his-sect">';
+		str += mockData[i].year;
+		if(i % 2 == 0) {
+			str += '<div class="his-tip tip-top">';
+		} 
+		if(i % 2 == 1){
+			str += '<div class="his-tip tip-bottom">';
+		}
+		str += '<div class="his-tip-top"></div>';
+		str += '<div class="his-tip-body">' + mockData[i].desc + '</div>';
+		str += '<div class="his-tip-foot"></div>';
+		str += '</div>';
+		str += '</div>';
+		console.log(mockData[i].year, mockData[i].desc)
+	}
+	$(".echarts").append(str);
+}
+
+window.onload = function(){
+	devHistory()
+}
+
+</script>
+</body>
+
+</html>
