@@ -1,0 +1,156 @@
+<html>
+
+<head>
+<meta charset="utf-8" />
+<title>人才需求</title>
+<script src="js/echarts.js"></script>
+<script src="./js/jquery-2.2.3.min.js"></script>
+<style type="text/css">
+#echarts {
+	width: 800px;
+	height: 700px;
+	margin: 30px;
+}
+.demand-box {
+    width: 100%;
+    height: auto;
+}
+.demand-head {
+    font-size: 1em;
+    margin-bottom: 20px;
+    height: 2em;
+    line-height: 2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.demand-head span {
+    display: inline-block;
+    margin-right: 20px;
+    height: 100%;
+}
+.demand-head img {
+    display: inline;
+    height: 100%;
+    margin-right: 10px;
+}    
+.demand-body, .demand-body .item {
+    width: 100%;
+    overflow: hidden;
+}
+.item { 
+    margin-bottom: 20px;
+}
+.item .item-name {
+    width: 4em;
+    height: 34px;
+    line-height: 34px;
+    margin-right: 20px;
+    float: left;
+}
+.item .item-icon-box {
+    float: left;
+    overflow: hidden;
+}
+.item .item-icon {
+    display: inline-block;
+    width: 27px;
+    height: 34px;
+    margin-right: 5px;
+    background-size: cover;
+} 
+.item-icon img {
+    width: 100%;
+    height: 100%;
+}
+.needs {
+    background-image: url(./img/talent.png);
+    background-position: left top;
+}
+.got {
+    background-image: url(./img/talent.png);
+    background-position: right top;
+}
+</style>
+</head>
+
+<body>
+
+<pre>
+    <code>
+        var tData = [
+            {item: "研发部门", demand: 14, got: 50},
+            {item: "总装车间", demand: 5, got: 46},
+        ]
+    </code>
+</pre>
+
+<div class="demand-box">
+    <div class="demand-head">
+        <img src="./img/talent-a.png"><span>总需求</span>
+        <img src="./img/talent-b.png"><span>已达成</span>
+    </div>
+    <div class="demand-body">
+        <div class="item">
+            <div class="item-name">研发部</div>
+            <div class="item-icon-box">
+                <div class="item-icon"><img src="./img/talent-a.png"></div>
+                <div class="item-icon"><img src="./img/talent-a.png"></div>
+                <div class="item-icon"><img src="./img/talent-a.png"></div>
+                <div class="item-icon"><img src="./img/talent-a.png"></div>
+                <div class="item-icon"><img src="./img/talent-a.png"></div>
+                <div class="item-icon"><img src="./img/talent-a.png"></div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-name">总装车间</div>
+            <div class="item-icon-box">
+                <div class="item-icon"><img src="./img/talent-b.png"></div>
+                <div class="item-icon"><img src="./img/talent-b.png"></div>
+                <div class="item-icon"><img src="./img/talent-b.png"></div>
+                <div class="item-icon"><img src="./img/talent-b.png"></div>
+                <div class="item-icon"><img src="./img/talent-b.png"></div>
+                <div class="item-icon"><img src="./img/talent-b.png"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="echarts" id="echarts"></div>
+
+<script type="text/javascript">
+var tData = [
+    {item: "研发部门", demand: 14, got: 50},
+    {item: "总装车间", demand: 5, got: 46},
+]
+var str = '';
+str += '<div class="demand-box">';
+str += '<div class="demand-head">';
+str += '<img src="./img/talent-a.png"><span>总需求</span>';
+str += '<img src="./img/talent-b.png"><span>已达成</span>';
+str += '</div>'; // demand-head 封口
+str += '<div class="demand-body">';
+
+for(var i = 0; i<tData.length; i++) {
+    str += '<div class="item">';
+    str += '<div class="item-name">';
+    str += tData[i].item;
+    str += '</div>'; // item-name 封口
+    str += '<div class="item-icon-box">';
+    for(var j=0; j<tData[i].demand; j++){
+        str += '<div class="item-icon"><img src="./img/talent-a.png"></div>';
+    }
+    str += '</div>'; // item-icon-box 封口
+    str += '</div>'; // item 封口
+
+}
+str += '</div>'; // demand-body 封口
+str += '</div>'; // demand-box 封口
+
+console.log("str ", str);
+$("#echarts").append(str);
+
+</script>
+</body>
+
+</html>
