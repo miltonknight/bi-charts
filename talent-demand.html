@@ -6,6 +6,14 @@
 <script src="js/echarts.js"></script>
 <script src="./js/jquery-2.2.3.min.js"></script>
 <style type="text/css">
+.demo {
+	border: 1px solid #ccc;
+}
+.demo h2 {
+	text-align: center;
+}
+
+
 #echarts {
 	width: 800px;
 	height: 700px;
@@ -56,21 +64,14 @@
     display: inline-block;
     width: 27px;
     height: 34px;
-    margin-right: 5px;
+    margin-right: 10px;
     background-size: cover;
 } 
 .item-icon img {
     width: 100%;
     height: 100%;
 }
-.needs {
-    background-image: url(./img/talent.png);
-    background-position: left top;
-}
-.got {
-    background-image: url(./img/talent.png);
-    background-position: right top;
-}
+
 </style>
 </head>
 
@@ -85,7 +86,8 @@
     </code>
 </pre>
 
-<div class="demand-box">
+<div class="demand-box demo">
+	<h2>DEMO</h2>
     <div class="demand-head">
         <img src="./img/talent-a.png"><span>总需求</span>
         <img src="./img/talent-b.png"><span>已达成</span>
@@ -123,6 +125,9 @@ var tData = [
     {item: "研发部门", demand: 14, got: 50},
     {item: "总装车间", demand: 5, got: 46},
 ]
+var c0 = ["研发部门", "总装车间"];
+var c1 = [14, 5];
+
 var str = '';
 str += '<div class="demand-box">';
 str += '<div class="demand-head">';
@@ -131,13 +136,13 @@ str += '<img src="./img/talent-b.png"><span>已达成</span>';
 str += '</div>'; // demand-head 封口
 str += '<div class="demand-body">';
 
-for(var i = 0; i<tData.length; i++) {
+for(var i = 0; i < c0.length; i++) {
     str += '<div class="item">';
     str += '<div class="item-name">';
-    str += tData[i].item;
+    str += c0[i];
     str += '</div>'; // item-name 封口
     str += '<div class="item-icon-box">';
-    for(var j=0; j<tData[i].demand; j++){
+    for(var j = 0; j < c1[i]; j++){
         str += '<div class="item-icon"><img src="./img/talent-a.png"></div>';
     }
     str += '</div>'; // item-icon-box 封口
