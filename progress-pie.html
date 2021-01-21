@@ -1,0 +1,199 @@
+<html>
+
+<head>
+<meta charset="utf-8" />
+<title>水流图+进度图</title>
+<script src="js/echarts.js"></script>
+<script src="js/echarts-liquidfill.min.js"></script>
+<script src="js/jquery-2.2.3.js"></script>
+<style type="text/css">
+body {
+	background-color: #003366;
+}
+#echarts {
+	width: 500px;/* 
+	height: 500px; */
+	width: 400px;
+	height: 400px;
+}
+</style>
+</head>
+
+<body>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="echarts" class="echarts"></div>
+
+<script type="text/javascript">
+// 基于准备好的dom，初始化echarts实例
+var myChart = echarts.init(document.getElementById("echarts"));
+
+var ratio = 66.66; //占比数值  总数为100
+var ratioLength = 3; //波浪数量
+var ratioArr = [];
+var ratioColor = ['#1991d2', '#3831f3', '#1991d2']; //波浪内颜色
+
+var c0 = 45; // value 
+var c1 = 100; // total
+
+
+for (var ratioIndex = 0; ratioIndex < ratioLength; ratioIndex++) {
+    ratioArr.push(c0 / c1)
+}
+var option = {
+    // backgroundColor: '#003366',
+    title: {
+        text: c0 + '%',
+        textStyle: {
+            fontSize: '350%',
+            fontFamily: 'Microsoft Yahei',
+            fontWeight: 'bold',
+            color: '#fff'
+        },
+        x: 'center',
+        y: 'center'
+    },
+    series: [{
+            type: 'liquidFill',
+            radius: '45%',
+            center: ['50%', '50%'],
+            color: ratioColor,
+            data: ratioArr,
+            backgroundStyle: {
+                // borderWidth: 1,
+                color: '#1f2c52',
+            },
+            label: {
+                normal: {
+                    formatter: '',
+                }
+            },
+            outline: {
+                show: false,
+            },
+        },
+        { //细的外圈
+            type: "pie",
+            center: ["50%", "50%"],
+            radius: ["49%", "50%"],
+            hoverAnimation: true,
+            data: [{
+                    name: "",
+                    value: c0,
+                    labelLine: {
+                        show: true
+                    },
+                    itemStyle: {
+                        color: 'transparent',
+                    },
+                    emphasis: {
+                        labelLine: {
+                            show: true
+                        },
+                        itemStyle: {
+                            color: 'transparent',
+							borderWidth: 20
+                        },
+                    }
+                },
+                { //画剩余的刻度圆环
+                    name: "",
+                    value: c1-c0,
+                    itemStyle: {
+						color: '#13446f',
+                    },
+                    label: {
+                        show: false
+                    },
+                    labelLine: {
+                        show: false
+                    },
+                    emphasis: {
+                        labelLine: {
+                            show: false
+                        },
+                        itemStyle: {
+                            color: '#13446f'
+                        },
+                    }
+                }
+            ]
+        },
+        { //粗的外圈
+            type: "pie",
+            center: ["50%", "50%"],
+            radius: ["45%", "51%"], // 调整数值改变圆圈粗细
+            hoverAnimation: false,
+            zlevel: 2,
+            data: [
+                {
+                    name: "",
+                    value: c0,
+                    labelLine: {
+                        show: false
+                    },
+                    itemStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            offset: 0,
+                            color: '#1278d1'
+                        }, {
+                            offset: 1,
+                            // color: '#0707ff',
+							color: '#00e2fe'
+                        }]),
+						width: 100
+                    },
+                    emphasis: {
+                        labelLine: {
+                            show: false
+                        },
+                        itemStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                offset: 0,
+                                color: '#1278d1'
+                            }, {
+                                offset: 1,
+                                color: '#00e2fe'
+                            }]),
+                        },
+                    }
+                },
+                { //画剩余的刻度圆环
+                    name: "",
+                    value: c1-c0,
+                    itemStyle: {
+                        // color: 'transparent',
+						color: '#13446f',
+						borderWidth: 20,
+                    },
+                    label: {
+                        show: false
+                    },
+                    labelLine: {
+                        show: false
+                    },
+                    emphasis: {
+                        labelLine: {
+                            show: false
+                        },
+                        itemStyle: {
+                            color: 'transparent'
+                        },
+                    }
+                }
+            ]
+        }
+    ]
+}
+
+// backgroundStyle: {
+// 	borderColor: '#156ACF',
+// 	borderWidth: 1,
+// 	shadowColor: 'rgba(0, 0, 0, 0.4)',
+// 	shadowBlur: 20
+// },
+myChart.setOption(option);
+
+</script>
+</body>
+
+</html>

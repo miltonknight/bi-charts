@@ -1,0 +1,196 @@
+<html>
+
+<head>
+<meta charset="utf-8" />
+<title>水流图+进度图2</title>
+<script src="js/echarts.js"></script>
+<script src="js/echarts-liquidfill.min.js"></script>
+<script src="js/jquery-2.2.3.min.js"></script>
+<style type="text/css">
+body {
+	background-color: #003366;
+}
+.demo {
+	width: 800px;
+	margin-bottom: 50px;
+}
+
+
+#echarts {
+	width: 95%; 
+}
+.process-box {
+	width: 100%;	
+	height: auto;
+}
+.process-title {
+	font-size: 1em;
+	color: #8cdcf0;
+	margin-bottom: 10px;
+	text-align: right;
+}
+.process-title span {
+	font-size: 1.4em;
+	color: #fff;
+}	
+.fl {
+	float: left;
+}
+.process-bar {
+	width: 100%;
+	position: relative;
+	height: 50px;
+	padding: 4px;
+	border: 1px solid #115888;
+	display: flex;
+}
+.process-bar-upper {
+	width: 100%;
+	position: absolute;
+	height: 50px;
+	display: flex;
+}
+.process-bar-light,
+.process-bar-dark {
+	/* width: 10px; */
+	height: 50px;
+}	
+.process-bar-dark {
+	margin-right: 5px;
+	flex-grow: 1;
+	background-color: #12436e;
+}
+.process-bar-dark:nth-last-child(1) {
+	margin-right: 0;
+}	
+.process-bar-light {
+	float: left;
+	background-color: #4cbafc;
+}
+.process-number {
+	position: relative;
+	top: 5px;
+	font-size: 1.2em;
+	color: #8cdcf0;
+	left: 0;
+	width: 1.5em;
+	text-align: center;
+	margin-left: -1.1em;
+}
+.process-number i {
+	width: 0;
+	height: 0;
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	border-top: 10px solid #4cbafc;
+	display: block;
+	margin: 0 auto;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="demo">
+	<div class="process-box">
+		<div class="process-title"><span class="fl">XXXXKPI</span> 计划：<span>XXX</span></div>
+		<div class="process-bar">
+			<div class="process-bar-dark"></div>
+			<div class="process-bar-dark"></div>
+			<div class="process-bar-dark"></div>
+			<div class="process-bar-dark"></div>
+			<div class="process-bar-upper">
+				<div class="process-bar-light"></div>
+				<div class="process-bar-light"></div>
+				<div class="process-bar-light"></div>
+				<div class="process-bar-light"></div>
+				<div class="process-number"><i></i><span>12</span></div>
+			</div>
+		</div>
+	</div>
+</div>	
+	
+<div id="echarts" class="echarts"></div>
+
+<script type="text/javascript">
+// 基于准备好的dom，初始化echarts实例
+// var myChart = echarts.init(document.getElementById("echarts"));
+
+// generate data
+var c0 = 'XXXX KPI';
+var c1 = 75; // 实际
+var c2 = 100; // 计划
+
+var bars;
+bars = c1 / c2 * 100 / 2;
+bars = bars.toFixed(0);
+console.log("bars:", bars);
+
+function makeBars() {
+	var str = '';
+	str += '<div class="process-box">';
+	str += '<div class="process-title"><span class="fl">'+ c0 + '</span> 计划 <span>' + c2 + '</span></div>';
+	str += '<div class="process-bar">'; // dark spots
+	for(var i=0; i<50; i++) {
+		str += '<div class="process-bar-dark"></div>';
+	}
+	str += '<div class="process-bar-upper">'; // light spots
+	for(var j=0; j<bars; j++) {
+		str += '<div class="process-bar-light"></div>';
+	}
+	str += '<div class="process-number"><i></i>' + c1 + '</div>';
+	str += '</div>'; // close .process-bar-upper
+	str += '</div>'; // close .process-bar
+	str += '</div>'; // close .process-box
+
+	// console.log('str', str);
+	$(".echarts").html('');
+	$(".echarts").append(str);
+
+	var darkWidth = $(".echarts .process-bar-dark").width();
+	console.log("darkWidth:", darkWidth);
+	$(".echarts .process-bar-light").width(darkWidth);
+}
+
+function makeBars2() {
+	var str = '';
+	str += '<div class="process-box">';
+	str += '<div class="process-title"><span class="fl">'+ c0 + '</span> 计划 <span>' + c2 + '</span></div>';
+	str += '<div class="process-bar">'; // dark spots
+	for(var i=0; i<50; i++) {
+		str += '<div class="process-bar-dark" data-id="' + i + '"></div>';
+	}
+	str += '</div>'; // close .process-bar
+	str += '</div>'; // close .process-box
+
+	// console.log('str', str);
+	$(".echarts").html('');
+	$(".echarts").append(str);
+	
+	var bArr = [];
+	bArr = $("#echarts .process-bar").find(".process-bar-dark");
+	// console.log("bArr::", bArr);
+	for(var j=0; j<bars; j++) { // 染色
+		$(bArr[j]).addClass("process-bar-light");
+	}
+	console.log("循环次数：", j)
+	var str2 = '<div class="process-number"><i></i>' + c1 + '</div>';
+	$("#echarts .process-box").append(str2);
+	
+	$("#echarts .process-number").css("left", bars*2+"%")
+	
+}
+
+window.onload = makeBars2;
+
+$(window).resize(function(){
+	// console.log("again")
+	makeBars2();
+});
+
+
+</script>
+</body>
+
+</html>
