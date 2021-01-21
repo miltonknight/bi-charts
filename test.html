@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+</head>
+<body>
+	
+	
+	
+</body>
+<script type="text/javascript">
+var mapSpot = [
+	[117.11, 34.15], // xuzhou
+	[118.58, 32.01], // nanjing
+	[123.38, 41.8], // shenyang
+	[112.01, 38.01], // taiyuan
+	[86.52, 42.45], // xinjiang
+	[104.07, 30.67], // chengdu
+	[102.90, 25.31] // kunming
+];
+
+// 经度
+var lng = [117.11, 118.58, 123.38, 112.01, 86.52, 104.07, 102.90];
+// 纬度
+var lat = [34.15, 32.01, 41.8,38.01, 42.45, 30.67, 25.31];
+// 坐标
+var coordinate = [];
+
+for(var i = 0; i < lng.length; i++) {
+	coordinate[i] = [lng[i], lat[i]];
+}
+console.log("mapSpot", mapSpot)
+console.log("coordinate", coordinate);
+
+</script>
+
+</html>
