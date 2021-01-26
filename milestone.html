@@ -54,19 +54,23 @@ code {
 	text-align: center;
 	background: url(img/MS-body.png) no-repeat left top;
 }
+.ms-body.not {
+	background: url(img/MS-body2.png) no-repeat left top;
+}
 .ms-body:nth-last-child(1) {
 	width: 527px;
 	background: url(img/MS-foot.png) no-repeat left top;
 }
-.ms-body.not div{
-	color: red;
-}	
+.ms-body.not:nth-last-child(1) {
+	width: 527px;
+	background: url(img/MS-body2.png) no-repeat left top;
+}
 .ms-head-name {
 	height: 107px;
 	line-height: 107px;
 	color: #fff;
 	font-size: 60px;
-	text-shadow: 0 0 30px #8cd9fd;
+	text-shadow: 0 0 20px #8cd9fd;
 }
 .ms-head-time {
 	color: #fff;
@@ -126,7 +130,7 @@ code {
 <script type="text/javascript">
 // genarate datas
 var c0 = ["第一步骤", "第2步骤", "第3步骤", "第4步骤", "第5步骤", "第6步骤", "第7步骤" ];
-var c1 = ["已完成", "已完成", "已完成", "已完成", "已完成", "未完成", "未完成", ];
+var c1 = ["已完成", "已完成", "已完成", "已完成", "未完成", "未完成", "未完成", ];
 var c2 = ["2019-5-21", "2019-9-18", "2019-10-23", "2020-4-3", "2020-6-18", "2020-8-18", "2020-11-22",]
 
 function milestone() {
