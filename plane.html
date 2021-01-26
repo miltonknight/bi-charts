@@ -6,7 +6,7 @@
 <script src="js/echarts.js"></script>
 <script src="js/jquery-2.2.3.min.js"></script>
 <style type="text/css">
-#main {
+#echarts {
 	width: 800px;
 	height: 500px;
 }
@@ -15,11 +15,11 @@
 
 <body>
 <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-<div id="main"></div>
+<div id="echarts"></div>
 
 <script type="text/javascript">
 // 基于准备好的dom，初始化echarts实例
-var myChart = echarts.init(document.getElementById("main"));
+var myChart = echarts.init(document.getElementById("echarts"));
 
 var uploadedDataURL = "https://www.makeapie.com/asset/get/s/data-1528971808162-BkOXf61WX.json";
 // var uploadedDataURL = "data-plane.json";
