@@ -35,28 +35,28 @@ http://echarts.baidu.com/option.html#series-map.geoIndex
 并且加了pin气泡图标以示数值大小
 **/
 
-var fColors = ["#4ab2e5", "#f56f1c"]
 
 var points = [{
-		value: [126.4746, 43.5938], itemStyle: {color: '#4fb6d2'}, // 吉林
+		value: [126.4746, 43.5938], itemStyle: {color: '#3fa8d8'}, // 吉林
 	}, {
-		value: [116.4551, 40.2539],	itemStyle: {color: '#4fb6d2'}, // 北京
+		value: [116.4551, 40.2539],	itemStyle: {color: '#3fa8d8'}, // 北京
 	}, {
-		value: [117.4219, 39.4189], itemStyle: {color: '#4fb6d2'}, // 天津
+		value: [117.4219, 39.4189], itemStyle: {color: '#3fa8d8'}, // 天津
 	}, {
 		value: [121.4648, 31.2891],	itemStyle: {color: '#f34e2b'}, // 上海
 	}, {
-		value: [89.9023, 41.748], itemStyle: {color: '#f56321'}, // 新疆
+		value: [89.9023, 41.748], itemStyle: {color: '#f2eb00'}, // 新疆
 	}, {
-		value: [103.9526, 30.7617],	itemStyle: {color: '#f56f1c'}, // 成都
+		value: [103.9526, 30.7617],	itemStyle: {color: '#f2eb00'}, // 成都
 	},
 ]
 
 // 原始数据
+var fColors = ["#3fa8d8", "#f2eb00"]; // 定义点和线条颜色
 var tLng = ["122.3438", "126.4746", "116.4551", "117.4219", "121.4648", "89.9023", "103.9526"]; // 经度 C0
 var tLat = ["41.0889", "43.5938", "40.2539", "39.4189", "31.2891", "41.748", "30.7617"]; // 纬度 C1
 var tType = ["空军", "空军", "空军", "空军", "海军", "海军", "海军"]; // 军种 C2
-var basePoint = ["122.3438", "41.0889"]; // 基准点，沈阳 基准点，删选出的数据
+var basePoint = ["122.3438", "41.0889"]; // 基准点，沈阳 基准点，筛选出的数据
 
 var dataPoints = []; // 数据点
 for(var i=0; i<tLat.length; i++) {
@@ -65,14 +65,14 @@ for(var i=0; i<tLat.length; i++) {
 		dataPoints.push({
 		    value: [tLng[i], tLat[i]],
 		    itemStyle: {
-				color: fColors[0] // '#4fb6d2'
+				color: fColors[0] // '#3fa8d8'
 		    },
 		});
 	} else {
 		dataPoints.push({
 			value: [tLng[i], tLat[i]],
 		    itemStyle: {
-				color: fColors[1] // '#f56f1c'
+				color: fColors[1] // '#f2eb00'
 		    },
 		});
 	}
@@ -89,7 +89,7 @@ for(var j=1; j<tLat.length; j++) {
 				dataPoints[j].value
 		    ],
 		    lineStyle: {
-				color: fColors[0] // '#4fb6d2'
+				color: fColors[0] // '#3fa8d8'
 		    },
 		});
 	} else {
@@ -100,7 +100,7 @@ for(var j=1; j<tLat.length; j++) {
 				dataPoints[j].value
 		    ],
 		    lineStyle: {
-				color: fColors[1] //'#f56f1c'
+				color: fColors[1] //'#f2eb00'
 		    },
 		});
 	}
