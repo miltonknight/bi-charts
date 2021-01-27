@@ -1,0 +1,179 @@
+<html>
+
+<head>
+<meta charset="utf-8" />
+<title>里程碑-调整尺寸版</title>
+<script src="js/echarts.js"></script>
+<script src="./js/jquery-2.2.3.min.js"></script>
+<style type="text/css">
+body {
+	background-color: #093F85;
+}
+.demo {
+	color: #fff;
+	text-align: center;
+	border: 5px solid #CCCCCC;
+	margin-bottom: 100px;
+}
+code {
+	color: #fff;
+}
+
+#echarts {
+	width: 100%;
+	/* height: 400px; */
+	margin: 30px;
+}
+.milestone {
+    width: 100%;
+    clear: both;
+    overflow: hidden;
+}
+.ms-head {
+    width: 370px;
+    height: 109px;
+    float: left;
+	background: url(img/MSN-head.png);
+    text-align: center;
+	color: #fff;
+	font-size: 36px;
+	text-shadow: 0 0 30px #8cd9fd;
+	line-height: 70px;
+}
+.ms-arrow {
+	width: 63px;
+	height: 109px;
+	float: left;
+	background: url(img/MSN-arrow.png) no-repeat;
+}
+.ms-body  {
+	height: 180px;
+	float: left;
+}	
+.ms-head-name {
+	padding-right: 74px;
+	height: 107px;
+	line-height: 70px;
+	color: #fff;
+	font-size: 36px;
+	text-shadow: 0 0 20px #8cd9fd;
+	background: url(img/MSN-body-right.png) no-repeat right top;
+}
+.ms-head-name span {
+	display: block;
+	padding-left: 80px;
+	height: 107px;
+	line-height: 70px;
+	margin-bottom: 50px;
+	text-align: center;
+	background: url(img/MSN-body-left.png) no-repeat left top;
+}
+.ms-head-name.not {
+	background: url(img/MSN-body2-right.png) no-repeat right top;
+}
+.ms-head-name.not span{
+	background: url(img/MSN-body2-left.png) no-repeat left top;
+}
+.ms-body:nth-last-child(1) .ms-head-name {
+	background: url(img/MSN-foot-right.png) no-repeat right top;
+}
+.ms-body:nth-last-child(1) .ms-head-name span {
+	background: url(img/MSN-foot-left.png) no-repeat left top;
+}
+.ms-body:nth-last-child(1) .ms-head-name.not {
+	background: url(img/MSN-foot2-right.png) no-repeat right top;
+}
+.ms-body:nth-last-child(1) .ms-head-name.not span {
+	background: url(img/MSN-foot2-left.png) no-repeat left top;
+}
+.ms-head-time {
+	color: #fff;
+	text-align: center;
+	font-size: 24px;
+	font-family: "arial, helvetica, sans-serif";
+	font-style: italic;
+	padding-top: 27px;
+	margin-top: -20px;
+	background: url(img/MSN-dot.png) top center no-repeat;
+}
+
+</style>
+</head>
+
+<body>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<!-- <div id="main"></div> -->
+<pre>
+    <code>
+        // genarate datas
+        var c0 = ["第一步骤", "第2步骤", "第3步骤", "第4步骤", "第5步骤", "第6步骤", "第7步骤" ];
+        var c1 = ["已完成", "已完成", "已完成", "已完成", "已完成", "未完成", "未完成", ];
+        var c2 = ["2019-5-21", "2019-9-18", "2019-10-23", "2020-4-3", "2020-6-18", "2020-8-18", "2020-11-22",]
+    </code>
+</pre>
+
+<div class="demo">
+	<h2>demo</h2>
+	<div class="milestone">
+		<div class="ms-head">项目里程碑</div>
+		<div class="ms-arrow"></div>
+		<div class="ms-body">
+			<div class="ms-head-name"><span>第一步骤</span></div>
+			<div class="ms-head-time">2018-10-22</div>
+		</div>
+		<div class="ms-arrow"></div>
+		<div class="ms-body">
+			<div class="ms-head-name"><span>第一步骤</span></div>
+			<div class="ms-head-time">2018-10-22</div>
+		</div>
+		<div class="ms-arrow"></div>
+		<div class="ms-body">
+			<div class="ms-head-name not"><span>第一步骤</span></div>
+			<div class="ms-head-time">2018-10-22</div>
+		</div>
+		<div class="ms-arrow"></div>
+		<div class="ms-body">
+			<div class="ms-head-name not"><span>第一步骤</span></div>
+			<div class="ms-head-time">2018-10-22</div>
+		</div>
+		
+	</div>
+</div>
+
+<div class="echarts" id="echarts"></div>
+
+<script type="text/javascript">
+// genarate datas
+var c0 = ["第一步骤", "第2步骤", "第3步骤", "第4步骤第4步骤步骤", "第5步骤", "第6步骤", "第7步骤" ];
+var c1 = ["已完成", "已完成", "已完成", "已完成", "未完成", "未完成", "未完成", ];
+var c2 = ["2019-5-21", "2019-9-18", "2019-10-23", "2020-4-3", "2020-6-18", "2020-8-18", "2020-11-22",]
+
+function milestone() {
+	var str = '<div class="milestone">';
+	str += '<div class="ms-head">项目里程碑</div>';
+	
+	for(var i = 0; i<c0.length; i++) {
+		str += '<div class="ms-arrow"></div>';
+		str += '<div class="ms-body">';
+		if(c1[i] === "已完成") {
+			str += '<div class="ms-head-name">';
+		}
+		else {
+			str += '<div class="ms-head-name not">';
+		}
+		str += '<span>' + c0[i] + '</span></div>';
+		str += '<div class="ms-head-time">' + c2[i] + '</div>';
+		str += "</div>";
+	}
+	console.log("str ", str);
+	$("#echarts").append(str);
+}
+
+window.onload = function(){
+	milestone();
+}
+
+</script>
+</body>
+
+</html>
