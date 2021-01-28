@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>滚动列表</title>
+<script src="js/jquery-2.2.3.min.js"></script>
+<style type="text/css">
+body {
+	background: #03369f;
+}	
+ul, li {
+	padding: 0;
+	margin: 50px;
+	background: #000;
+}
+li {
+	width: 100px;
+	height: 20px;
+	display: block;
+}
+.test-box {
+	width: 100px;
+	height: 20px;
+	background-color: #aaff00;
+	margin-bottom: 10px;
+}
+</style>
+</head>
+<body>
+	
+<ul id="demo">
+    <li><div class="test-box">123</div></li>
+    <li><div class="test-box">234</div></li>
+    <li><div class="test-box">345</div></li>
+    <li><div class="test-box">456</div></li>
+	<li><div class="test-box">567</div></li>
+	<li><div class="test-box">678</div></li>
+	<li><div class="test-box">789</div></li>
+	<li><div class="test-box">890</div></li>
+	<li><div class="test-box">90J</div></li>
+	<li><div class="test-box">10JQ</div></li>
+</ul>
+	
+<div id="echarts" class="echarts"></div>
+	
+
+<script>
+var data = [c0, c1, c2, c3];
+var c0 = [], c1 = [], c2 = [], c3 = [];
+data.c0 = ["img/1.png", "img/2.png", "img/3.png", "img/4.png", "img/5.png", "img/6.png", "img/7.png",]; // 图片地址，指标名称
+data.c1 = [10, 20, 30, 40, 50, 60, 70]; // 计划
+data.c2 = [8, 31, 27, 60, 35, 52, 60]; // 实际
+
+function makeData() {
+	var str = '';
+	var value;
+	for(var i=0; i<data.c0.length; i++) {
+		
+		str += '</div>';
+	}
+	$(".echarts").html('');
+	$(".echarts").append(str);
+}
+
+//		书讯快递循环垂直向上滚动
+function movedom(){
+	var margintop = 0;//上边距的偏移量
+	var stop = false;
+	setInterval( function() {
+		if(stop === true){
+			return;
+		}
+		$("#demo").children("li").first().animate({"margin-top": (margintop--)}, 0, function() {
+			console.log(margintop);
+			var $li = $(this);
+			if(!$li.is(":animated")){ //第一个li的动画结束时
+				if(-margintop > $li.height() * 2) {
+					$li.css("margin-top","0").appendTo($("#demo"));
+					margintop = 0;
+				}
+			}
+		});
+	}, 100);  //滚动速度
+	// 鼠标放到快递信息(ul)上时
+	$("#demo").hover( function() {
+		$(this).css("cursor","pointer");
+		stop = true;//停止动画
+	}, function(){
+		stop = false;//开始动画
+	});
+}
+// movedom();	
+
+
+window.onload = movedom();
+
+</script>
+</body>
+</html>
