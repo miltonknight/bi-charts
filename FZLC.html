@@ -148,6 +148,7 @@ $(".echarts").on("click", ".his-tip-body", function(){
 	var obj = $(this).find(".img-box");
 	var _height = obj.css("height");
 	if(_height === "0px") {
+		$(".img-box").height("0");
 		obj.height("auto");
 	} else {
 		obj.height(0);	
