@@ -6,17 +6,37 @@
 <script src="js/jquery-2.2.3.min.js"></script>
 <style type="text/css">
 body {
+	margin: 0;
 	background: #03369f;
 }	
+#demo {
+	margin: 0;
+	float: left;
+}
+.left {
+	float: left;
+}
+.left .box {
+	width: 100px;
+	height: 20px;
+	background-color: #fff;
+}
+.left .box:nth-child(2n) {
+	background-color: #ccc;
+}
 ul, li {
+	width: 100px;
 	padding: 0;
-	margin: 50px;
-	background: #000;
+	margin: 0;
+	
 }
 li {
 	width: 100px;
 	height: 20px;
 	display: block;
+}
+li:nth-child(2n) {
+	background-color: #aaaaff;
 }
 .test-box {
 	width: 100px;
@@ -27,7 +47,16 @@ li {
 </style>
 </head>
 <body>
-	
+
+<div class="left">
+	<div class="box"></div>
+	<div class="box"></div>
+	<div class="box"></div>
+	<div class="box"></div>
+	<div class="box"></div>
+	<div class="box"></div>
+</div>	
+
 <ul id="demo">
     <li><div class="test-box">123</div></li>
     <li><div class="test-box">234</div></li>
@@ -92,7 +121,7 @@ function movedom(){
 // movedom();	
 
 
-window.onload = movedom();
+// window.onload = movedom();
 
 </script>
 </body>
