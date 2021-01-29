@@ -15,14 +15,14 @@
 
 <body>
 <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-<div id="echarts"></div>
+<div id="echarts" class="echarts"></div>
 
 <script type="text/javascript">
 // 基于准备好的dom，初始化echarts实例
-var myChart = echarts.init(document.getElementById("echarts"));
+var chart = echarts.init(document.getElementById("echarts"));
 
-var uploadedDataURL = "https://www.makeapie.com/asset/get/s/data-1528971808162-BkOXf61WX.json";
-// var uploadedDataURL = "data-plane.json";
+// var uploadedDataURL = "https://www.makeapie.com/asset/get/s/data-1528971808162-BkOXf61WX.json";
+var uploadedDataURL = "data-plane.json";
 
 /**
 此版本通过设置geoindex && seriesIndex: [1] 属性来实现geo和map共存，来达到hover散点和区域显示tooltip的效果
@@ -53,12 +53,17 @@ var points = [{
 
 // 原始数据
 var fColors = ["#3fa8d8", "#f2eb00"]; // 定义点和线条颜色
-var tLng = ["122.3438", "126.4746", "116.4551", "117.4219", "121.4648", "89.9023", "103.9526"]; // 经度 C0
-var tLat = ["41.0889", "43.5938", "40.2539", "39.4189", "31.2891", "41.748", "30.7617"]; // 纬度 C1
+var tCity = ["吉林", "北京", "天津", "上海", "新疆", "成都"]
+var tLng = [/*"122.3438",*/ "126.4746", "116.4551", "117.4219", "121.4648", "89.9023", "103.9526"]; // 经度 C0
+var tLat = [/*"41.0889", */"43.5938", "40.2539", "39.4189", "31.2891", "41.748", "30.7617"]; // 纬度 C1
 var tType = ["空军", "空军", "空军", "空军", "海军", "海军", "海军"]; // 军种 C2
+var tJc = ["0102", "0203", "0304", "0405", "0506", "0607"] // 架次 C3
+var tNum = [5, 10, 15, 30, 6, 12] // 数量C4
+var tForce = ["空1军", "空93033师", "空93团", "空2旅", "空2军", "空12团"] // 服役部队 C5 
+
 var basePoint = ["122.3438", "41.0889"]; // 基准点，沈阳 基准点，筛选出的数据
 
-var dataPoints = []; // 数据点
+var dataPoints = []; // 生成数据点
 for(var i=0; i<tLat.length; i++) {
 	if(tType[i] === "空军") {
 		// dataPoints[i] = [tLng[i], tLat[i]];
@@ -79,8 +84,8 @@ for(var i=0; i<tLat.length; i++) {
 }
 console.log("dataPoints", dataPoints);
 
-var fullPoints = [];
-for(var j=1; j<tLat.length; j++) {
+var fullPoints = []; // 生成从基准点到数据点的线
+for(var j=0; j<tLat.length; j++) {
 	if(tType[j] === "空军") {
 		// fullPoints[j] = [basePoint, dataPoints[j], {"lineStyle": "{color: '#4fb6d2'}"}];
 		fullPoints.push({
@@ -108,13 +113,13 @@ for(var j=1; j<tLat.length; j++) {
 console.log("fullPoints", fullPoints);
 
 // var uploadedDataURL = "/asset/get/s/data-1482909892121-BJ3auk-Se.json";
-myChart.showLoading();
+chart.showLoading();
 let index = -1;
 
 $.getJSON(uploadedDataURL, function(geoJson) {
 
 	echarts.registerMap('china', geoJson);
-	myChart.hideLoading();
+	chart.hideLoading();
 	option = {
 		backgroundColor: '#013954',
 		title: {
@@ -127,49 +132,29 @@ $.getJSON(uploadedDataURL, function(geoJson) {
 			}
 		},
 
-		// tooltip: {
-		//     trigger: 'item',
-		//     formatter: function(params) {
-		//         console.log(params)
-		//             return params.name + ' : ' + params.value[2];
-		//     }
-		// },
-		// visualMap: {
-		//    min: 0,
-		//    max: 1000000,
-		//    right: 100,
-		//    seriesIndex: 1,
-		//    type: 'piecewise',
-		//    bottom: 100,
-		//    textStyle: {
-		// 	 color: '#FFFF'
-		//    },
-		//    splitList: [
-		// 	 {
-		// 	   gt: 50000,
-		// 	   color: '#F5222D',
-		// 	   label: '困难人数大于5万人'
-		// 	 }, //大于5万人
-		// 	 {
-		// 	   gte: 30000,
-		// 	   lte: 50000,
-		// 	   color: '#FA541C ',
-		// 	   label: '困难人数3-5万人'
-		// 	 }, //3-5万人
-		// 	 {
-		// 	   gte: 10000,
-		// 	   lte: 30000,
-		// 	   color: '#FA8C16',
-		// 	   label: '困难人数1-3万人'
-		// 	 }, //1-3万人
-		// 	 {
-		// 	   lte: 10000,
-		// 	   color: '#fbe1d6',
-		// 	   label: '困难人数小于1万人'
-		// 	 }
-		//    ]
-		//  },
-
+		tooltip: {
+			show: true,
+			triggerOn: "click",
+			enterable: true,  // 鼠标可进入tooltip
+			formatter: function (params, api) {
+				// params.dataIndex 可以定义数据index
+				console.log("params.dataIndex", params.dataIndex)
+				console.log("params.data:::", params.data)
+				console.log("api", api)
+				// infos += params.marker + "data:::" + params.dataIndex + "value:::" + params.value;
+				var infos = '';
+				if(params.data != undefined) {
+					infos += "位置: " + tCity[params.dataIndex] + "<br>";
+					infos += "数量: " + tNum[params.dataIndex] + "<br>";
+					infos += "架次: " + tJc[params.dataIndex] + "<br>";
+					infos += "服役部队: " + tForce[params.dataIndex] + "<br>";
+					infos += "<a href='https://www.baidu.com' target='_blank' style='color:#fff'>查看详细</a>";
+				} else {
+					infos += "此处无数据"
+				}
+				return infos;
+			}
+		},
 		geo: {
 			map: 'china',
 			aspectScale: 0.75, //长宽比
@@ -311,18 +296,7 @@ $.getJSON(uploadedDataURL, function(geoJson) {
 				},
 				lineStyle: {
 					normal: {
-						color: '#1DE9B6'
-							/* function (value){ //随机颜色
-			
-			['#f21347','#f3243e','#f33736','#f34131','#f34e2b',
-			'#f56321','#f56f1c','#f58414','#f58f0e','#f5a305',
-			'#e7ab0b','#dfae10','#d5b314','#c1bb1f','#b9be23',
-			'#a6c62c','#96cc34','#89d23b','#7ed741','#77d64c',
-			'#71d162','#6bcc75','#65c78b','#5fc2a0','#5abead',
-			'#52b9c7','#4fb6d2','#4ab2e5']
-return "#"+("00000"+((Math.random()*16777215+0.5)>>0).toString(16)).slice(-6);
-}*/
-							,
+						color: '#1DE9B6',
 						width: 1, //线条宽度
 						opacity: 0.1, //尾迹线条透明度
 						curveness: .3 //尾迹线条曲直度
@@ -333,36 +307,6 @@ return "#"+("00000"+((Math.random()*16777215+0.5)>>0).toString(16)).slice(-6);
 				// 	lineStyle: {
 				// 		color: '#4ab2e5'
 				// 	}
-				// }, 
-				// {
-				// 	coords: [[122.3438,41.0889], [116.4551, 40.2539]], // 北京
-				// 	lineStyle: {
-				// 		color: '#4ab2e5'
-				// 	}
-				// }, 
-				// {
-				// 	coords: [[122.3438,41.0889], [117.4219, 39.4189]], // 天津
-				// 	lineStyle: {
-				// 		color: '#4ab2e5'
-				// 	}
-				// }, 
-				// {
-				// 	coords: [[122.3438,41.0889], [121.4648, 31.2891]], // 上海
-				// 	lineStyle: {
-				// 		color: '#4ab2e5'
-				// 	}
-				// }, 
-				// {
-				// 	coords: [[122.3438,41.0889], [89.9023, 41.748]], // 新疆
-				// 	lineStyle: {
-				// 		color: 'red'
-				// 	}
-				// }, 
-				// {
-				// 	coords: [[122.3438,41.0889], [103.9526, 30.7617]], // 成都
-				// 	lineStyle: {
-				// 		color: 'red'
-				// 	}
 				// }
 				// ]
 				data: fullPoints
@@ -370,9 +314,8 @@ return "#"+("00000"+((Math.random()*16777215+0.5)>>0).toString(16)).slice(-6);
 
 		]
 	};
-	myChart.setOption(option);
+	chart.setOption(option);
 });
-
 
 //myChart.setOption(option);
 </script>
