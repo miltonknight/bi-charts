@@ -12,6 +12,7 @@
 	border: 1px solid #ccc;
 	margin: 150px;
 	height: 800px;
+	margin-top: 400px;
 }
 .his-sect {
 	width: 317px;
@@ -41,10 +42,10 @@
 	text-indent: 2em;
 }
 .tip-top {
-	top: -158px;
+	bottom: 367px;
 }
 .tip-bottom {
-	bottom: -153px;
+	top: 369px;
 }
 .his-tip-top {
 	width: 470px;
@@ -55,6 +56,17 @@
 	width: 400px;
 	padding: 10px 35px;
 	background: url(img/HISSECT-BODY.png);
+}
+.his-tip-body .img-box {
+	width: 100%;
+	height: 0;
+	overflow: hidden;
+	margin: 0 auto 10px;
+	text-align: center;
+	text-indent: 0;
+}
+.his-tip-body .img-box img {
+	width: 100%;
 }
 .his-tip-foot {
 	width: 470px;
@@ -88,21 +100,21 @@
 	
 var data = [];
 var mockData = [
-    {year: 1951, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "xxx.jpg"},
-	{year: 1956, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "xxx.jpg"},
-	{year: 1956, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "xxx.jpg"},
-	{year: 1958, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "xxx.jpg"},
-	{year: 1964, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "xxx.jpg"},
-	{year: 1964, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "xxx.jpg"},
-	{year: 1966, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "xxx.jpg"},
-	{year: 1969, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "xxx.jpg"},
-	{year: 1990, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "xxx.jpg"},
-	{year: 2002, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "xxx.jpg"},
-	{year: 2007, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "xxx.jpg"},
-	{year: 2012, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "xxx.jpg"},
-	{year: 2013, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "xxx.jpg"},
-	{year: 2018, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "xxx.jpg"},
-	{year: 2019, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "xxx.jpg"}
+    {year: 1951, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: ""},
+	{year: 1956, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "img/2.png"},
+	{year: 1956, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "img/3.png"},
+	{year: 1958, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "img/4.png"},
+	{year: 1964, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "img/5.png"},
+	{year: 1964, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "img/6.png"},
+	{year: 1966, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "img/7.png"},
+	{year: 1969, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "img/8.png"},
+	{year: 1990, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "img/1.png"},
+	{year: 2002, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "img/2.png"},
+	{year: 2007, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "img/3.png"},
+	{year: 2012, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "img/4.png"},
+	{year: 2013, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "img/5.png"},
+	{year: 2018, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "img/1.png"},
+	{year: 2019, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "img/2.png"}
 ];
 
 function devHistory() {
@@ -118,14 +130,29 @@ function devHistory() {
 			str += '<div class="his-tip tip-bottom">';
 		}
 		str += '<div class="his-tip-top"></div>';
-		str += '<div class="his-tip-body">' + mockData[i].desc + '</div>';
+		str += '<div class="his-tip-body">';
+		if(mockData[i].imgSrc != "") {
+			str += '<div class="img-box"><img src="'+ mockData[i].imgSrc + '" /></div>';
+		}
+		str += mockData[i].desc + '</div>';
 		str += '<div class="his-tip-foot"></div>';
 		str += '</div>';
 		str += '</div>';
 		console.log(mockData[i].year, mockData[i].desc)
 	}
+	$(".echarts").html('');
 	$(".echarts").append(str);
 }
+
+$(".echarts").on("click", ".his-tip-body", function(){
+	var obj = $(this).find(".img-box");
+	var _height = obj.css("height");
+	if(_height === "0px") {
+		obj.height("auto");
+	} else {
+		obj.height(0);	
+	}
+});
 
 window.onload = function(){
 	devHistory()
