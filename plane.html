@@ -9,6 +9,8 @@
 #echarts {
 	width: 800px;
 	height: 500px;
+	background-image: url(img/10.jpg);
+	background-size: cover;
 }
 </style>
 </head>
@@ -121,7 +123,7 @@ $.getJSON(uploadedDataURL, function(geoJson) {
 	echarts.registerMap('china', geoJson);
 	chart.hideLoading();
 	option = {
-		backgroundColor: '#013954',
+		// backgroundColor: '#013954',
 		title: {
 			top: 20,
 			// text: '外场集群',
@@ -221,7 +223,7 @@ $.getJSON(uploadedDataURL, function(geoJson) {
 						}
 					}
 				},
-				itemStyle: {
+				itemStyle: { // 地图色块设置
 					normal: {
 						borderColor: '#93ebf8', // 地图描边颜色
 						borderWidth: 1,
