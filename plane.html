@@ -9,8 +9,19 @@
 #echarts {
 	width: 800px;
 	height: 500px;
-	background-image: url(img/10.jpg);
-	background-size: cover;
+	background-color: #003366;
+/* 	background-image: url(img/10.jpg);
+	background-size: cover; */
+}
+.detail-box {
+	width: 60%;
+	height: 60%;
+	background: #007AFF;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin: -19% 0 0 -30%;
+	z-index: 99999999;
 }
 </style>
 </head>
@@ -55,6 +66,10 @@ var points = [{
 
 // 原始数据
 var fColors = ["#3fa8d8", "#f2eb00"]; // 定义点和线条颜色
+var mapBg = ["#0c094c", "#111d71"];
+var mapBgHover = "#0044af";
+var mapShadow = "#3a73c0";
+
 var tCity = ["吉林", "北京", "天津", "上海", "新疆", "成都"]
 var tLng = [/*"122.3438",*/ "126.4746", "116.4551", "117.4219", "121.4648", "89.9023", "103.9526"]; // 经度 C0
 var tLat = [/*"41.0889", */"43.5938", "40.2539", "39.4189", "31.2891", "41.748", "30.7617"]; // 纬度 C1
@@ -62,6 +77,10 @@ var tType = ["空军", "空军", "空军", "空军", "海军", "海军", "海军
 var tJc = ["0102", "0203", "0304", "0405", "0506", "0607"] // 架次 C3
 var tNum = [5, 10, 15, 30, 6, 12] // 数量C4
 var tForce = ["空1军", "空93033师", "空93团", "空2旅", "空2军", "空12团"] // 服役部队 C5 
+
+// 弹出表数据
+var detailData;
+
 
 var basePoint = ["122.3438", "41.0889"]; // 基准点，沈阳 基准点，筛选出的数据
 
@@ -150,7 +169,7 @@ $.getJSON(uploadedDataURL, function(geoJson) {
 					infos += "数量: " + tNum[params.dataIndex] + "<br>";
 					infos += "架次: " + tJc[params.dataIndex] + "<br>";
 					infos += "服役部队: " + tForce[params.dataIndex] + "<br>";
-					infos += "<a href='https://www.baidu.com' target='_blank' style='color:#fff'>查看详细</a>";
+					infos += "<a href='javascript:showDetail()' style='color:#fff'>查看详细</a>";
 				} else {
 					infos += "此处无数据"
 				}
@@ -171,14 +190,17 @@ $.getJSON(uploadedDataURL, function(geoJson) {
 						r: 0.8,
 						colorStops: [{
 							offset: 0,
-							color: '#09132c' // 0% 处的颜色
+							// color: '#09132c' ,// 0% 处的颜色
+							color: mapBg[0] // 0% 处的颜色
 						}, {
 							offset: 1,
-							color: '#274d68' // 100% 处的颜色
+							// color: '#274d68' ,// 100% 处的颜色
+							color: mapBg[1] // 100% 处的颜色
 						}],
 						globalCoord: true // 缺省为 false
 					},
-					shadowColor: 'rgb(58,115,192)',
+					// shadowColor: 'rgb(58,115,192)',
+					shadowColor: mapShadow, // 地图阴影颜色
 					shadowOffsetX: 10,
 					shadowOffsetY: 11
 				},
@@ -234,16 +256,19 @@ $.getJSON(uploadedDataURL, function(geoJson) {
 							r: 0.8,
 							colorStops: [{ // 地图色块渐变
 								offset: 0,
-								color: '#070e3a' // 0% 处的颜色#09132c
+								// color: '#070e3a' ,// 0% 处的颜色#09132c
+								color: mapBg[0] // 0% 处的颜色#09132c
 							}, {
 								offset: 1,
-								color: '#173164' // 100% 处的颜色
+								// color: '#173164' // 100% 处的颜色
+								color: mapBg[1] // 100% 处的颜色
 							}],
 							globalCoord: true // 缺省为 false
 						},
 					},
-					emphasis: {
-						areaColor: '#ff911e',
+					emphasis: { // 地图hover颜色
+						// areaColor: '#ff911e',
+						areaColor: mapBgHover,
 						//    shadowColor: 'rgb(12,25,50)',
 						borderWidth: 0.1
 					}
@@ -286,7 +311,7 @@ $.getJSON(uploadedDataURL, function(geoJson) {
 				symbolSize: 12,
 				// data: points // 基准点绘制
 				data: dataPoints
-			}, {//地图线的动画效果
+			}, { // 地图线的动画效果
 				type: 'lines',
 				zlevel: 2,
 				effect: {
@@ -320,6 +345,26 @@ $.getJSON(uploadedDataURL, function(geoJson) {
 });
 
 //myChart.setOption(option);
+
+function showDetail() {
+	var str = '';
+	str += '<div class="detail-box">';
+	str += '321313131313131321';	
+	str += '<span class="closex">XXXXX</span>';
+	str += '</div>';	
+	$(".echarts").append(str);
+}
+$(".echarts").on("click", ".closex", function(){
+	console.log(1)
+	$(".detail-box").hide();
+	$(".detail-box").remove();
+});
+
+
+
+
+
+
 </script>
 </body>
 
