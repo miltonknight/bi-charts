@@ -107,11 +107,12 @@ body {
 
 <script>
 var data = [c0, c1, c2, c3];
-var c0 = [], c1 = [], c2 = [], c3 = [];
+var c0 = [], c1 = [], c2 = [], c3 = [], c4 = [];
 data.c0 = ["img/1.png", "img/2.png", "img/3.png", "img/4.png", "img/5.png", "img/6.png", "img/7.png",]; // 图片地址，指标名称
 data.c1 = [10, 20, 30, 40, 50, 60, 70]; // 计划
 data.c2 = [8, 31, 27, 60, 35, 52, 60]; // 实际
-data.c3 = ["上升", "下降", "上升", "下降", "上升", "下降", "上升"]; // 同比
+data.c3 = ["90%", "80%", "70%", "60%", "50%", "45%", "126%"]; // 同比
+data.c4 = ["卡片1", "卡片2", "卡片3", "卡片4", "卡片5", "卡片6", "卡片7"]; // 卡片名称
 
 function makeData() {
 	var str = '';
@@ -120,11 +121,13 @@ function makeData() {
 		str += '<div class="swiper-slide">';
 		str += '<div class="slide-img">';
 		str += '<img src="' + data.c0[i] + '" alt="">';
+		str += '<p>' + data.c4[i] + '</p>';
 		str += '</div>';
 		str += '<p>计划：' + data.c1[i] + '</p>';
 		str += '<p class="yellow">实际：' + data.c2[i] + '</p>';
 		str += '<p class="status">同比：';
-		value = (data.c2[i] / data.c1[i]).toFixed(2) * 100;
+		// value = (data.c2[i] / data.c1[i]).toFixed(2) * 100;
+		value = data.c3[i];
 		if(value > 100 ) {
 			str += '<img src="data:image/png;base64,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" /> ' + value + '%';
 		}
