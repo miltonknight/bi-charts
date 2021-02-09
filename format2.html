@@ -24,46 +24,44 @@ var params = global.params;
 /**
 * 渲染图形
 */
-
-// // 整体的数据初始化
+// 整体的数据初始化
 var basePoint = ["122.3438", "41.0889"]; // 基准点，沈阳 基准点，筛选出的数据
-var tCity = ["吉林", "北京", "天津", "上海", "新疆", "四川"] // 地名 C0
-var tLng = [/*"122.3438",*/ "126.4746", "116.4551", "117.4219", "121.4648", "89.9023", "103.9526"]; // 经度 C1
-var tLat = [/*"41.0889", */"43.5938", "40.2539", "39.4189", "31.2891", "41.748", "30.7617"]; // 纬度 C2
-var tType = ["空军", "空军", "空军", "空军", "海军", "海军", "海军"]; // 军种 C3
-var tJc = ["0102", "0203", "0304", "0405", "0506", "0607"] // 架次 C4
-var tNum = [5, 10, 15, 30, 6, 12] // 数量C5
-var tForce = ["空1军", "空93033师", "空93团", "空2旅", "空2军", "空12团"] // 服役部队 C6
+var tCity = [] // 地名 C0
+var tLng = []; // 经度 C1
+var tLat = []; // 纬度 C2
+var tType = []; // 军种 C3
+var tJc = [] // 架次 C4
+var tNum = [] // 数量C5
+var tForce = [] // 服役部队 C6
 
 // 坐标点
 var spotColor = '#0087f4'; // 点颜色
 var fontColor = '#ffff00'; // 文字颜色
 var mapSpots = [];
-// for(var n = 0; n < tLng.length; n++) {
-// 	// mapSpots[n] = [tLng[n], tLat[n]];
-// 	mapSpots.push({
-// 		name: tCity[n],
-// 		value: [tLng[n], tLat[n]]
-// 	})
-// }
-// mapSpots.push({
-// 	name: "沈阳",
-// 	value: basePoint
-// })
+for(var n = 0; n < tLng.length; n++) {
+	// mapSpots[n] = [tLng[n], tLat[n]];
+	mapSpots.push({
+		name: tCity[n],
+		value: [tLng[n], tLat[n]]
+	})
+}
+mapSpots.push({
+	name: "沈阳",
+	value: basePoint
+})
 console.log("mapSpots:::>", mapSpots);
 
 // 线
 var lineData = [];
 var lineColors = ["#3fa8d8", "#f2eb00"]
-// for(var m = 0; m < mapSpots.length; m++) {
-// 	lineData.push({
-// 		coords: [basePoint, mapSpots[m].value],
-// 		value: (Math.random() * 3000).toFixed(2)
-// 	})
-// }
+for(var m = 0; m < mapSpots.length; m++) {
+	lineData.push({
+		coords: [basePoint, mapSpots[m].value],
+		value: (Math.random() * 3000).toFixed(2)
+	})
+}
 console.log("lineData:::>>", lineData);
 
-	
 var config = {
 	color: '#750be8',
 	levels: 1, 
@@ -71,28 +69,12 @@ var config = {
 	threshold: 0.01 // 起始点
 }
 
-var canvas = document.createElement('canvas');
-canvas.width = 2048;
-canvas.height = 1024;
-context = canvas.getContext("2d");
-
-context.lineWidth = 0.5;
-context.strokeStyle = config.color;
-context.fillStyle = config.color;
-context.shadowColor = config.color;			
-
-$.when(
-	$.getScript('./js/world-gl-map/d3-contour.js'),
-	$.getScript('./js/world-gl-map/d3_geo.js'),
-	$.getScript('./js/world-gl-map/d3_timer.js')
-).done(makeDatas(data));
-
-function makeDatas(data) {
+function makeData(data) {
 	// 整体的数据初始化
 	basePoint = ["122.3438", "41.0889"]; // 基准点，沈阳 基准点，筛选出的数据
-	tCity = ["吉林", "北京", "天津", "上海", "新疆", "四川"] // 地名 C0
-	tLng = [/*"122.3438",*/ "126.4746", "116.4551", "117.4219", "121.4648", "89.9023", "103.9526"]; // 经度 C1
-	tLat = [/*"41.0889", */"43.5938", "40.2539", "39.4189", "31.2891", "41.748", "30.7617"]; // 纬度 C2
+	tCity = data.c0 // 地名 C0
+	tLng = data.c1; // 经度 C1
+	tLat = data.c2; // 纬度 C2
 	tType = ["空军", "空军", "空军", "空军", "海军", "海军", "海军"]; // 军种 C3
 	tJc = ["0102", "0203", "0304", "0405", "0506", "0607"] // 架次 C4
 	tNum = [5, 10, 15, 30, 6, 12] // 数量C5
@@ -126,11 +108,27 @@ function makeDatas(data) {
 	}
 	console.log("lineData:::>>", lineData);
 	
-	drawEarth();
+	drawEarth()
 }
 
+var canvas = document.createElement('canvas');
+canvas.width = 2048;
+canvas.height = 1024;
+context = canvas.getContext("2d");
 
+context.lineWidth = 0.5;
+context.strokeStyle = config.color;
+context.fillStyle = config.color;
+context.shadowColor = config.color;			
+
+// $.when(
+// 	$.getScript('./js/world-gl-map/d3-contour.js'),
+// 	$.getScript('./js/world-gl-map/d3_geo.js'),
+// 	$.getScript('./js/world-gl-map/d3_timer.js')
+// ).done(drawEarth());
+		
 function drawEarth() {	
+	console.log("drawEarth-----------------")
 	image('img/10.jpg').then(function(image) {
 		var m = image.height,
 			n = image.width,
@@ -150,6 +148,7 @@ function drawEarth() {
 		}
 
 		var results = [];
+		
 		function update(threshold, levels) {
 			context.clearRect(0, 0, canvas.width, canvas.height);
 			var thresholds = [];
@@ -184,6 +183,7 @@ function drawEarth() {
 
 function image(url) {
 	return new Promise(function(resolve) {
+		console.log("image-----------------")
 		var image = new Image();
 		image.src = url;
 		image.onload = function() {
@@ -198,7 +198,8 @@ function image(url) {
 }
 
 function initCharts(opt) {
-	var myChart = echarts.init(document.getElementsByClassName("echarts")[0])
+	console.log("initcharts-----------------")
+	var chart = echarts.init(document.getElementsByClassName("echarts")[0])
 	let canvas2 = document.createElement('canvas');
 	let mapChart = echarts.init(canvas2, null, {
 		width: 2048,
@@ -283,13 +284,13 @@ function initCharts(opt) {
 			show: true,
 			triggerOn: "click",
 			formatter: function (params, api) {
-				console.log("params::::>valuevaluevalue", params.value); // 能够取到当前点的值
+				// console.log("params::::>valuevaluevalue", params.value); // 能够取到当前点的值
 				// console.log("api::::>", api)
 				// var infos = "<span onclick='goThere(" + mapSpots[2] + ")'>" + params.name + "</span>";
 				// infos += params.marker + "data:::" + params.data + "value:::" + params.value;
 				// infos += "这里可以打出想要的信息";
 				// return infos;
-				goThere(params.value)
+				goThere(params.value);
 	        }
 		},
 		globe: {
@@ -372,16 +373,8 @@ function initCharts(opt) {
 				normal: {
 					show: true,
 					position: 'right',
-//			                formatter: '{b}',
 					formatter: function(params, api){ // 此处为自动循环
-						console.log("params", params)
-						// if(params.dataIndex == 0){
-						// 	return '徐州'
-						// }else if(params.dataIndex == 1){
-						// 	return '南京'
-						// }else if(params.dataIndex == 2){
-						// 	return '沈阳'
-						// }
+						// console.log("params ==>>", params)
 						console.log("第"+params.dataIndex+"个点:", params.dataIndex)
 						return params.name
 						
@@ -414,7 +407,7 @@ function initCharts(opt) {
 	// }
 	console.log("*******************", option.series[0].lineStyle.color);
 	
-	myChart.setOption(option)
+	chart.setOption(option)
 }
 
 function reset() {
@@ -427,8 +420,8 @@ function reset() {
 // 指定显示中国地图
 function china() {
 	//  控制globe中的viewControl进行旋转、缩放等控制可以实现定位
-	var myChart = echarts.init(document.getElementsByClassName("echarts")[0])
-	myChart.setOption({
+	var chart = echarts.init(document.getElementsByClassName("echarts")[0])
+	chart.setOption({
 		globe: {
 			viewControl: { // 控制部位
 				alpha: 30,
@@ -448,8 +441,8 @@ function goThere(there) {
 	// reset();
 	console.log("咱往这里走：：：：：：：", there);
 	//  控制globe中的viewControl进行旋转、缩放等控制可以实现定位
-	var myChart = echarts.init(document.getElementsByClassName("echarts")[0])
-	myChart.setOption({
+	var chart = echarts.init(document.getElementsByClassName("echarts")[0])
+	chart.setOption({
 		globe: {
 			viewControl: { // 控制部位
 				alpha: 30,
@@ -466,8 +459,8 @@ function goThere(there) {
 }
 
 function goOn() {
-	var myChart = echarts.init(document.getElementsByClassName("echarts")[0])
-	myChart.setOption({
+	var chart = echarts.init(document.getElementsByClassName("echarts")[0])
+	chart.setOption({
 		globe: {
 			viewControl: { // 控制部位
 //			    targetCoord: [123.38, 41.8], // 目标坐标
@@ -479,6 +472,16 @@ function goOn() {
 	});
 }
 
+// $.when(
+// 	$.getScript('./js/world-gl-map/d3-contour.js'),
+// 	$.getScript('./js/world-gl-map/d3_geo.js'),
+// 	$.getScript('./js/world-gl-map/d3_timer.js')
+// // ).done(drawEarth());
+// ).done(makeData());
+
+function makeData2(data){
+	console.log(123)
+}
 
 /**
  * 初始化节点数据时触发
@@ -487,8 +490,17 @@ function goOn() {
 
 global.init = function(data) {
 	
-	chart = echarts.init(body.querySelector("#echarts"));
-	makeDatas(data)
+	//chart = echarts.init(body.querySelector("#echarts"));
+	console.log(1111111111)
+	$.when(
+		$.getScript('./js/world-gl-map/d3-contour.js'),
+		$.getScript('./js/world-gl-map/d3_geo.js'),
+		$.getScript('./js/world-gl-map/d3_timer.js')
+	// ).done(drawEarth());
+	).done(makeData2(data));
+	console.log(22222222222222);
+	
+	// makeDatas(data)
 	// renderChart(data);
 	//对外发起联动
 	chart.on('click', function(param){
@@ -505,7 +517,13 @@ global.init = function(data) {
  * @param {Object} param 联动筛选的数据
  */
 global.update = function(data, param) {
-	renderChart(data);
+	//renderChart(data);
+	$.when(
+		$.getScript('./js/world-gl-map/d3-contour.js'),
+		$.getScript('./js/world-gl-map/d3_geo.js'),
+		$.getScript('./js/world-gl-map/d3_timer.js')
+	// ).done(drawEarth());
+	).done(makeData(data));
 }
 
 /**
