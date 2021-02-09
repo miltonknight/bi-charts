@@ -101,7 +101,7 @@
 var data = [];
 var mockData = [
     {year: 1951, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: ""},
-	{year: 1956, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "img/2.png"},
+	{year: 1956, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "<null>"},
 	{year: 1956, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "img/3.png"},
 	{year: 1958, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "img/4.png"},
 	{year: 1964, desc: "1951年6月29日，空军工程部将所辖第五厂移交重工业部航空工业局，更名为国营112厂。", imgSrc: "img/5.png"},
@@ -131,27 +131,44 @@ function devHistory() {
 		}
 		str += '<div class="his-tip-top"></div>';
 		str += '<div class="his-tip-body">';
-		if(mockData[i].imgSrc != "") {
+		if(mockData[i].imgSrc != "" && mockData[i].imgSrc != "<null>") {
 			str += '<div class="img-box"><img src="'+ mockData[i].imgSrc + '" /></div>';
 		}
+		
 		str += mockData[i].desc + '</div>';
 		str += '<div class="his-tip-foot"></div>';
 		str += '</div>';
 		str += '</div>';
-		console.log(mockData[i].year, mockData[i].desc)
+		console.log(mockData[i].year, mockData[i].desc, mockData[i].imgSrc)
 	}
 	$(".echarts").html('');
 	$(".echarts").append(str);
 }
 
+// $(".echarts").on("click", ".his-tip-body", function(){
+// 	var obj = $(this).find(".img-box");
+// 	var _height = obj.css("height");
+// 	if(_height === "0px") {
+// 		$(".img-box").height("0");
+// 		obj.height("auto");
+// 	} else {
+// 		obj.height(0);	
+// 	}
+// });
+
 $(".echarts").on("click", ".his-tip-body", function(){
 	var obj = $(this).find(".img-box");
-	var _height = obj.css("height");
-	if(_height === "0px") {
-		$(".img-box").height("0");
-		obj.height("auto");
+	var objImg = $(this).find(".img-box img");
+	console.log("objImg" ,objImg);
+	if(objImg.length != 0) {
+		if(obj.height() > 0) { // 如果打开再次点击关闭
+			$(".img-box").height("0");
+		} else {
+			$(".img-box").height("0"); // 收起来
+			obj.css("height", "auto"); // 展开
+		}
 	} else {
-		obj.height(0);	
+		$(".img-box").height("0");
 	}
 });
 
