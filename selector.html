@@ -43,9 +43,9 @@
 }
 .imgbox {
     width: 300px;
-    height: 150px;
-    border: 1px solid #ccc;
-    margin: 20px;
+    height: auto;
+    border: 1px solid #f1f1f1;
+    padding: 2px;
     overflow: hidden;
 }
 .imgbox img {
@@ -125,11 +125,14 @@ for(var i = 0; i<tData.length; i++) {
 console.log("str ", str);
 $("#box").append(str);
 
-var imgSrc = './img/test.png';
+// var imgSrc = './img/LV5.png';
+var imgSrc = './img/10.jpg';
 window.onload=function(){
-    var bb = document.getElementById("imgbox").getElementsByTagName("img");
-    console.log(bb);
-    bb[0].src = imgSrc;
+    // var bb = document.getElementById("imgbox").getElementsByTagName("img");
+    // console.log(bb);
+    // bb[0].src = imgSrc;
+	$("#imgbox img").attr('src', imgSrc);
+	console.log("bbbb ", $("#imgbox img")[0].src);
 }
 
 </script>
