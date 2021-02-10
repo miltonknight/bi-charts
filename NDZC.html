@@ -2,7 +2,7 @@
 
 <head>
 <meta charset="utf-8" />
-<title>里程碑</title>
+<title>年度转场</title>
 <script src="js/echarts.js"></script>
 <script src="./js/jquery-2.2.3.min.js"></script>
 <style type="text/css">
@@ -28,7 +28,7 @@ code {
 }
 .ndzc {
 	width: 100%;
-	height: 500px;
+	/* height: 500px; */
 }
 .zc-box {
 	width: 100%;
@@ -55,6 +55,18 @@ code {
 	height: 50px;
 	line-height: 50px;
 	background: #ccc;
+}
+
+.test {
+	width: 259px;
+	height: 113px;
+	background-image: url(img/test11.png);
+}
+.test2 {
+	width: 518px;
+	height: 226px;
+	background-image: url(img/test11.png);
+	background-size: cover;
 }
 
 </style>
@@ -122,8 +134,10 @@ code {
 		</div>
 	</div>
 </div>
-<button type="button" class="up">上</button>
-<button type="button" class="down">下</button>
+<div class="test">1111</div>
+<div class="test2">1111</div>
+<button type="button" class="up">下移</button>
+<button type="button" class="down">上移</button>
 
 <div class="echarts" id="echarts"></div>
 
@@ -155,27 +169,44 @@ window.onload = function(){
 	// itemMove()
 }
 
-var mHeight;
-var cHeight;
-var Lmt = 0; // last margin-top
+var mHeight = $(".ndzc .zc-box").height(); // 获取当前第一个元素的高度吗，数字;
+var cHeight = $(".ndzc").height();
+var boxHeight = $(".demo").height();;
+var remainHeight = 0; // last margin-top
 var Vmt = 0; // current margin-top
+var flag = true;
+var flag2 = true;
 
-$("body").on("click", ".up", function(){
-	mHeight = $(".ndzc .zc-box").height(); // 获取当前第一个元素的高度吗，数字
-	cHeight = $(".ndzc").height(); 
-	Vmt -= mHeight;
-	// if(cHeight > Math.abs(Vmt)) {
-		$(".ndzc").css("marginTop", Vmt); // 向上移动
-	// }
+$("body").on("click", ".up", function(){ // 向下
+	if(flag) {
+		// mHeight = $(".ndzc .zc-box").height(); // 获取当前第一个元素的高度吗，数字
+		// cHeight = $(".ndzc").height(); 
+		// boxHeight = $(".demo").height(); // 外部容器高度
+		Vmt -= mHeight;
+		remainHeight = cHeight - boxHeight - Math.abs(Vmt);
+		console.log("cHeight:::>", cHeight);
+		console.log("Vmt:::>", Vmt);
+		if(remainHeight > 0) {
+			$(".ndzc").css("marginTop", Vmt); // 向上移动
+			flag2 = true;
+		} else {
+			$(".ndzc").css("marginTop", Vmt); // 向上移动
+			flag = false;
+		}
+	}
 });
 
-$("body").on("click", ".down", function(){
-	mHeight = $(".ndzc .zc-box").height(); // 获取当前第一个元素的高度
-	m = $(".ndzc").css("marginTop"); 
-	Vmt += mHeight
-	// if(m < 0) {
-		$(".ndzc").css("marginTop", Vmt); // 向上移动
-	// }
+$("body").on("click", ".down", function(){ // 向上
+	if(flag2) {
+		Vmt += mHeight;
+		if(Vmt < 0) {
+			$(".ndzc").css("marginTop", Vmt); // 向上移动
+			flag = true;
+		} else {
+			$(".ndzc").css("marginTop", 0); // 向上移动
+			flag2 = false;
+		}
+	}
 });
 
 
