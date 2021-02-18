@@ -1,0 +1,271 @@
+<html>
+
+<head>
+<meta charset="utf-8" />
+<title>年度转场</title>
+<script src="js/echarts.js"></script>
+<script src="./js/jquery-2.2.3.min.js"></script>
+<style type="text/css">
+body {
+	background-color: #0c60c0;
+}
+.demo {
+	color: #fff;
+	text-align: center;
+	border: 1px solid #CCCCCC;
+	margin-bottom: 100px;
+	overflow: hidden;
+	width: 100%;
+	height: 500px;
+}
+code {
+	color: #fff;
+}
+
+#echarts {
+	color: #fff;
+	text-align: center;
+	border: 1px solid #CCCCCC;
+	margin-bottom: 100px;
+	overflow: hidden;
+	width: 100%;
+	height: 200px;
+}
+.ndzc {
+	width: 100%;
+}
+.zc-box {
+	width: 100%;
+	height: auto;
+	clear: both;
+	overflow: hidden;
+	display: flex;
+}
+.zc-name {
+	flex: 0 0 100px;
+	text-align: center;
+	color: #fff;
+	height: 50px;
+	line-height: 50px;
+	margin-right: 20px;
+	background-size: 100% 100%;
+}
+.name-zc {
+	background-image: url(img/zc-box-zc.png);
+}
+.name-qf {
+	background-image: url(img/zc-box-qf.png);
+}
+.name-wwc {
+	background-image: url(img/zc-box-wwc.png);
+}
+.zc-items {
+	/* width: 100%; */
+	/* min-height: 200px; */
+}
+.item {
+	width: 100px;
+	text-align: center;
+	color: #fff;
+	float: left;
+	margin: 0 0px 20px 0;
+	height: 50px;
+	line-height: 50px;
+	/* background: #ccc; */
+	background-size: 100% 100%;
+}
+.item-zc {
+	/* color: orange; */
+	background-image: url(img/zc-box-zc.png);
+}
+.item-qf {
+	/* color: green; */
+	background-image: url(img/zc-box-qf.png);
+}
+.item-wwc {
+	/* color: blue; */
+	background-image: url(img/zc-box-wwc.png);
+}
+.zc-arr {
+	width: 40px;
+	height: 50px;
+	float: left;
+	background-size: 100% 100%;
+}
+.zc-arr:last-child {
+	display: none;
+}
+.zc-arr-zc {
+	background-image: url(img/zc-arr-zc.png);
+}
+.zc-arr-qf {
+	background-image: url(img/zc-arr-qf.png);
+}
+.zc-arr-wwc {
+	background-image: url(img/zc-arr-wwc.png);
+}
+
+</style>
+</head>
+
+<body>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<!-- <div id="main"></div> -->
+<pre>
+    <code>
+        
+    </code>
+</pre>
+
+<!-- <div class="demo">
+	
+	<div class="ndzc">
+		<div class="zc-box">
+			<div class="zc-name">AGBCD1</div>
+			<div class="zc-items">
+				<div class="item item-zc">1</div><div class="zc-arr zc-arr-zc"></div>
+				<div class="item item-zc">1</div><div class="zc-arr zc-arr-zc"></div>
+				<div class="item item-zc">1</div><div class="zc-arr zc-arr-zc"></div>
+				<div class="item item-zc">1</div><div class="zc-arr zc-arr-zc"></div>
+				<div class="item item-zc">1</div><div class="zc-arr zc-arr-zc"></div>
+				<div class="item item-qf">1</div><div class="zc-arr zc-arr-zc"></div>
+				<div class="item item-qf">1</div><div class="zc-arr zc-arr-zc"></div>
+				<div class="item item-qf">1</div><div class="zc-arr zc-arr-zc"></div>
+				<div class="item item-wwc">1</div><div class="zc-arr zc-arr-zc"></div>
+				<div class="item item-wwc">1</div><div class="zc-arr zc-arr-zc"></div>
+				<div class="item item-wwc">1</div><div class="zc-arr zc-arr-zc"></div>
+				<div class="item item-wwc">1</div><div class="zc-arr zc-arr-zc"></div>
+			</div>
+		</div>
+	</div>
+</div> -->
+
+<div class="echarts" id="echarts"></div>
+
+<button type="button" class="up">上翻</button>
+<button type="button" class="down">下翻</button>
+
+
+<script type="text/javascript">
+
+var mHeight; // 获取当前第一个元素的高度吗，数字;
+var cHeight;
+var boxHeight;
+var remainHeight = 0; // last margin-top
+var Vmt = 0; // current margin-top
+var flag;
+var flag2;
+
+$("body").on("click", ".up", function(){ // 向上
+	console.log("往下走了------------------");
+	if(flag) {
+		Vmt -= mHeight;
+		remainHeight = cHeight - boxHeight - Math.abs(Vmt);
+		console.log("remainHeight:::>", remainHeight);
+		console.log("Vmt:::>", Vmt);
+		if(remainHeight > 0) {
+			$(".ndzc").css("marginTop", Vmt); // 向上移动
+			flag2 = true;
+		} else {
+			$(".ndzc").css("marginTop", Vmt); // 向上移动
+			flag = false;
+		}
+	}
+	console.log("flag::", flag);
+	console.log("flag2::", flag2);
+});
+
+$("body").on("click", ".down", function(){ // 向下
+	console.log("往下走了--------------");
+	if(flag2) {
+		Vmt += mHeight;
+		remainHeight += mHeight;
+		console.log("Vmt::::", Vmt)
+		console.log("remainHeight::::", remainHeight)
+		if(!(Vmt > 0)) {
+			$(".ndzc").css("marginTop", Vmt); // 向下移动
+			flag = true;
+		} else {
+			$(".ndzc").css("marginTop", 0); // 向下移动
+			flag2 = false;
+		}
+	}
+	console.log("flag::", flag);
+	console.log("flag2::", flag2);
+});
+
+// genarate datas
+var c0 = ["A", "A", "A", "A", "B", "B", "B", "C", "C", "D"];
+var c1 = ["001", "002", "003", "004", "005", "006", "007", "008", "009", "010"]
+var c2 = ["转场完成", "转场完成", "铅封完成", "未完成", "铅封完成", "未完成", "未完成", "铅封完成", "未完成", "未完成" ];
+
+
+function ndzc() {
+	// 新数组
+	var headArr = [];
+	headArr = [...new Set(c0)]; // 原数组去重
+	// console.log("headArr:::", headArr);
+	
+	// 遍历c0，打出类型
+	var str = '<div class="ndzc">';
+	for(var i = 0; i < headArr.length; i++) {
+		str += '<div class="zc-box">';
+		str += '<div class="zc-name name-zc">' + headArr[i] + '</div>';
+		str += '<div class="zc-items" id="box'+ i +'">';
+		str += '</div>';
+		str += '</div>';
+	}
+	str += '</div>';
+	// console.log(str)
+	$("#echarts").append(str);
+	
+	// 遍历c1，寻找对应父级打出
+	for(var j=0; j<c1.length; j++) {
+		var index = headArr.indexOf(c0[j]);
+		// console.log("index", index);
+		var subStr = '' 
+		switch(c2[j]) {
+			case "转场完成":
+				subStr += '<div class="item item-zc">';
+				break;
+			case "铅封完成":
+				subStr += '<div class="item item-qf">';
+				break;
+			case "未完成":
+				subStr += '<div class="item item-wwc">';
+				break;
+		};
+		subStr += c1[j] + '</div>';
+		subStr += '<div class="zc-arr zc-arr-wwc"></div>';
+		// console.log("subStr", subStr);
+		// 按照父级类数组打出存在直接转为字符串的bug，改为增加id打出
+		$("#box"+index).append(subStr);
+	}
+	mHeight = $(".ndzc .zc-box").height(); // 获取当前第一个元素的高度吗，数字;
+	cHeight = $(".ndzc").height();  // 获取内容区内高（内容）
+	boxHeight = $(".echarts").height(); // 获取内容区外高
+	// console.log("cHeight", cHeight);
+	// console.log("boxHeight", boxHeight);
+	if(cHeight < boxHeight) {
+		flag = false;
+		flag2 = false;
+		// console.log("nonono+++++++++++++")
+	}
+	else {
+		flag = true;
+		flag2 = false;
+		// console.log("yesyesyes++++++++++")
+	}
+}
+
+window.onload = function(){
+	ndzc();
+	// mHeight = $(".ndzc .zc-box").height(); // 获取当前第一个元素的高度吗，数字;
+	// cHeight = $(".ndzc").height();  // 获取内容区内高（内容）
+	// boxHeight = $(".echarts").height(); // 获取内容区外高
+	// itemMove()
+}
+</script>
+</body>
+
+</html>
