@@ -24,463 +24,55 @@ var params = global.params;
 /**
 * 渲染图形
 */
-// 整体的数据初始化
-var basePoint = ["122.3438", "41.0889"]; // 基准点，沈阳 基准点，筛选出的数据
-var tCity = [] // 地名 C0
-var tLng = []; // 经度 C1
-var tLat = []; // 纬度 C2
-var tType = []; // 军种 C3
-var tJc = [] // 架次 C4
-var tNum = [] // 数量C5
-var tForce = [] // 服役部队 C6
-
-// 坐标点
-var spotColor = '#0087f4'; // 点颜色
-var fontColor = '#ffff00'; // 文字颜色
-var mapSpots = [];
-for(var n = 0; n < tLng.length; n++) {
-	// mapSpots[n] = [tLng[n], tLat[n]];
-	mapSpots.push({
-		name: tCity[n],
-		value: [tLng[n], tLat[n]]
-	})
-}
-mapSpots.push({
-	name: "沈阳",
-	value: basePoint
-})
-console.log("mapSpots:::>", mapSpots);
-
-// 线
-var lineData = [];
-var lineColors = ["#3fa8d8", "#f2eb00"]
-for(var m = 0; m < mapSpots.length; m++) {
-	lineData.push({
-		coords: [basePoint, mapSpots[m].value],
-		value: (Math.random() * 3000).toFixed(2)
-	})
-}
-console.log("lineData:::>>", lineData);
-
-var config = {
-	color: '#750be8',
-	levels: 1, 
-	intensity: 4, // 强度
-	threshold: 0.01 // 起始点
-}
-
-function makeData(data) {
-	// 整体的数据初始化
-	basePoint = ["122.3438", "41.0889"]; // 基准点，沈阳 基准点，筛选出的数据
-	tCity = data.c0 // 地名 C0
-	tLng = data.c1; // 经度 C1
-	tLat = data.c2; // 纬度 C2
-	tType = ["空军", "空军", "空军", "空军", "海军", "海军", "海军"]; // 军种 C3
-	tJc = ["0102", "0203", "0304", "0405", "0506", "0607"] // 架次 C4
-	tNum = [5, 10, 15, 30, 6, 12] // 数量C5
-	tForce = ["空1军", "空93033师", "空93团", "空2旅", "空2军", "空12团"] // 服役部队 C6
+var c0 = data.c0;
+var c1 = data.c1;
+var c2 = data.c2;
+function ndzc(data) {
+	// 新数组
+	var headArr = [];
+	headArr = [...new Set(c0)]; // 原数组去重
+	console.log("headArr:::", headArr);
 	
-	// 坐标点
-	spotColor = '#0087f4'; // 点颜色
-	fontColor = '#ffff00'; // 文字颜色
-	mapSpots = [];
-	for(var n = 0; n < tLng.length; n++) {
-		// mapSpots[n] = [tLng[n], tLat[n]];
-		mapSpots.push({
-			name: tCity[n],
-			value: [tLng[n], tLat[n]]
-		})
+	// 遍历c0，打出类型
+	var str = '<div class="ndzc">';
+	for(var i = 0; i < headArr.length; i++) {
+		str += '<div class="zc-box">';
+		str += '<div class="zc-name name-zc">' + headArr[i] + '</div>';
+		str += '<div class="zc-items" id="box'+ i +'">';
+		str += '</div>';
+		str += '</div>';
 	}
-	mapSpots.push({
-		name: "沈阳",
-		value: basePoint
-	})
-	console.log("mapSpots:::>", mapSpots);
+	str += '</div>';
+	// console.log(str)
+	$("#echarts").append(str);
 	
-	// 线
-	lineData = [];
-	lineColors = ["#3fa8d8", "#f2eb00"]
-	for(var m = 0; m < mapSpots.length; m++) {
-		lineData.push({
-			coords: [basePoint, mapSpots[m].value],
-			value: (Math.random() * 3000).toFixed(2)
-		})
-	}
-	console.log("lineData:::>>", lineData);
-	
-	drawEarth()
-}
-
-var canvas = document.createElement('canvas');
-canvas.width = 2048;
-canvas.height = 1024;
-context = canvas.getContext("2d");
-
-context.lineWidth = 0.5;
-context.strokeStyle = config.color;
-context.fillStyle = config.color;
-context.shadowColor = config.color;			
-
-// $.when(
-// 	$.getScript('./js/world-gl-map/d3-contour.js'),
-// 	$.getScript('./js/world-gl-map/d3_geo.js'),
-// 	$.getScript('./js/world-gl-map/d3_timer.js')
-// ).done(drawEarth());
-		
-function drawEarth() {	
-	console.log("drawEarth-----------------")
-	image('img/10.jpg').then(function(image) {
-		var m = image.height,
-			n = image.width,
-			values = new Array(n * m),
-			contours = d3.contours().size([n, m]).smooth(true),
-			projection = d3.geoIdentity().scale(canvas.width / n),
-			path = d3.geoPath(projection, context);
-
-		for (var j = 0, k = 0; j < m; ++j) {
-			for (var i = 0; i < n; ++i, ++k) {
-			values[k] = image.data[(k << 2)] / 255;
-			}
-		}
-
-		var opt = {
-			image: canvas
-		}
-
-		var results = [];
-		
-		function update(threshold, levels) {
-			context.clearRect(0, 0, canvas.width, canvas.height);
-			var thresholds = [];
-			for (var i = 0; i < levels; i++) {
-				thresholds.push((threshold + 1 / levels * i) % 1);
-			}
-			results = contours.thresholds(thresholds)(values);
-			redraw();
-		}
-
-		function redraw() {
-			results.forEach(function (d, idx) {
-				context.beginPath();
-				path(d);
-				context.globalAlpha = 1;
-				context.stroke();
-				if (idx > config.levels / 5 * 3) {
-					context.globalAlpha = 0.01;
-					context.fill();
-				}
-			});
-			opt.onupdate();
-		}
-		d3.timer(function(t) {
-			var threshold = (t % 10000) / 10000;
-			update(threshold, 1);
-		});
-		initCharts(opt);
-		update(config.threshold, config.levels);
-	});		
-}
-
-function image(url) {
-	return new Promise(function(resolve) {
-		console.log("image-----------------")
-		var image = new Image();
-		image.src = url;
-		image.onload = function() {
-			var canvas = document.createElement("canvas");
-			canvas.width = image.width / 8;
-			canvas.height = image.height / 8;
-			var context = canvas.getContext("2d");
-			context.drawImage(image, 0, 0, canvas.width, canvas.height);
-			resolve(context.getImageData(0, 0, canvas.width, canvas.height));
+	// 遍历c1，寻找对应父级打出
+	for(var j=0; j<c1.length; j++) {
+		var index = headArr.indexOf(c0[j]);
+		console.log("index", index);
+		var subStr = '' 
+		switch(c2[j]) {
+			case "转场完成":
+				subStr += '<div class="item item-zc">';
+				break;
+			case "铅封完成":
+				subStr += '<div class="item item-qf">';
+				break;
+			case "未完成":
+				subStr += '<div class="item item-wwc">';
+				break;
 		};
-	});
-}
-
-function initCharts(opt) {
-	console.log("initcharts-----------------")
-	var chart = echarts.init(document.getElementsByClassName("echarts")[0])
-	let canvas2 = document.createElement('canvas');
-	let mapChart = echarts.init(canvas2, null, {
-		width: 2048,
-		height: 1024
-	});
-	
-	var contourChart = echarts.init(document.createElement('canvas'), null, {
-		width: 2048,
-		height: 1024
-	});
-
-	var img = new echarts.graphic.Image({
-		style: {
-			image: opt.image,
-			x: -1,
-			y: -1,
-			width: opt.image.width + 2,
-			height: opt.image.height + 2
-		}
-	});
-	contourChart.getZr().add(img);
-
-	opt.onupdate = function () {
-		img.dirty();
-	};
-			
-	mapChart.setOption({
-		series: [{
-			type: 'map',
-			map: 'world',
-			// 绘制完整尺寸的 echarts 实例
-			top: 0,
-			left: 0,
-			right: 0,
-			bottom: 0,
-			boundingCoords: [
-				[-180, 90],
-				[180, -90]
-			]
-		}]
-	});
-	var canvas1 = document.createElement('canvas');
-	var mapChart1 = echarts.init(canvas1, null, {
-		width: 2048,
-		height: 1024
-	});
-	mapChart1.setOption({
-		backgroundColor: 'transparent',
-		series: [{
-			type: 'map',
-			map: 'china',
-			left: 0,
-			top: 0,
-			right: 0,
-			bottom: 0,
-			//   environment: '#000',
-			boundingCoords: [
-				[-180, 90],
-				[180, -90]
-			],
-			label: {
-				normal: {
-					show: false,
-					fontSize: 4,
-					lineHeigh: 4,
-					color: '#000',
-				}
-			},
-			itemStyle: {
-				normal: {
-					areaColor: 'transparent',
-					borderWidth: 1,
-					borderType: 'solid',
-					borderColor: '#a85000'
-				}
-			},
-		}]
-	});		
-
-	var option = {
-		tooltip: {
-			show: true,
-			triggerOn: "click",
-			formatter: function (params, api) {
-				// console.log("params::::>valuevaluevalue", params.value); // 能够取到当前点的值
-				// console.log("api::::>", api)
-				// var infos = "<span onclick='goThere(" + mapSpots[2] + ")'>" + params.name + "</span>";
-				// infos += params.marker + "data:::" + params.data + "value:::" + params.value;
-				// infos += "这里可以打出想要的信息";
-				// return infos;
-				goThere(params.value);
-	        }
-		},
-		globe: {
-			heightTexture: 'img/bathymetry_bw_composite_4k-back.jpg', // 地球高度的图片
-			baseTexture: 'img/10.jpg', // 地球表面纹理
-			shading: 'lambert',
-			light: { // 光照阴影
-				main: {
-					color: '#fff', // 光照颜色
-					intensity: 1.0, // 光照强度
-					shadowQuality: 'ultra', // 阴影亮度
-					shadow: true, // 是否显示阴影
-					alpha: 40,
-					beta: -30
-				},
-				ambient: {
-					intensity: 1.0
-				}
-			},
-			viewControl: { // 控制部位
-				alpha: 30,
-				beta: 160,
-//			    targetCoord: [123.38, 41.8], // 目标坐标
-				autoRotate: true, // 是否自动旋转
-				autoRotateAfterStill: 5,
-				distance: 240, // 缩放距离 
-				autoRotateSpeed:4
-			},
-			postEffect: { // 为画面添加高光，景深，环境光遮蔽（SSAO），调色等效果
-				enable: true, // 是否开启
-				SSAO: { // 环境光遮蔽
-					radius: 10, // 环境光遮蔽的采样半径。半径越大效果越自然
-					intensity: 10, // 环境光遮蔽的强度
-					enable: true
-				}
-			}
-		},
-		series: [{
-			name: 'lines3D',
-			type: 'lines3D',
-			coordinateSystem: 'globe',
-			effect: {
-				show: true,
-				period: 2,
-				trailWidth: 3, // 动态线条宽度
-				trailLength: 0.7,
-				trailOpacity: 1,
-				symbol: 'arrow', //箭头图标
-				symbolSize: 2, //图标大小
-				// trailColor: '#0087f4' ,// 动态线条颜色
-				trailColor: lineColors[0]// 动态线条颜色
-			},
-			blendMode: 'lighter',
-			lineStyle: { // 发射线条颜色
-				width: 3, // 动态线条宽度
-				opacity: 0.2,
-				// color: '#0087f4' ,// 静态线条颜色
-				color: lineColors[0] // 静态线条颜色
-			},
-			data: [],
-			silent: false
-		},{ //点
-			name: '坐标',
-			type: 'scatter3D',
-			blendMode: 'lighter',
-			coordinateSystem: 'globe',
-			showEffectOn: 'render',
-			zlevel: 2,
-			effectType:"ripple", 
-			symbolSize: 15,
-			rippleEffect: {
-				period: 4,
-				scale: 4,
-				brushType: 'fill'
-			},
-			
-			showEffectOn: 'hover', 
-			hoverAnimation: true,
-			label: { // 地图上点名称
-				normal: {
-					show: true,
-					position: 'right',
-					formatter: function(params, api){ // 此处为自动循环
-						// console.log("params ==>>", params)
-						console.log("第"+params.dataIndex+"个点:", params.dataIndex)
-						return params.name
-						
-					},
-					textStyle: { // 亮点文本效果
-						fontSize: 16,
-						backgroundColor:'transparent',
-						// color: '#ffff00',
-						color: fontColor
-					}
-				}
-			},
-			itemStyle: { // 坐标点颜色
-				normal: {
-					// color: '#0087f4',
-					color: spotColor
-				}
-			},
-			data: mapSpots // 绘制地图上的点
-
-		}]
+		subStr += c1[j] + '</div>';
+		subStr += '<div class="zc-arr zc-arr-wwc"></div>';
+		console.log(typeof(subStr));
+		console.log("subStr", subStr);
+		$("#box"+index).append(subStr);
+		// $("#echarts").append(subStr);
+		console.log("---------------------------");
+		// $(".zc-box")[index].find(".zc-items").append(subStr)
+		
 	}
 	
-	// 点数据赋值
-	option.series[0].data = lineData;
-	// if(tType === "空军") {
-	// 	option.series[0].lineStyle.color = lineColors[0];
-	// } else {
-	// 	option.series[0].lineStyle.color = lineColors[1];
-	// }
-	console.log("*******************", option.series[0].lineStyle.color);
-	
-	chart.setOption(option)
-}
-
-function reset() {
-	drawEarth();
-	// window.location.reload()
-}
-
-// var there = [104.07, 30.67];
-
-// 指定显示中国地图
-function china() {
-	//  控制globe中的viewControl进行旋转、缩放等控制可以实现定位
-	var chart = echarts.init(document.getElementsByClassName("echarts")[0])
-	chart.setOption({
-		globe: {
-			viewControl: { // 控制部位
-				alpha: 30,
-				beta: 160,
-			    targetCoord: [104.07, 30.67], // 目标坐标
-				autoRotate: false, // 是否自动旋转
-				autoRotateAfterStill: 10,
-				distance: 140, // 缩放距离 
-				autoRotateSpeed: 4
-			},
-		},
-	});
-}
-
-// 显示地图某个确定的点
-function goThere(there) {
-	// reset();
-	console.log("咱往这里走：：：：：：：", there);
-	//  控制globe中的viewControl进行旋转、缩放等控制可以实现定位
-	var chart = echarts.init(document.getElementsByClassName("echarts")[0])
-	chart.setOption({
-		globe: {
-			viewControl: { // 控制部位
-				alpha: 30,
-				beta: 160,
-			    // targetCoord: [123.38, 41.8], // 目标坐标
-				targetCoord: there, // 目标坐标
-				autoRotate: false, // 是否自动旋转
-				autoRotateAfterStill: 10,
-				distance: 60, // 缩放距离 
-				autoRotateSpeed: 4
-			},
-		},
-	});
-}
-
-function goOn() {
-	var chart = echarts.init(document.getElementsByClassName("echarts")[0])
-	chart.setOption({
-		globe: {
-			viewControl: { // 控制部位
-//			    targetCoord: [123.38, 41.8], // 目标坐标
-				autoRotate: true, // 是否自动旋转
-				autoRotateAfterStill: 10,
-				distance: 240, // 缩放距离 
-			},
-		},
-	});
-}
-
-// $.when(
-// 	$.getScript('./js/world-gl-map/d3-contour.js'),
-// 	$.getScript('./js/world-gl-map/d3_geo.js'),
-// 	$.getScript('./js/world-gl-map/d3_timer.js')
-// // ).done(drawEarth());
-// ).done(makeData());
-
-function makeData2(data){
-	console.log(123)
 }
 
 /**
