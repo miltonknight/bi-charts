@@ -7,7 +7,7 @@
 <script src="./js/jquery-2.2.3.min.js"></script>
 <style type="text/css">
 body {
-	background-color: #093F85;
+	background-color: #0c60c0;
 }
 .demo {
 	color: #fff;
@@ -23,12 +23,16 @@ code {
 }
 
 #echarts {
+	color: #fff;
+	text-align: center;
+	border: 1px solid #CCCCCC;
+	margin-bottom: 100px;
+	overflow: hidden;
 	width: 100%;
-	margin: 30px;
+	height: 500px;
 }
 .ndzc {
 	width: 100%;
-	/* height: 500px; */
 }
 .zc-box {
 	width: 100%;
@@ -39,10 +43,21 @@ code {
 }
 .zc-name {
 	flex: 0 0 100px;
+	text-align: center;
+	color: #fff;
 	height: 50px;
 	line-height: 50px;
-	background-color: #00AADC;
 	margin-right: 20px;
+	background-size: 100% 100%;
+}
+.name-zc {
+	background-image: url(img/zc-box-zc.png);
+}
+.name-qf {
+	background-image: url(img/zc-box-qf.png);
+}
+.name-wwc {
+	background-image: url(img/zc-box-wwc.png);
 }
 .zc-items {
 	/* width: 100%; */
@@ -50,23 +65,37 @@ code {
 }
 .item {
 	width: 100px;
+	text-align: center;
+	color: #fff;
 	float: left;
 	margin: 0 20px 20px 0;
 	height: 50px;
 	line-height: 50px;
-	background: #ccc;
+	/* background: #ccc; */
+	background-size: 100% 100%;
 }
-
-.test {
-	width: 259px;
-	height: 113px;
-	background-image: url(img/test11.png);
+.item-zc {
+	background-image: url(img/zc-box-zc.png);
 }
-.test2 {
-	width: 518px;
-	height: 226px;
-	background-image: url(img/test11.png);
-	background-size: cover;
+.item-qf {
+	background-image: url(img/zc-box-qf.png);
+}
+.item-wwc {
+	background-image: url(img/zc-box-wwc.png);
+}
+.zc-arr {
+	width: 40px;
+	height: 50px;
+	background-size: 100% 100%;
+}
+.zc-arr-zc {
+	background-image: url(img/zc-arr-zc.png);
+}
+.zc-arr-qf {
+	background-image: url(img/zc-arr-qf.png);
+}
+.zc-arr-wwc {
+	background-image: url(img/zc-arr-wwc.png);
 }
 
 </style>
@@ -80,14 +109,14 @@ code {
         
     </code>
 </pre>
-
+<!-- 
 <div class="demo">
 	
 	<div class="ndzc">
 		<div class="zc-box">
 			<div class="zc-name">AGBCD1</div>
 			<div class="zc-items">
-				<div class="item">1</div><div class="item">1</div><div class="item">1</div><div class="item">1</div><div class="item">1</div><div class="item">1</div><div class="item">1</div><div class="item">1</div><div class="item">1</div><div class="item">1</div><div class="item">1</div><div class="item">1</div>
+				<div class="item">1</div><div class="zc-arr zc-arr-zc"></div><div class="item">1</div><div class="item">1</div><div class="item">1</div><div class="item">1</div><div class="item">1</div><div class="item">1</div><div class="item">1</div><div class="item">1</div><div class="item">1</div><div class="item">1</div><div class="item">1</div>
 			</div>
 		</div>
 		<div class="zc-box">
@@ -133,29 +162,52 @@ code {
 			</div>
 		</div>
 	</div>
-</div>
-<div class="test">1111</div>
-<div class="test2">1111</div>
-<button type="button" class="up">下移</button>
-<button type="button" class="down">上移</button>
+</div> -->
+<button type="button" class="up">向上移动</button>
+<button type="button" class="down">向下移动</button>
 
 <div class="echarts" id="echarts"></div>
 
 <script type="text/javascript">
 // genarate datas
-var c0 = ["第一步骤", "步骤", "步骤", "步骤", "步骤", "步骤", "步骤" ];
-var c1 = ["已完成", "已完成", "已完成", "已完成", "未完成", "未完成", "未完成", ];
-var c2 = ["2019-5-21", "2019-9-18", "2019-10-23", "2020-4-3", "2020-6-18", "2020-8-18", "2020-11-22"]
+var c0 = ["A", "B", "C", "D"];
+var c1 = ["A-J15D-121", "A-J15D-122", "A-J15D-123", "A-0100-55124", "A-J15D-125", "A-J15D-126", "A-J15D-127", "A-J15D-128","B-J15D-121", "B-J15D-122", "B-J15D-123", "B-0100-55124", "C-J15D-125", "D-J15D-126", "A-J15D-127", "A-J15D-128"]
+var c2 = ["转场完成", "转场完成", "转场完成", "铅封完成", "铅封完成", "未完成", "未完成", "未完成" ];
+var c3 = ["2019-5-21", "2019-9-18", "2019-10-23", "2020-4-3", "2020-6-18", "2020-8-18", "2020-11-22", "2020-11-22"];
 
 function ndzc() {
 	var str = '<div class="ndzc">';
 	for(var i = 0; i < c0.length; i++) {
 		str += '<div class="zc-box">';
-		str += '<div class="zc-name">' + c0[i] + '</div>';
+		str += '<div class="zc-name ';
+		switch(c2[i]) {
+		    case "转场完成":
+				str += "name-zc"
+				break;
+		    case "铅封完成":
+		        str += "name-qf"
+		        break;
+			case "未完成":
+				str += "name-wwc"
+				break;
+		};
+		str += '">' + c0[i] + '</div>';
 		str += '<div class="zc-items">';
-		for(var j = 0; j < c0.length; i++) {
-			str += '<div class="item">' +  + '</div>'
-		}	
+		for(var j = 0; j < c1.length; j++) {
+			str += '<div class="item ';
+			switch(c2[i]) {
+			    case "转场完成":
+					str += "item-zc"
+					break;
+			    case "铅封完成":
+			        str += "item-qf"
+			        break;
+				case "未完成":
+					str += "item-wwc"
+					break;
+			};
+			str += '">' + c1[j] + '</div>';
+		}
 		str += "</div>"; // .zc-items end
 		str += "</div>"; // .zx-box end
 	}
@@ -164,27 +216,23 @@ function ndzc() {
 	$("#echarts").append(str);
 }
 
-window.onload = function(){
-	// ndzc();
-	// itemMove()
-}
-
-var mHeight = $(".ndzc .zc-box").height(); // 获取当前第一个元素的高度吗，数字;
-var cHeight = $(".ndzc").height();
-var boxHeight = $(".demo").height();;
+// var mHeight = $(".ndzc .zc-box").height(); // 获取当前第一个元素的高度吗，数字;
+// var cHeight = $(".ndzc").height();
+// var boxHeight = $(".echarts").height();
+var mHeight; // 获取当前第一个元素的高度吗，数字;
+var cHeight;
+var boxHeight;
 var remainHeight = 0; // last margin-top
 var Vmt = 0; // current margin-top
 var flag = true;
 var flag2 = true;
 
-$("body").on("click", ".up", function(){ // 向下
+$("body").on("click", ".up", function(){ // 向上
+	console.log("往下走了------------------");
 	if(flag) {
-		// mHeight = $(".ndzc .zc-box").height(); // 获取当前第一个元素的高度吗，数字
-		// cHeight = $(".ndzc").height(); 
-		// boxHeight = $(".demo").height(); // 外部容器高度
 		Vmt -= mHeight;
 		remainHeight = cHeight - boxHeight - Math.abs(Vmt);
-		console.log("cHeight:::>", cHeight);
+		console.log("remainHeight:::>", remainHeight);
 		console.log("Vmt:::>", Vmt);
 		if(remainHeight > 0) {
 			$(".ndzc").css("marginTop", Vmt); // 向上移动
@@ -194,22 +242,36 @@ $("body").on("click", ".up", function(){ // 向下
 			flag = false;
 		}
 	}
+	console.log("flag::", flag);
+	console.log("flag2::", flag2);
 });
 
-$("body").on("click", ".down", function(){ // 向上
+$("body").on("click", ".down", function(){ // 向下
+	console.log("往下走了--------------");
 	if(flag2) {
 		Vmt += mHeight;
-		if(Vmt < 0) {
-			$(".ndzc").css("marginTop", Vmt); // 向上移动
+		remainHeight += mHeight;
+		console.log("Vmt::::", Vmt)
+		console.log("remainHeight::::", remainHeight)
+		if(!(Vmt > 0)) {
+			$(".ndzc").css("marginTop", Vmt); // 向下移动
 			flag = true;
 		} else {
-			$(".ndzc").css("marginTop", 0); // 向上移动
+			$(".ndzc").css("marginTop", 0); // 向下移动
 			flag2 = false;
 		}
 	}
+	console.log("flag::", flag);
+	console.log("flag2::", flag2);
 });
 
-
+window.onload = function(){
+	ndzc();
+	mHeight = $(".ndzc .zc-box").height(); // 获取当前第一个元素的高度吗，数字;
+	cHeight = $(".ndzc").height();  // 获取内容区内高（内容）
+	boxHeight = $(".echarts").height(); // 获取内容区外高
+	// itemMove()
+}
 </script>
 </body>
 
