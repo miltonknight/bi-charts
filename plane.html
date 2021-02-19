@@ -7,7 +7,7 @@
 <script src="js/jquery-2.2.3.min.js"></script>
 <style type="text/css">
 #echarts {
-	width: 800px;
+	width: 600px;
 	height: 500px;
 	background-color: #003366;
 /* 	background-image: url(img/10.jpg);
@@ -217,10 +217,9 @@ $.getJSON(uploadedDataURL, function(geoJson) {
 				name: '南海诸岛',
 				itemStyle: {
 					areaColor: 'rgba(0, 10, 52, 1)',
-
 					borderColor: 'rgba(0, 10, 52, 1)',
 					normal: {
-						opacity: 0,
+						opacity: 0.5,
 						label: {
 							show: false,
 							color: "#009cc9",
@@ -229,7 +228,8 @@ $.getJSON(uploadedDataURL, function(geoJson) {
 				},
 			}],
 		},
-		series: [{
+		series: [
+			{
 				type: 'map',
 				roam: false,
 				label: {
