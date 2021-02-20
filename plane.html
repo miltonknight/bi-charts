@@ -8,7 +8,7 @@
 <style type="text/css">
 #echarts {
 	width: 600px;
-	height: 500px;
+	height: 1500px;
 	background-color: #003366;
 /* 	background-image: url(img/10.jpg);
 	background-size: cover; */
@@ -71,12 +71,12 @@ var mapBgHover = "#0044af";
 var mapShadow = "#3a73c0";
 
 var tCity = ["吉林", "北京", "天津", "上海", "新疆", "成都"]
-var tLng = [/*"122.3438",*/ "126.4746", "116.4551", "117.4219", "121.4648", "89.9023", "103.9526"]; // 经度 C0
-var tLat = [/*"41.0889", */"43.5938", "40.2539", "39.4189", "31.2891", "41.748", "30.7617"]; // 纬度 C1
-var tType = ["空军", "空军", "空军", "空军", "海军", "海军", "海军"]; // 军种 C2
-var tJc = ["0102", "0203", "0304", "0405", "0506", "0607"] // 架次 C3
-var tNum = [5, 10, 15, 30, 6, 12] // 数量C4
-var tForce = ["空1军", "空93033师", "空93团", "空2旅", "空2军", "空12团"] // 服役部队 C5 
+var tLng = [/*"122.3438",*/ "126.4746", "116.4551", "117.4219", "121.4648", "89.9023", "103.9526", "111.7341", "132.01"]; // 经度 C0
+var tLat = [/*"41.0889", */"43.5938", "40.2539", "39.4189", "31.2891", "41.748", "30.7617", "4.0227", "24.85"]; // 纬度 C1
+var tType = ["空军", "空军", "空军", "空军", "海军", "海军", "海军", "海军"]; // 军种 C2
+var tJc = ["0102", "0203", "0304", "0405", "0506", "0607", "0815"] // 架次 C3
+var tNum = [5, 10, 15, 30, 6, 12, 3] // 数量C4
+var tForce = ["空1军", "空93033师", "空93团", "空2旅", "空2军", "空12团", "空100团"] // 服役部队 C5 
 
 // 弹出表数据
 var detailData;
@@ -219,10 +219,10 @@ $.getJSON(uploadedDataURL, function(geoJson) {
 					areaColor: 'rgba(0, 10, 52, 1)',
 					borderColor: 'rgba(0, 10, 52, 1)',
 					normal: {
-						opacity: 0.5,
+						opacity: 0,
 						label: {
 							show: false,
-							color: "#009cc9",
+							color: "#c90303",
 						}
 					}
 				},
@@ -239,7 +239,7 @@ $.getJSON(uploadedDataURL, function(geoJson) {
 							color: '#1DE9B6'
 						}
 					},
-					emphasis: {// 地图字体颜色hover
+					emphasis: { // 地图字体颜色hover
 						textStyle: {
 							color: '#ffffff'
 						}
@@ -269,7 +269,7 @@ $.getJSON(uploadedDataURL, function(geoJson) {
 					emphasis: { // 地图hover颜色
 						// areaColor: '#ff911e',
 						areaColor: mapBgHover,
-						//    shadowColor: 'rgb(12,25,50)',
+						// shadowColor: 'rgb(12,25,50)',
 						borderWidth: 0.1
 					}
 				},
@@ -299,11 +299,10 @@ $.getJSON(uploadedDataURL, function(geoJson) {
 				},
 				itemStyle: {
 					normal: {
-						color: '#1DE9B6'
-							/* function (value){ //随机颜色
-							 return "#"+("00000"+((Math.random()*16777215+0.5)>>0).toString(16)).slice(-6);
-							 }*/
-							,
+						color: '#1DE9B6',
+						/* function (value){ //随机颜色
+						 return "#"+("00000"+((Math.random()*16777215+0.5)>>0).toString(16)).slice(-6);
+						 }*/
 						shadowBlur: 10,
 						shadowColor: '#333'
 					}
