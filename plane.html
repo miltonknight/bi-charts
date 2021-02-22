@@ -8,7 +8,7 @@
 <style type="text/css">
 #echarts {
 	width: 600px;
-	height: 1500px;
+	height: 500px;
 	background-color: #003366;
 /* 	background-image: url(img/10.jpg);
 	background-size: cover; */
@@ -36,6 +36,7 @@ var chart = echarts.init(document.getElementById("echarts"));
 
 // var uploadedDataURL = "https://www.makeapie.com/asset/get/s/data-1528971808162-BkOXf61WX.json";
 var uploadedDataURL = "data-plane.json";
+// var uploadedDataURL = "plane.json";
 
 /**
 此版本通过设置geoindex && seriesIndex: [1] 属性来实现geo和map共存，来达到hover散点和区域显示tooltip的效果
@@ -71,8 +72,8 @@ var mapBgHover = "#0044af";
 var mapShadow = "#3a73c0";
 
 var tCity = ["吉林", "北京", "天津", "上海", "新疆", "成都"]
-var tLng = [/*"122.3438",*/ "126.4746", "116.4551", "117.4219", "121.4648", "89.9023", "103.9526", "111.7341", "132.01"]; // 经度 C0
-var tLat = [/*"41.0889", */"43.5938", "40.2539", "39.4189", "31.2891", "41.748", "30.7617", "4.0227", "24.85"]; // 纬度 C1
+var tLng = [/*"122.3438",*/ "126.4746", "116.4551", "117.4219", "121.4648", "89.9023", "103.9526", "115.5"/*, "132.01"*/]; // 经度 C0
+var tLat = [/*"41.0889", */"43.5938", "40.2539", "39.4189", "31.2891", "41.748", "30.7617", "9.9"/*, "18.4"*/]; // 纬度 C1
 var tType = ["空军", "空军", "空军", "空军", "海军", "海军", "海军", "海军"]; // 军种 C2
 var tJc = ["0102", "0203", "0304", "0405", "0506", "0607", "0815"] // 架次 C3
 var tNum = [5, 10, 15, 30, 6, 12, 3] // 数量C4
@@ -81,11 +82,20 @@ var tForce = ["空1军", "空93033师", "空93团", "空2旅", "空2军", "空12
 // 弹出表数据
 var detailData;
 
-
 var basePoint = ["122.3438", "41.0889"]; // 基准点，沈阳 基准点，筛选出的数据
 
 var dataPoints = []; // 生成数据点
 for(var i=0; i<tLat.length; i++) {
+	if( (110.5<tLng[i]) && (tLng[i]<118.5) && (7<tLat[i]) && (tLat[i]<18) ) {
+		// console.log("-------------------------------");
+		// console.log("origin tLng::>", tLng[i]);
+		// console.log("origin tLat::>", tLat[i]);
+		tLng[i] = (tLng[i]-110.5)/8*6.11+125.9;
+		tLat[i] = (tLat[i]-7)/11*6.45+18.4;
+		// console.log("i::", i);
+		// console.log("changed tLng::>", tLng[i]);
+		// console.log("changed tLat::>", tLat[i]);
+	}
 	if(tType[i] === "空军") {
 		// dataPoints[i] = [tLng[i], tLat[i]];
 		dataPoints.push({
@@ -103,10 +113,19 @@ for(var i=0; i<tLat.length; i++) {
 		});
 	}
 }
+// 加入basepoint
+dataPoints.push({
+	value: basePoint,
+	itemStyle: {
+		color: fColors[0] // '#f2eb00'
+	},
+});
+
 console.log("dataPoints", dataPoints);
 
 var fullPoints = []; // 生成从基准点到数据点的线
 for(var j=0; j<tLat.length; j++) {
+	// if
 	if(tType[j] === "空军") {
 		// fullPoints[j] = [basePoint, dataPoints[j], {"lineStyle": "{color: '#4fb6d2'}"}];
 		fullPoints.push({
