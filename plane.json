@@ -3146,7 +3146,7 @@
 		"properties": {
 			"name": "南海诸岛",
 			"cp": [111.7341, 4.0227],
-			"childNum": 1
+			"childNum": 4
 		},
 		"geometry": {
 			"type": "Polygon",
