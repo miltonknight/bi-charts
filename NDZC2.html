@@ -29,7 +29,7 @@ code {
 	margin-bottom: 100px;
 	overflow: hidden;
 	width: 100%;
-	height: 200px;
+	height: 500px;
 }
 .ndzc {
 	width: 100%;
@@ -49,8 +49,9 @@ code {
 	line-height: 50px;
 	margin-right: 20px;
 	background-size: 100% 100%;
+	background-image: url(img/zc-name.png);
 }
-.name-zc {
+/* .name-zc {
 	background-image: url(img/zc-box-zc.png);
 }
 .name-qf {
@@ -58,7 +59,7 @@ code {
 }
 .name-wwc {
 	background-image: url(img/zc-box-wwc.png);
-}
+} */
 .zc-items {
 	/* width: 100%; */
 	/* min-height: 200px; */
@@ -104,7 +105,20 @@ code {
 .zc-arr-wwc {
 	background-image: url(img/zc-arr-wwc.png);
 }
-
+.up, .down {
+	display: block;
+	width: 220px;
+	height: 72px;
+	/* line-height: 72px; */
+	float: left;
+	background-size: 100% 100%;
+}
+.up {
+	background-image: url(img/pageUp.png);
+}
+.down {
+	background-image: url(img/pageDown.png);
+}
 </style>
 </head>
 
@@ -142,9 +156,10 @@ code {
 
 <div class="echarts" id="echarts"></div>
 
-<button type="button" class="up">上翻</button>
-<button type="button" class="down">下翻</button>
-
+<!-- <button type="button" class="up">上翻</button>
+<button type="button" class="down">下翻</button> -->
+<span class="up"></span>
+<span class="down"></span>
 
 <script type="text/javascript">
 
@@ -210,7 +225,7 @@ function ndzc() {
 	var str = '<div class="ndzc">';
 	for(var i = 0; i < headArr.length; i++) {
 		str += '<div class="zc-box">';
-		str += '<div class="zc-name name-zc">' + headArr[i] + '</div>';
+		str += '<div class="zc-name">' + headArr[i] + '</div>';
 		str += '<div class="zc-items" id="box'+ i +'">';
 		str += '</div>';
 		str += '</div>';
