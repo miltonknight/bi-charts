@@ -252,7 +252,9 @@ $.getJSON(uploadedDataURL, function(geoJson) {
 		series: [
 			{
 				type: 'map',
+				map: 'china', //使用
 				roam: false,
+				zoom: 1.1,
 				label: {
 					normal: {
 						show: true,
@@ -293,10 +295,8 @@ $.getJSON(uploadedDataURL, function(geoJson) {
 						// shadowColor: 'rgb(12,25,50)',
 						borderWidth: 0.1
 					}
-				},
-				zoom: 1.1,
+				}
 				//     roam: false,
-				map: 'china' //使用
 				// data: this.difficultData //热力图数据   不同区域 不同的底色
 			}, {
 				type: 'effectScatter',
