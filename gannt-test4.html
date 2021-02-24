@@ -1,0 +1,86 @@
+<html>
+
+<head>
+<meta charset="utf-8" />
+<title>Gantt Test</title>
+<script src="js/echarts.js"></script>
+<script src="js/jquery-2.2.3.js"></script>
+<style type="text/css">
+#echarts {
+	width: 800px;
+	height: 500px;
+	border: 1px solid #ccc;
+	margin: 30px;
+}
+</style>
+</head>
+
+<body>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="echarts" class="echarts"></div>
+
+<script type="text/javascript">
+	
+var myChart = echarts.init(document.getElementById("echarts"));
+
+var data = [];
+var dataCount = 10;
+var startTime = +new Date();
+console.log("startTime =  " + startTime);
+var categories = ['J15-001', 'J15-002', 'J15-003'];
+var types = [
+    {name: '组合件', color: '#cbc344'},
+    {name: '段件', color: '#3a5aff'},
+    {name: '部装', color: '#8d2a35'},
+    {name: '预总装', color: '#c59bff'},
+    {name: '总装', color: '#379b3a'},
+    {name: '喷漆', color: '#39c8c4'},
+	{name: '试飞', color: '#c93c3c'}
+];
+
+function timeDiff(startTime, endTime) {
+	startTime = startTime.replace(/\./g,"/");
+	endTime = endTime.replace(/\./g,"/");
+	var sTime = new Date(startTime);    //开始时间-标准时间格式
+	var eTime = new Date(endTime);  //结束时间-标准时间格式
+	// var xx = parseInt((eTime.getTime()-sTime.getTime())/parseInt(1000*3600*24));
+	var xx = parseInt((eTime.getTime()-sTime.getTime())); //mm时间戳格式
+	console.log(xx)
+	return xx;
+}
+
+// 日期e.g.2020.1.1 转毫秒时间戳
+function timeFormat(sTime) {
+	var sTime = sTime.replace(/\./g,"/"); // 系统分隔符'.'转换为'/'
+	sTime = new Date(sTime); // 转为标准时间格式
+	sTime = sTime.getTime(); // 转为毫秒格式显示，分钟:/1000/60, 小时:/1000/60/60, 天:/1000/60/60/24
+	// console.log("sTime::", sTime);
+	return sTime;
+}
+
+// 标准时间转 yyyy-mm-dd
+function timeLabel(strTime) {
+	var curTime = new Date(strTime);
+	var Y = curTime.getFullYear();
+	var M = curTime.getMonth()+1;
+	var D = curTime.getDate();
+	var timeLabel = Y + '-'+ M + '-' + D;
+	// console.log("timeLabel", timeLabel);
+	return timeLabel;
+}
+
+// 毫秒时间戳转日期
+function whatTime(val) {
+	var mTime = new Date();
+	mTime.setTime(val);
+	// console.log("whatTime---", mTime)
+	return mTime;
+}
+
+
+myChart.setOption(option);
+
+</script>
+</body>
+
+</html>

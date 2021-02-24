@@ -1,0 +1,177 @@
+<html>
+
+<head>
+<meta charset="utf-8" />
+<title>Gantt Test</title>
+<script src="js/echarts.js"></script>
+<script src="js/jquery-2.2.3.js"></script>
+<style type="text/css">
+#echarts {
+	width: 800px;
+	height: 500px;
+	border: 1px solid #ccc;
+	margin: 30px;
+}
+</style>
+</head>
+
+<body>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="echarts" class="echarts"></div>
+
+<!-- <script src="js/gData.js" type="text/javascript" charset="utf-8"></script> -->
+<script type="text/javascript">
+	
+var myChart = echarts.init(document.getElementById("echarts"));
+
+var data = [];
+var dataCount = 10;
+var startTime = +new Date();
+console.log("startTime =  " + startTime);
+var categories = ['J15-001', 'J15-002', 'J15-003'];
+var types = [
+    {name: '组合件', color: '#cbc344'},
+    {name: '段件', color: '#3a5aff'},
+    {name: '部装', color: '#8d2a35'},
+    {name: '预总装', color: '#c59bff'},
+    {name: '总装', color: '#379b3a'},
+    {name: '喷漆', color: '#39c8c4'},
+	{name: '试飞', color: '#c93c3c'}
+];
+
+// Generate mock data
+echarts.util.each(categories, function (category, index) {
+    var baseTime = startTime;
+    for (var i = 0; i < dataCount; i++) {
+        var typeItem = types[Math.round(Math.random() * (types.length - 1))];
+		// var typeItem;
+		// for(var m=0; m<types.length; m++) {
+		// 	typeItem = types[m];
+		// }
+		
+        var duration = Math.round(Math.random() * 10000);
+        data.push({
+            name: typeItem.name,
+            value: [
+                index,
+                baseTime,
+                baseTime += duration,
+                duration
+            ],
+            itemStyle: {
+                normal: {
+                    color: typeItem.color
+                }
+            }
+        });
+        baseTime += Math.round(Math.random() * 2000);
+    }
+});
+console.log(data);
+
+function renderItem(params, api) {
+    var categoryIndex = api.value(0);
+    var start = api.coord([api.value(1), categoryIndex]);
+    var end = api.coord([api.value(2), categoryIndex]);
+    var height = api.size([0, 1])[1] * 0.6;
+
+    var rectShape = echarts.graphic.clipRectByRect({
+        x: start[0],
+        y: start[1] - height / 2,
+        width: end[0] - start[0],
+        height: height
+    }, {
+        x: params.coordSys.x,
+        y: params.coordSys.y,
+        width: params.coordSys.width,
+        height: params.coordSys.height
+    });
+
+    return rectShape && {
+        type: 'rect',
+        shape: rectShape,
+        style: api.style()
+    };
+}
+
+
+option = {
+    tooltip: {
+        formatter: function (params) {
+            return params.marker + params.name + ': ' + params.value[3] + ' ms';
+        }
+    },
+    title: {
+        text: 'Profile',
+        left: 'center'
+    },
+    dataZoom: [{
+        start:2,
+        minValueSpan:10000,
+        
+        type: 'slider',
+        filterMode: 'weakFilter',
+        showDataShadow: false,
+        top: 400,
+        height: 10,
+        borderColor: 'transparent',
+        backgroundColor: '#e2e2e2',
+        handleIcon: 'M10.7,11.9H9.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4h1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7v-1.2h6.6z M13.3,22H6.7v-1.2h6.6z M13.3,19.6H6.7v-1.2h6.6z', // jshint ignore:line
+        handleSize: 20,
+        handleStyle: {
+            shadowBlur: 6,
+            shadowOffsetX: 1,
+            shadowOffsetY: 2,
+            shadowColor: '#aaa'
+        },
+        labelFormatter: ''
+    }, {
+        type: 'inside',
+        filterMode: 'weakFilter'
+    }],
+    grid: {
+        height:300
+    },
+    xAxis: {
+        type : 'value',
+        min: startTime,
+        minInterval:1,
+        scale: true,
+        axisLabel: {
+            formatter: function (val) {
+                return Math.max(0, val - startTime) + ' ms';
+            }
+        }
+    },
+    yAxis: {
+        data: categories
+    },
+    geo:{
+        scaleLimit:{
+            
+        }
+    }
+    ,
+    series: [{
+        type: 'custom',
+        
+        renderItem: renderItem,
+        itemStyle: {
+            normal: {
+                opacity: 0.8
+            }
+        },
+        encode: {
+            x: [1, 2],
+            y: 0
+        },
+        data: data
+    }]
+};
+
+myChart.setOption(option);
+
+</script>
+</body>
+
+</html>
