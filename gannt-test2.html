@@ -29,14 +29,13 @@ var dataCount = 7;
 var startTime = +new Date();
 var categories = ['categoryA', 'categoryB', 'categoryC'];
 var mockData = [
-	
-    {step: '组合件', color: '#cbc344', startTime: '2018.6.1', endTime: '2018.8.12', type: 0},
-    {step: '段件', color: '#3a5aff', startTime: '2018.8.13', endTime: '2018.10.12', type: 0},
-    {step: '部装', color: '#8d2a35', startTime: '2018.10.13', endTime: '2019.2.1', type: 0},
-    {step: '预总装', color: '#c59bff', startTime: '2019.2.2', endTime: '2019.6.15', type: 0},
-    {step: '总装', color: '#379b3a', startTime: '2019.6.16', endTime: '2019.12.10', type: 0},
-	{step: '喷漆', color: '#39c8c4', startTime: '2019.12.11', endTime: '2020.2.18', type: 0},
-    {step: '试飞', color: '#c93c3c', startTime: '2020.2.19', endTime: '2020.4.28', type: 0},
+	{step: '组合件', color: '#cbc344', startTime: '2019.6.1', endTime: '2019.8.12', type: 0},
+	{step: '段件', color: '#3a5aff', startTime: '2019.8.13', endTime: '2019.10.12', type: 0},
+	{step: '部装', color: '#8d2a35', startTime: '2019.10.13', endTime: '2020.2.1', type: 0},
+	{step: '预总装', color: '#c59bff', startTime: '2020.2.2', endTime: '2020.6.15', type: 0},
+	{step: '总装', color: '#379b3a', startTime: '2020.6.16', endTime: '2020.12.10', type: 0},
+	{step: '喷漆', color: '#39c8c4', startTime: '2020.12.11', endTime: '2021.2.18', type: 0},
+	{step: '试飞', color: '#c93c3c', startTime: '2021.2.19', endTime: '2021.4.28', type: 0},
 	 
 	// [
 	// {step: '组合件', color: '#cbc344', startTime: '2018.6.10', endTime: '2018.8.22', type: 1},
@@ -49,14 +48,14 @@ var mockData = [
 	// ]
 ];
 var mockData2 = [
+	{step: '组合件', color: '#cbc344', startTime: '2019.7.10', endTime: '2019.9.22', type: 1},
+	{step: '段件', color: '#3a5aff', startTime: '2019.9.23', endTime: '2019.11.22', type: 1},
+	{step: '部装', color: '#8d2a35', startTime: '2019.11.23', endTime: '2020.3.10', type: 1},
+	{step: '预总装', color: '#c59bff', startTime: '2020.3.11', endTime: '2020.7.25', type: 1},
+	{step: '总装', color: '#379b3a', startTime: '2020.7.26', endTime: '2021.1.20', type: 1},
+	{step: '喷漆', color: '#39c8c4', startTime: '2021.1.21', endTime: '2021.3.26', type: 1},
+	{step: '试飞', color: '#c93c3c', startTime: '2021.3.27', endTime: '2021.6.10', type: 1},
 	
-	{step: '组合件', color: '#cbc344', startTime: '2018.7.10', endTime: '2018.9.22', type: 1},
-	{step: '段件', color: '#3a5aff', startTime: '2018.9.23', endTime: '2018.11.22', type: 1},
-	{step: '部装', color: '#8d2a35', startTime: '2018.11.23', endTime: '2019.3.10', type: 1},
-	{step: '预总装', color: '#c59bff', startTime: '2019.3.11', endTime: '2019.7.25', type: 1},
-	{step: '总装', color: '#379b3a', startTime: '2019.7.26', endTime: '2020.1.20', type: 1},
-	{step: '喷漆', color: '#39c8c4', startTime: '2020.1.21', endTime: '2020.3.26', type: 1},
-	{step: '试飞', color: '#c93c3c', startTime: '2020.3.27', endTime: '2020.6.10', type: 1},
 ];
 
 function timeDiff(startTime, endTime) {
@@ -100,13 +99,13 @@ function whatTime(val) {
 
 // 预整合数据项
 //组合件: #cbc344， 段件:#3a5aff，部装：#8d2a35，预总装：#c59bff，总装：#379b3a，喷漆：#39c8c4，试飞：#c93c3c
-var pModels = ['KJ-J15:计划', 'KJ-J20', 'KJ-J35', /*'HJ-J15', 'HJ-J20', 'HJ-J35'*/];
-var pModels2 = ['KJ-J15:实际', 'KJ-J20-1', 'KJ-J35-1', /*'HJ-J15', 'HJ-J20', 'HJ-J35'*/];
+var pModels = ['KJ-J15:计划', 'KJ-J20-p', 'KJ-J35-p', /*'HJ-J15-p', 'HJ-J20-p', 'HJ-J35-p'*/];
+var pModels2 = ['KJ-J15:实际', 'KJ-J20-1', 'KJ-J35-1', /*'HJ-J15-R', 'HJ-J20-R', 'HJ-J35-R'*/];
 var steps = ["组合件", "段件", "部装", "预总装", "总装", "喷漆", "试飞"]
 var color = ["#cbc344", "#3a5aff", "#8d2a35", "#c59bff", "#379b3a", "#39c8c4", "#c93c3c"];
 
 var yLabelItems = [];
-pModels,pModels2
+pModels,pModels2;
 
 //echarts.util.each(pModels, pModels2, function(item, index) {
 //function labels(){
@@ -157,7 +156,7 @@ echarts.util.each(pModels, function (pModel, index) {
           // baseTime += StartTime;
     }
 });
-console.log("total data::::::::", data)
+console.log("total data::::::::", data);
 
 echarts.util.each(pModels2, function (pModel2, index2) {
 	console.log("index2:-----------------------------------", index2)
@@ -170,9 +169,9 @@ echarts.util.each(pModels2, function (pModel2, index2) {
         var StartTime2 = timeFormat(setItem2.startTime);
         var EndTime2 = timeFormat(setItem2.endTime);
         console.log("StartTime[" + i + "]------", StartTime2);
-        console.log("EndTime[" + i + "]--------", EndTime2)
-        console.log("duration[" + i + "]-------", duration2)
-		console.log("baseTime[" + i + "]-------", baseTime2)
+        console.log("EndTime[" + i + "]--------", EndTime2);
+        console.log("duration[" + i + "]-------", duration2);
+		console.log("baseTime[" + i + "]-------", baseTime2);
         data2.push({
 			name: pModel2, // 标题名称
             step: setItem2.step, // 阶段名
@@ -307,7 +306,8 @@ option = {
 			// data: yLabels,
     	}
     ],
-    series: [{
+    series: [
+		{
 		name: '计划',
         type: 'custom',
         renderItem: renderItem,
@@ -320,27 +320,27 @@ option = {
         },
         data: data
 		// data: pData
-    },
-	{
+    },{
 		name: '实际',
-        type: 'custom',
-        renderItem: renderItem2,
-        itemStyle: {
-            opacity: 0.8,
-            padding: [35,5,5,5]
-        },
-        encode: {
-            x: [1, 2], //2 3列映射到X轴
-            y: 0 //1列映射到Y轴
-        },
+		type: 'custom',
+		renderItem: renderItem2,
+		itemStyle: {
+			opacity: 0.8,
+			padding: [35,5,5,5]
+		},
+		encode: {
+			x: [1, 2], //2 3列映射到X轴
+			y: 0 //1列映射到Y轴
+		},
 		data: data2
-        // data: rData,
-    },
+		// data: rData,
+	},
 	]
 };
 
 myChart.setOption(option);
-
+console.log("data::::", data)
+console.log("data2::::", data2)
 </script>
 </body>
 
