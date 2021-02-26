@@ -21,7 +21,7 @@
 
 <script type="text/javascript">
 	
-// var myChart = echarts.init(document.getElementById("echarts"));
+var myChart = echarts.init(document.getElementById("echarts"));
 
 function timeDiff(startTime, endTime) {
 	startTime = startTime.replace(/\./g,"/");
@@ -92,7 +92,9 @@ var types = [
 //-------------------------------------------------------------------------------------
 var data = [c1, c2, c3, c4, c5, c6, c7];
 var c1=[], c2=[], c3=[], c4=[], c5=[], c6=[], c7=[];
-var names = []; // c1+c2 型号-架次拼串
+var names = [];
+var pNames = []; // c1+c2 型号-架次拼串
+var rNames = []; // c1+c2 型号-架次拼串
 var steps = data.c3; // c3 阶段
 var pStartTimes = data.c4; // c4 计划开始时间
 var pEndTimes = data.c5; // c5 计划结束时间
@@ -139,41 +141,47 @@ rEndTimes = ["2018-10-11", "2019-2-1", "2019-7-15", "2019-12-10", "2020-2-18", "
 			 "2018-12-11", "2019-4-1", "2019-9-15", "2020-2-10", "2020-4-18", "2020-6-28", "2020-8-25",
 ];
 
-
 // Generate mock data 
 var pData = [], rData = [];
+pData = [{ 
+	"name": '', 
+    "status": [],
+		 }
+];
+// rData = [{ "name": '11', "status": [1,2,3]}];
+// console.log("*********", typeof(pData[0].name[0]));
+
 // 第一步：拼接机型架次号为图表左侧标题 .Array
 for(var i=0; i<data.c1.length; i++) {
-	var temp = data.c1[i] + "-" + data.c2[i];
+	var temp = data.c1[i] + "-" + data.c2[i] + "计划";
+	var temp2 = data.c1[i] + "-" + data.c2[i] + "实际";
 	// names.push( data.c1[i] + "-" + data.c2[i] );
-	names.push(temp);
+	pNames.push(temp);
+	rNames.push(temp2);
 }
-names = [...new Set(names)];
+pNames = [...new Set(pNames)];
+rNames = [...new Set(rNames)];
+console.log("pNames[]=>", pNames);
+console.log("rNames[]=>", rNames);
+for(var i=0; i<pNames.length; i++) {
+	names.push(pNames[i])
+	names.push(rNames[i])
+}
 console.log("names[]=>", names);
 
 // 第二步：组合数据 .Array
 var baseTime;
 var index;
-var temp = [];
-var temp2 = [];
-for(var j=0; j<names.length; j++) {
+var tempPlan = [];
+var tempReality = [];
+// 计划时间
+for(var j=0; j<pNames.length; j++) {
 	pData.push({
-		name: names[j], // 标题名称
+		name: pNames[j], // 标题名称
 	});
-	
-	// console.log("***************************************")
-	// console.log(pData);
 	var m=0;
 	for(var i=0; i<pStartTimes.length; i++) {
-		var abc = data.c1[i] + "-" + data.c2[i]
-		temp2.push({abc})
-		
-		console.log(names[j]);
-		console.log(data.c1[i] + "-" + data.c2[i])
-		if (names[j] === data.c1[i] + "-" + data.c2[i]) {
-			// console.log("names", names[j]);
-			// console.log("anothername", data.c1[i] + "-" + data.c2[i])
-			// var setItem = mockData[i];
+		if (pNames[j] === data.c1[i] + "-" + data.c2[i] + "计划") {
 			var StartTime = timeFormat(pStartTimes[i]);
 			var EndTime = timeFormat(pEndTimes[i]);
 			var duration = timeDiff(pStartTimes[i], pEndTimes[i]);
@@ -181,77 +189,256 @@ for(var j=0; j<names.length; j++) {
 			// console.log("EndTime[" + i + "]--------", EndTime)
 			// console.log("duration[" + i + "]-------", duration)
 			// console.log("baseTime[" + i + "]-------", baseTime)
-			// temp.push({
-			// 	// name: names[j], // 标题名称
-			// 	name: data.c1[i] + "-" + data.c2[i],
-			// 	step: steps[i], // 阶段名
-			// 	value: [ 
-			// 		index, // index未发现做用
-			// 		// baseTime,
-			// 		// baseTime += duration,
-			// 		// StartTime, // 开始时间 mm时间戳
-			// 		timeFormat(pStartTimes[i]),
-			// 		// EndTime, // 结束时间 mm时间戳
-			// 		timeFormat(pEndTimes[i]),
-			// 		// duration , // 持续时间 mm时间戳
-			// 		timeDiff(pStartTimes[i], pEndTimes[i])
-			// 	],
-			// 	itemStyle: {
-			// 		normal: { // 设置矩形颜色
-			// 			color: colorMatch(steps[i]),
-			// 		}
-			// 	},
-			// 	// type: setItem2.type // 类型: 计划 or 完成
-			// });
-			m++;
-			console.log("m:::", m);
-			// console.log("temp::>", temp);
-			// break;
+			tempPlan.push({
+				name: pNames[j], // 标题名称
+				// name: data.c1[i] + "-" + data.c2[i],
+				step: steps[i], // 阶段名
+				value: [ 
+					// index, // index未发现做用
+					pNames[j],
+					// baseTime, 
+					// baseTime += duration,
+					// StartTime, // 开始时间 mm时间戳
+					timeFormat(pStartTimes[i]),
+					// EndTime, // 结束时间 mm时间戳
+					timeFormat(pEndTimes[i]),
+					// duration , // 持续时间 mm时间戳
+					timeDiff(pStartTimes[i], pEndTimes[i])
+				],
+				itemStyle: {
+					normal: { // 设置矩形颜色
+						color: colorMatch(steps[i]),
+					}
+				},
+				type: 1 // 类型: 计划 or 完成
+			});
+			// console.log("m:::", ++m);
+			// console.log("tempPlan::>", tempPlan);
+			pData[j].status = tempPlan;
 		}
 		else {
-			m=0
-			// alert(11)
-			temp = [];
-			// break
+			m = 0;
+			// console.log("NO~NO~NO~");
+			tempPlan = [];
 		}
 	}
-	pData[j].status = temp;
 }
-console.log("11111111", pData);
-console.log("2222222222222",temp2)
+console.log("pData[]=>", pData);
 
+var pDataStatus = [];
+for(var m=0; m<pData.length; m++) {
+	// for(var n=0; n<pData[m].status.length; n++) {
+	for(var n=0; n<7; n++) {
+		// console.log("##", pData[0].status[0])
+		// pDataStatus.push(pData[m].status[n]) 
+		pDataStatus[0] = pData[m].status[n];
+	}
+}
+console.log("pDataStatus:::>", pDataStatus);
 
+// 实际时间
+for(var j=0; j<rNames.length; j++) {
+	rData.push({
+		name: rNames[j], // 标题名称
+	});
+	var m=0;
+	for(var i=0; i<rStartTimes.length; i++) {
+		if (rNames[j] === data.c1[i] + "-" + data.c2[i] + "实际") {
+			var StartTime = timeFormat(rStartTimes[i]);
+			var EndTime = timeFormat(rEndTimes[i]);
+			var duration = timeDiff(rStartTimes[i], rEndTimes[i]);
+			// console.log("StartTime[" + i + "]------", StartTime);
+			// console.log("EndTime[" + i + "]--------", EndTime)
+			// console.log("duration[" + i + "]-------", duration)
+			// console.log("baseTime[" + i + "]-------", baseTime)
+			tempReality.push({
+				name: rNames[j], // 标题名称
+				// name: data.c1[i] + "-" + data.c2[i],
+				step: steps[i], // 阶段名
+				value: [ 
+					// index, // index未发现做用
+					rNames[j],
+					// baseTime, 
+					// baseTime += duration,
+					// StartTime, // 开始时间 mm时间戳
+					timeFormat(pStartTimes[i]),
+					// EndTime, // 结束时间 mm时间戳
+					timeFormat(pEndTimes[i]),
+					// duration , // 持续时间 mm时间戳
+					timeDiff(pStartTimes[i], pEndTimes[i])
+				],
+				itemStyle: {
+					normal: { // 设置矩形颜色
+						color: colorMatch(steps[i]),
+					}
+				},
+				type: 0.5 // 类型: 计划 or 完成
+			});
+			// console.log("m:::", ++m);
+			// console.log("tempReality::>", tempReality);
+			rData[j].status = tempReality;
+		}
+		else {
+			m = 0;
+			// console.log("NO~NO~NO~");
+			tempReality = [];
+		}
+	}
+}
+console.log("rData[]=>", rData);
 
+var rDataStatus = [];
+// for(var m=0; m<rData.length; m++) {
+// 	// for(var n=0; n<rData[m].status.length; n++) {
+// 	for(var n=0; n<7; n++) {
+// 		console.log("@@", rData[m].status[n])
+// 		rDataStatus.push(rData[m].status[n]) 
+// 	}
+// }
+console.log("rDataStatus:::>", rDataStatus);
 
-// data2.push({
-// 	name: pModel2, // 标题名称
-// 	step: setItem2.step, // 阶段名
-// 	value: [ 
-// 		index2 = pModel2, // index未发现做用
-// 		// baseTime,
-// 		// baseTime += duration,
-// 		StartTime2, // 开始时间 mm时间戳
-// 		EndTime2, // 结束时间 mm时间戳
-// 		duration2 , // 持续时间 mm时间戳
-// 	],
-// 	itemStyle: {
-// 		normal: { // 设置矩形颜色
-// 			color: setItem2.color,
-// 		}
-// 	},
-// 	type: setItem2.type // 类型: 计划 or 完成
-// });
+function renderItem(params, api) {
+    var categoryIndex = api.value(0);
+    var start = api.coord([api.value(1), categoryIndex]);
+    var end = api.coord([api.value(2), categoryIndex]);
+	// console.log("api:::", api)
+    var height = api.size([0, 1])[1] * 0.2;
 
+    var rectShape = echarts.graphic.clipRectByRect({
+        x: start[0],
+        y: start[1] - height / 2,
+        width: end[0] - start[0],
+        height: height
+    }, {
+        x: params.coordSys.x,
+        y: params.coordSys.y,
+        width: params.coordSys.width,
+        height: params.coordSys.height
+    });
 
+    return rectShape && {
+        type: 'rect',
+        shape: rectShape,
+        style: api.style()
+    };
+}
 
+function renderItem2(params, api) {
+    var categoryIndex = api.value(0);
+    var start = api.coord([api.value(1), categoryIndex]);
+    var end = api.coord([api.value(2), categoryIndex]);
+	console.log("api:::", api)
+    var height = api.size([0, 1])[1] * 0.1;
 
+    var rectShape = echarts.graphic.clipRectByRect({
+        x: start[0],
+        y: start[1] - height / 2,
+        width: end[0] - start[0],
+        height: height
+    }, {
+        x: params.coordSys.x,
+        y: params.coordSys.y,
+        width: params.coordSys.width,
+        height: params.coordSys.height
+    });
 
+    return rectShape && {
+        type: 'rect',
+        shape: rectShape,
+        style: api.style()
+    };
+}
 
+option = {
+    tooltip: {
+        formatter: function (params) {
+            // return params.marker + params.name + ': ' + (params.value[3]/1000/60/24 - new Date('1970/1/1').getTime()/1000/60/24) + ' 天';
+			// return params.marker + params.step + ': ' + (params.value[3]/1000/60/60/24) + ' 天';
+			var stc = params.marker + params.data.step + ':<br>';
+			stc += "开始时间: " + timeLabel(params.value[1]) + "<br>";
+			stc += "结束时间: " + timeLabel(params.value[2]) + "<br>";
+			stc += "共计: " + (params.value[3]/1000/60/60/24).toFixed(0) + " 天";
+			return stc;
+        }
+    },
+    title: {
+        text: '主进度计划',
+        left: 'center'
+    },
+    dataZoom: [{
+        type: 'slider',
+        filterMode: 'weakFilter',
+        showDataShadow: false,
+        top: 400,
+        height: 10,
+        borderColor: 'transparent',
+        backgroundColor: '#e2e2e2',
+        handleIcon: 'M10.7,11.9H9.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4h1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7v-1.2h6.6z M13.3,22H6.7v-1.2h6.6z M13.3,19.6H6.7v-1.2h6.6z', // jshint ignore:line
+        handleSize: 20,
+        handleStyle: {
+            shadowBlur: 6,
+            shadowOffsetX: 1,
+            shadowOffsetY: 2,
+            shadowColor: '#aaa'
+        },
+        labelFormatter: ''
+    }, {
+        type: 'inside',
+        filterMode: 'weakFilter'
+    }],
+    grid: {
+        height: 300
+    },
+    xAxis: {
+        // min: baseTime,
+        scale: true,
+        axisLabel: {
+            formatter: function (val) {
+                // return Math.max(0, val - startTime) + ' ms';
+				// 毫秒时间转 yyyy-mm-dd 
+				return timeLabel(whatTime(val))
+            },
+        },
+    },
+    yAxis: [{
+			type: 'category',
+        	// data: yLabelItems,
+			data: names,
+    	}
+    ],
+    series: [
+		{
+		name: '计划',
+        type: 'custom',
+        renderItem: renderItem,
+        itemStyle: {
+            opacity: 0.8
+        },
+        encode: {
+            x: [1, 2], //2 3列映射到X轴
+            y: 0 //1列映射到Y轴
+        },
+        // data: data
+		data: pDataStatus
+    },{
+		name: '实际',
+		type: 'custom',
+		renderItem: renderItem2,
+		itemStyle: {
+			opacity: 0.8,
+			padding: [35,5,5,5]
+		},
+		encode: {
+			x: [1, 2], //2 3列映射到X轴
+			y: 0 //1列映射到Y轴
+		},
+		// data: data2
+		data: rDataStatus,
+	},
+	]
+};
 
-
-// option = [];
-
-// myChart.setOption(option);
+myChart.setOption(option);
 
 </script>
 </body>
