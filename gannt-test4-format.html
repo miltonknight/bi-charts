@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Gantt Test</title>
+<script src="js/echarts.js"></script>
+<script src="js/jquery-2.2.3.min.js" type="text/javascript" charset="utf-8"></script>
+<style type="text/css">
+#echarts {
+	width: 800px;
+	height: 500px;
+	border: 1px solid #ccc;
+	margin: 30px;
+}
+</style>
+</head>
+
+<body>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="echarts" class="echarts"></div>
+
+<button type="button" onclick="changeData()">更换数据</button>
+<script type="text/javascript">
+	
+var myChart = echarts.init(document.getElementById("echarts"));
+
+function timeDiff(startTime, endTime) {
+	var startTime = startTime.replace(/\./g,"/");
+	var endTime = endTime.replace(/\./g,"/");
+	var sTime = new Date(startTime);    //开始时间-标准时间格式
+	var eTime = new Date(endTime);  //结束时间-标准时间格式
+	// var xx = parseInt((eTime.getTime()-sTime.getTime())/parseInt(1000*3600*24));
+	var xx = parseInt((eTime.getTime()-sTime.getTime())); //mm时间戳格式
+	// console.log(xx)
+	return xx;
+}
+
+// 日期e.g.2020.1.1 转毫秒时间戳
+function timeFormat(sTime) {
+	var sTime = sTime.replace(/\./g,"/"); // 系统分隔符'.'转换为'/'
+	sTime = new Date(sTime); // 转为标准时间格式
+	sTime = sTime.getTime(); // 转为毫秒格式显示，分钟:/1000/60, 小时:/1000/60/60, 天:/1000/60/60/24
+	// console.log("sTime::", sTime);
+	return sTime;
+}
+
+// 标准时间转 yyyy-mm-dd
+function timeLabel(strTime) {
+	var curTime = new Date(strTime);
+	var Y = curTime.getFullYear();
+	var M = curTime.getMonth()+1;
+	var D = curTime.getDate();
+	var timeLabel = Y + '-'+ M + '-' + D;
+	// console.log("timeLabel", timeLabel);
+	return timeLabel;
+}
+
+// 毫秒时间戳转日期
+function whatTime(val) {
+	var mTime = new Date();
+	mTime.setTime(val);
+	// console.log("whatTime---", mTime)
+	return mTime;
+}
+
+// 阶段添加颜色
+var item = "段件";
+function colorMatch(item) {
+	for(var i=0; i<mSteps.length; i++) {
+		if(item === mSteps[i].name) {
+			// console.log("++++++++++++++++++++++")
+			// console.log(mSteps[i].color);
+			return mSteps[i].color
+		}
+	}
+}
+var tempP = [];
+var tempR = [];
+var tempN = [];
+var k=0;
+var h = 0;
+var count = 4;
+function changeData(k,h,count) {
+	console.log("test************")
+	for(k; k<7*count; k++){
+		tempP[k] = pDataStatus[k];
+		tempR[k] = rDataStatus[k];
+	}
+	k += count;
+	for(h; h<2*count; h++){
+		tempN[h] = names[h]
+	}
+	h += count;
+	console.log("tempP", tempP);
+	console.log("tempR", tempR);
+	console.log("tempN", tempN);
+	
+	// option.series[0].data = tempP;
+	// option.series[1].data = tempR;
+	// option.yAxis.data = [];
+	// myChart.setOption(option);
+	// option.yAxis.data = tempN;
+	
+	// myChart.setOption(option);
+}
+
+var data = [c1, c2, c3, c4, c5, c6, c7];
+var c1=[], c2=[], c3=[], c4=[], c5=[], c6=[], c7=[];
+var names = [];
+var pNames = []; // c1+c2 型号-架次拼串
+var rNames = []; // c1+c2 型号-架次拼串
+var nameStyle = [];
+var steps = data.c3; // c3 阶段
+var pStartTimes = data.c4; // c4 计划开始时间
+var pEndTimes = data.c5; // c5 计划结束时间
+var rStartTimes = data.c6; // c6 计划开始时间
+var rEndTimes = data.c7; // c7 实际结束时间
+var colors = ["#cbc344", "#3a5aff", "#8d2a35", "#c59bff", "#379b3a", "#39c8c4", "#c93c3c"];
+
+
+data.c1 = ["A", "A", "A", "A", "A", "A", "A", 
+	       "A", "A", "A", "A", "A", "A", "A", 
+	       "B", "B", "B", "B", "B", "B", "B", 
+		   "C", "C", "C", "C", "C", "C", "C",
+		   "C", "C", "C", "C", "C", "C", "C", 
+		   "D", "D", "D", "D", "D", "D", "D", 
+];
+data.c2 = ["001", "001", "001", "001", "001", "001", "001",
+	       "002", "002", "002", "002", "002", "002", "002",
+	       "001", "001", "001", "001", "001", "001", "001",
+		   "001", "001", "001", "001", "001", "001", "001",
+		   "002", "002", "002", "002", "002", "002", "002",
+		   "001", "001", "001", "001", "001", "001", "001"
+];
+var mSteps = [
+    {name: '组合件', color: '#cbc344'},
+    {name: '段件', color: '#3a5aff'},
+    {name: '部装', color: '#8d2a35'},
+    {name: '预总装', color: '#c59bff'},
+    {name: '总装', color: '#379b3a'},
+    {name: '喷漆', color: '#39c8c4'},
+	{name: '试飞', color: '#c93c3c'}
+];
+
+steps = ["组合件", "段件", "部装", "预总装", "总装", "喷漆", "试飞",
+		 "组合件", "段件", "部装", "预总装", "总装", "喷漆", "试飞",
+		 "组合件", "段件", "部装", "预总装", "总装", "喷漆", "试飞",
+		 "组合件", "段件", "部装", "预总装", "总装", "喷漆", "试飞",
+		 "组合件", "段件", "部装", "预总装", "总装", "喷漆", "试飞",
+		 "组合件", "段件", "部装", "预总装", "总装", "喷漆", "试飞",
+];
+pStartTimes = ["2018-6-1", "2018-10-13", "2019-2-2", "2019-6-16", "2019-12-11", "2020-2-19", "2020-4-29",
+			   "2018-7-1", "2018-11-13", "2019-3-2", "2019-7-16", "2020-1-11", "2020-3-19", "2020-5-29",
+			   "2018-8-1", "2018-12-13", "2019-4-2", "2019-8-16", "2020-2-11", "2020-4-19", "2020-6-29",
+			   "2018-6-1", "2018-10-13", "2019-2-2", "2019-6-16", "2019-12-11", "2020-2-19", "2020-4-29",
+			   "2018-7-1", "2018-11-13", "2019-3-2", "2019-7-16", "2020-1-11", "2020-3-19", "2020-5-29",
+			   "2018-8-1", "2018-12-13", "2019-4-2", "2019-8-16", "2020-2-11", "2020-4-19", "2020-6-29",
+];
+pEndTimes = ["2018-10-12", "2019-2-1", "2019-6-15", "2019-12-10", "2020-2-18", "2020-4-28", "2020-6-20",
+			 "2018-11-12", "2019-3-1", "2019-7-15", "2020-1-10", "2020-3-18", "2020-5-28", "2020-7-20",
+			 "2018-12-12", "2019-4-1", "2019-8-15", "2020-2-10", "2020-4-18", "2020-6-28", "2020-8-20",
+			 "2018-10-12", "2019-2-1", "2019-6-15", "2019-12-10", "2020-2-18", "2020-4-28", "2020-6-20",
+			 "2018-11-12", "2019-3-1", "2019-7-15", "2020-1-10", "2020-3-18", "2020-5-28", "2020-7-20",
+			 "2018-12-12", "2019-4-1", "2019-8-15", "2020-2-10", "2020-4-18", "2020-6-28", "2020-8-20",
+];
+rStartTimes = ["2018-8-1", "2018-10-12", "2019-2-2", "2019-7-15", "2019-12-11", "2020-2-19", "2020-4-29",
+			   "2018-9-1", "2018-11-12", "2019-3-2", "2019-8-15", "2020-1-11", "2020-3-19", "2020-5-29",
+			   "2018-10-1", "2018-12-12", "2019-4-2", "2019-9-15", "2020-2-11", "2020-4-19", "2020-6-29",
+			   "2018-8-1", "2018-10-12", "2019-2-2", "2019-7-15", "2019-12-11", "2020-2-19", "2020-4-29",
+			   "2018-9-1", "2018-11-12", "2019-3-2", "2019-8-15", "2020-1-11", "2020-3-19", "2020-5-29",
+			   "2018-10-1", "2018-12-12", "2019-4-2", "2019-9-15", "2020-2-11", "2020-4-19", "2020-6-29"
+];
+rEndTimes = ["2018-10-11", "2019-2-1", "2019-7-15", "2019-12-10", "2020-2-18", "2020-4-28", "2020-6-25",
+			 "2018-11-11", "2019-3-1", "2019-8-15", "2020-1-10", "2020-3-18", "2020-5-28", "2020-7-25",
+			 "2018-12-11", "2019-4-1", "2019-9-15", "2020-2-10", "2020-4-18", "2020-6-28", "2020-8-25",
+			 "2018-10-11", "2019-2-1", "2019-7-15", "2019-12-10", "2020-2-18", "2020-4-28", "2020-6-25",
+			 "2018-11-11", "2019-3-1", "2019-8-15", "2020-1-10", "2020-3-18", "2020-5-28", "2020-7-25",
+			 "2018-12-11", "2019-4-1", "2019-9-15", "2020-2-10", "2020-4-18", "2020-6-28", "2020-8-25",
+];
+
+startTime = timeFormat(pStartTimes[0]);
+console.log("new startTime::", startTime)
+
+var baseTime;
+var index;
+var tempPlan = [];
+var tempReality = [];
+var pDataStatus = [];
+var rDataStatus = [];
+var option;
+function makeData() {
+	
+	// Generate mock data 
+	var pData = [], rData = [];
+
+	// 第一步：拼接机型架次号为图表左侧标题 .Array
+	for(var i=0; i<data.c1.length; i++) {
+		var temp = data.c1[i] + "-" + data.c2[i] + "计划";
+		var temp2 = data.c1[i] + "-" + data.c2[i] + "实际";
+		// names.push( data.c1[i] + "-" + data.c2[i] );
+		pNames.push(temp);
+		rNames.push(temp2);
+	}
+	pNames = [...new Set(pNames)];
+	rNames = [...new Set(rNames)];
+	console.log("pNames[]=>", pNames);
+	console.log("rNames[]=>", rNames);
+	for(var i=0; i<pNames.length; i++) {
+		names.push(rNames[i]);
+		names.push(pNames[i]);
+		nameStyle.push("#fff");
+		nameStyle.push("transparent");
+	}
+	console.log("names[]=>", names);
+	console.log("nameStyle[]=>", nameStyle);
+
+	// 第二步：组合数据 .Array
+	
+	// 计划时间
+	for(var j=0; j<pNames.length; j++) {
+		pData.push({
+			name: pNames[j], // 标题名称
+		});
+		var m=0;
+		for(var i=0; i<pStartTimes.length; i++) {
+			if (pNames[j] === data.c1[i] + "-" + data.c2[i] + "计划") {
+				var StartTime = timeFormat(pStartTimes[i]);
+				var EndTime = timeFormat(pEndTimes[i]);
+				var duration = timeDiff(pStartTimes[i], pEndTimes[i]);
+				// console.log("StartTime[" + i + "]------", StartTime);
+				// console.log("EndTime[" + i + "]--------", EndTime)
+				// console.log("duration[" + i + "]-------", duration)
+				// console.log("baseTime[" + i + "]-------", baseTime)
+				tempPlan.push({
+					name: pNames[j], // 标题名称
+					// name: data.c1[i] + "-" + data.c2[i],
+					step: steps[i], // 阶段名
+					value: [ 
+						// index, // index未发现做用
+						pNames[j],
+						// baseTime, 
+						// baseTime += duration,
+						// StartTime, // 开始时间 mm时间戳
+						timeFormat(pStartTimes[i]),
+						// EndTime, // 结束时间 mm时间戳
+						timeFormat(pEndTimes[i]),
+						// duration , // 持续时间 mm时间戳
+						timeDiff(pStartTimes[i], pEndTimes[i])
+					],
+					itemStyle: {
+						normal: { // 设置矩形颜色
+							color: colorMatch(steps[i]),
+						}
+					},
+					type: 1 // 类型: 计划 or 完成
+				});
+				// console.log("m:::", ++m);
+				// console.log("tempPlan::>", tempPlan);
+				pData[j].status = tempPlan;
+				pDataStatus = tempPlan;
+			}
+			else {
+				m = 0;
+				// console.log("NO~NO~NO~");
+				// tempPlan = [];
+			}
+		}
+	}
+	console.log("pData[]=>", pData);
+	console.log("pDataStatus:::>", pDataStatus);
+
+	// 实际时间
+	for(var j=0; j<rNames.length; j++) {
+		rData.push({
+			name: rNames[j], // 标题名称
+		});
+		var m=0;
+		for(var i=0; i<rStartTimes.length; i++) {
+			if (rNames[j] === data.c1[i] + "-" + data.c2[i] + "实际") {
+				var StartTime = timeFormat(rStartTimes[i]);
+				var EndTime = timeFormat(rEndTimes[i]);
+				var duration = timeDiff(rStartTimes[i], rEndTimes[i]);
+				tempReality.push({
+					name: rNames[j], // 标题名称
+					// name: data.c1[i] + "-" + data.c2[i],
+					step: steps[i], // 阶段名
+					value: [ 
+						// index, // index未发现做用
+						rNames[j],
+						// StartTime, // 开始时间 mm时间戳
+						timeFormat(rStartTimes[i]),
+						// EndTime, // 结束时间 mm时间戳
+						timeFormat(rEndTimes[i]),
+						// duration , // 持续时间 mm时间戳
+						timeDiff(rStartTimes[i], rEndTimes[i])
+					],
+					itemStyle: {
+						normal: { // 设置矩形颜色
+							color: colorMatch(steps[i]),
+						}
+					},
+					type: 0.5 // 类型: 计划 or 完成
+				});
+				rData[j].status = tempReality;
+				rDataStatus = tempReality;
+			}
+			else {
+				m = 0;
+			}
+		}
+	}
+	console.log("rData[]=>", rData);
+	console.log("rDataStatus:::>", rDataStatus);
+
+	function renderItem(params, api) {
+		var categoryIndex = api.value(0);
+		var start = api.coord([api.value(1), categoryIndex]);
+		var end = api.coord([api.value(2), categoryIndex]);
+		// console.log("api:::", api)
+		var height = api.size([0, 1])[1] * 0.4;
+
+		var rectShape = echarts.graphic.clipRectByRect({
+			x: start[0],
+			y: start[1] - height / 2,
+			width: end[0] - start[0],
+			height: height
+		}, {
+			x: params.coordSys.x,
+			y: params.coordSys.y,
+			width: params.coordSys.width,
+			height: params.coordSys.height
+		});
+
+		return rectShape && {
+			type: 'rect',
+			shape: rectShape,
+			style: api.style()
+		};
+	}
+
+	function renderItem2(params, api) {
+		var categoryIndex = api.value(0);
+		var start = api.coord([api.value(1), categoryIndex]);
+		var end = api.coord([api.value(2), categoryIndex]);
+		// console.log("api:::", api)
+		var height = api.size([0, 1])[1] * 0.2;
+
+		var rectShape = echarts.graphic.clipRectByRect({
+			x: start[0],
+			y: start[1] - height / 2,
+			width: end[0] - start[0],
+			height: height
+		}, {
+			x: params.coordSys.x,
+			y: params.coordSys.y,
+			width: params.coordSys.width,
+			height: params.coordSys.height
+		});
+
+		return rectShape && {
+			type: 'rect',
+			shape: rectShape,
+			style: api.style()
+		};
+	}
+	changeData(k,h,count);
+	option = {
+		tooltip: {
+			formatter: function (params) {
+				var stc = params.marker + params.data.step + ':<br>';
+				stc += "开始时间: " + timeLabel(params.value[1]) + "<br>";
+				stc += "结束时间: " + timeLabel(params.value[2]) + "<br>";
+				stc += "共计: " + (params.value[3]/1000/60/60/24).toFixed(0) + " 天";
+				return stc;
+			}
+		},
+		title: {
+			text: '主进度计划',
+			left: 'center',
+			textStyle:{
+				//文字颜色
+				color:'#ccc',
+				//字体风格,'normal','italic','oblique'
+				fontStyle:'normal',
+				//字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+				//字体大小
+			}
+		},
+		dataZoom: [{
+			type: 'slider',
+			filterMode: 'weakFilter',
+			showDataShadow: false,
+			top: 400,
+			height: 10,
+			borderColor: 'transparent',
+			backgroundColor: '#e2e2e2',
+			handleIcon: 'M10.7,11.9H9.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4h1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7v-1.2h6.6z M13.3,22H6.7v-1.2h6.6z M13.3,19.6H6.7v-1.2h6.6z', // jshint ignore:line
+			handleSize: 20,
+			handleStyle: {
+				shadowBlur: 6,
+				shadowOffsetX: 1,
+				shadowOffsetY: 2,
+				shadowColor: '#aaa'
+			},
+			labelFormatter: ''
+		}, {
+			type: 'inside',
+			filterMode: 'weakFilter'
+		}],
+		grid: {
+			height: 300
+		},
+		xAxis: {
+			// min: baseTime,
+			scale: true,
+			axisLabel: {
+				formatter: function (val) {
+					return timeLabel(whatTime(val))
+				},
+				color: 'red',
+			},
+		},
+		yAxis: [{
+				type: 'category',
+				// data: yLabelItems,
+				// data: names,
+				data: tempN,
+				axisLabel: { // 设置label样式
+					show: true,
+					color: nameStyle,
+				}
+			}
+		],
+		series: [
+			{
+			name: '',
+			type: 'custom',
+			renderItem: renderItem,
+			itemStyle: {
+				opacity: 0.8
+			},
+			encode: {
+				x: [1, 2], //2 3列映射到X轴
+				y: 0 //1列映射到Y轴
+			},
+			// data: data
+			// data: pDataStatus
+			data: tempP
+		},{
+			name: '',
+			type: 'custom',
+			renderItem: renderItem2,
+			itemStyle: {
+				opacity: 0.8,
+				padding: [35,5,5,5]
+			},
+			encode: {
+				x: [1, 2], //2 3列映射到X轴
+				y: 0 //1列映射到Y轴
+			},
+			// data: data2
+			// data: rDataStatus
+			data: tempR
+		}
+		]
+	};
+
+	myChart.setOption(option);
+}
+
+// pDataStatus, rDataStatus;
+// 控制数据打出
+// function changeData() {
+// 	console.log("test************")
+// 	var k=0;
+// 	var h = 0;
+// 	var count = 4;
+// 	var tempP = [];
+// 	var tempR = [];
+// 	var tempN = [];
+// 	for(k; k<7*count; k++){
+// 		tempP[k] = pDataStatus[k];
+// 		tempR[k] = rDataStatus[k];
+// 	}
+// 	for(h; h<2*count; h++){
+// 		tempN[h] = names[h]
+// 	}
+	
+// 	console.log("tempP", tempP);
+// 	console.log("tempR", tempR);
+// 	console.log("tempN", tempN);
+	
+// 	option.series[0].data = tempP;
+// 	option.series[1].data = tempR;
+// 	option.yAxis.data = [];
+// 	myChart.setOption(option);
+// 	option.yAxis.data = tempN;
+	
+// 	myChart.setOption(option);
+// }
+
+window.onload = makeData();
+</script>
+</body>
+
+</html>
