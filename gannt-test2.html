@@ -130,10 +130,10 @@ echarts.util.each(pModels, function (pModel, index) {
         var duration = timeDiff(setItem.startTime, setItem.endTime);
         var StartTime = timeFormat(setItem.startTime);
         var EndTime = timeFormat(setItem.endTime);
-        console.log("StartTime[" + i + "]------", StartTime);
-        console.log("EndTime[" + i + "]--------", EndTime)
-        console.log("duration[" + i + "]-------", duration)
-		console.log("baseTime[" + i + "]-------", baseTime)
+  //       console.log("StartTime[" + i + "]------", StartTime);
+  //       console.log("EndTime[" + i + "]--------", EndTime)
+  //       console.log("duration[" + i + "]-------", duration)
+		// console.log("baseTime[" + i + "]-------", baseTime)
         data.push({
 			name: pModel, // 标题名称
             step: setItem.step, // 阶段名
@@ -152,7 +152,7 @@ echarts.util.each(pModels, function (pModel, index) {
             },
 			type: setItem.type // 类型: 计划 or 完成
         });
-        console.log(":::baseTime:::", baseTime)
+        // console.log(":::baseTime:::", baseTime)
           // baseTime += StartTime;
     }
 });
@@ -168,10 +168,10 @@ echarts.util.each(pModels2, function (pModel2, index2) {
         var duration2 = timeDiff(setItem2.startTime, setItem2.endTime);
         var StartTime2 = timeFormat(setItem2.startTime);
         var EndTime2 = timeFormat(setItem2.endTime);
-        console.log("StartTime[" + i + "]------", StartTime2);
-        console.log("EndTime[" + i + "]--------", EndTime2);
-        console.log("duration[" + i + "]-------", duration2);
-		console.log("baseTime[" + i + "]-------", baseTime2);
+  //       console.log("StartTime[" + i + "]------", StartTime2);
+  //       console.log("EndTime[" + i + "]--------", EndTime2);
+  //       console.log("duration[" + i + "]-------", duration2);
+		// console.log("baseTime[" + i + "]-------", baseTime2);
         data2.push({
 			name: pModel2, // 标题名称
             step: setItem2.step, // 阶段名
@@ -190,7 +190,7 @@ echarts.util.each(pModels2, function (pModel2, index2) {
             },
 			type: setItem2.type // 类型: 计划 or 完成
         });
-        console.log(":::baseTime:::", baseTime2)
+        // console.log(":::baseTime:::", baseTime2)
           // baseTime += StartTime;
     }
 });
