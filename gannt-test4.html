@@ -141,13 +141,17 @@ rEndTimes = ["2018-10-11", "2019-2-1", "2019-7-15", "2019-12-10", "2020-2-18", "
 			 "2018-12-11", "2019-4-1", "2019-9-15", "2020-2-10", "2020-4-18", "2020-6-28", "2020-8-25",
 ];
 
+
+
+startTime = timeFormat(pStartTimes[0]);
+console.log("new startTime::", startTime)
 // Generate mock data 
 var pData = [], rData = [];
-pData = [{ 
-	"name": '', 
-    "status": [],
-		 }
-];
+// pData = [{ 
+// 	"name": '', 
+//     "status": [],
+// 	}
+// ];
 // rData = [{ "name": '11', "status": [1,2,3]}];
 // console.log("*********", typeof(pData[0].name[0]));
 
@@ -174,6 +178,8 @@ var baseTime;
 var index;
 var tempPlan = [];
 var tempReality = [];
+var pDataStatus = [];
+var rDataStatus = [];
 // 计划时间
 for(var j=0; j<pNames.length; j++) {
 	pData.push({
@@ -215,25 +221,16 @@ for(var j=0; j<pNames.length; j++) {
 			// console.log("m:::", ++m);
 			// console.log("tempPlan::>", tempPlan);
 			pData[j].status = tempPlan;
+			pDataStatus = tempPlan;
 		}
 		else {
 			m = 0;
 			// console.log("NO~NO~NO~");
-			tempPlan = [];
+			// tempPlan = [];
 		}
 	}
 }
 console.log("pData[]=>", pData);
-
-var pDataStatus = [];
-for(var m=0; m<pData.length; m++) {
-	// for(var n=0; n<pData[m].status.length; n++) {
-	for(var n=0; n<7; n++) {
-		// console.log("##", pData[0].status[0])
-		// pDataStatus.push(pData[m].status[n]) 
-		pDataStatus[0] = pData[m].status[n];
-	}
-}
 console.log("pDataStatus:::>", pDataStatus);
 
 // 实际时间
@@ -261,11 +258,11 @@ for(var j=0; j<rNames.length; j++) {
 					// baseTime, 
 					// baseTime += duration,
 					// StartTime, // 开始时间 mm时间戳
-					timeFormat(pStartTimes[i]),
+					timeFormat(rStartTimes[i]),
 					// EndTime, // 结束时间 mm时间戳
-					timeFormat(pEndTimes[i]),
+					timeFormat(rEndTimes[i]),
 					// duration , // 持续时间 mm时间戳
-					timeDiff(pStartTimes[i], pEndTimes[i])
+					timeDiff(rStartTimes[i], rEndTimes[i])
 				],
 				itemStyle: {
 					normal: { // 设置矩形颜色
@@ -277,24 +274,16 @@ for(var j=0; j<rNames.length; j++) {
 			// console.log("m:::", ++m);
 			// console.log("tempReality::>", tempReality);
 			rData[j].status = tempReality;
+			rDataStatus = tempReality;
 		}
 		else {
 			m = 0;
 			// console.log("NO~NO~NO~");
-			tempReality = [];
+			// tempReality = [];
 		}
 	}
 }
 console.log("rData[]=>", rData);
-
-var rDataStatus = [];
-// for(var m=0; m<rData.length; m++) {
-// 	// for(var n=0; n<rData[m].status.length; n++) {
-// 	for(var n=0; n<7; n++) {
-// 		console.log("@@", rData[m].status[n])
-// 		rDataStatus.push(rData[m].status[n]) 
-// 	}
-// }
 console.log("rDataStatus:::>", rDataStatus);
 
 function renderItem(params, api) {
@@ -302,7 +291,7 @@ function renderItem(params, api) {
     var start = api.coord([api.value(1), categoryIndex]);
     var end = api.coord([api.value(2), categoryIndex]);
 	// console.log("api:::", api)
-    var height = api.size([0, 1])[1] * 0.2;
+    var height = api.size([0, 1])[1] * 0.4;
 
     var rectShape = echarts.graphic.clipRectByRect({
         x: start[0],
@@ -328,7 +317,7 @@ function renderItem2(params, api) {
     var start = api.coord([api.value(1), categoryIndex]);
     var end = api.coord([api.value(2), categoryIndex]);
 	console.log("api:::", api)
-    var height = api.size([0, 1])[1] * 0.1;
+    var height = api.size([0, 1])[1] * 0.2;
 
     var rectShape = echarts.graphic.clipRectByRect({
         x: start[0],
@@ -363,7 +352,7 @@ option = {
     },
     title: {
         text: '主进度计划',
-        left: 'center'
+        left: 'center',
     },
     dataZoom: [{
         type: 'slider',
@@ -408,7 +397,7 @@ option = {
     ],
     series: [
 		{
-		name: '计划',
+		name: '',
         type: 'custom',
         renderItem: renderItem,
         itemStyle: {
@@ -421,7 +410,7 @@ option = {
         // data: data
 		data: pDataStatus
     },{
-		name: '实际',
+		name: '',
 		type: 'custom',
 		renderItem: renderItem2,
 		itemStyle: {
@@ -433,8 +422,8 @@ option = {
 			y: 0 //1列映射到Y轴
 		},
 		// data: data2
-		data: rDataStatus,
-	},
+		data: rDataStatus
+	}
 	]
 };
 
