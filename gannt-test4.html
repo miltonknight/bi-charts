@@ -74,20 +74,20 @@ function colorMatch(item) {
 	}
 }
 
-// var data = [];
-var dataCount = 10;
-var startTime = +new Date();
-console.log("startTime =  " + startTime);
-var categories = ['J15-001', 'J15-002', 'J15-003'];
-var types = [
-    {name: '组合件', color: '#cbc344'},
-    {name: '段件', color: '#3a5aff'},
-    {name: '部装', color: '#8d2a35'},
-    {name: '预总装', color: '#c59bff'},
-    {name: '总装', color: '#379b3a'},
-    {name: '喷漆', color: '#39c8c4'},
-	{name: '试飞', color: '#c93c3c'}
-];
+// // var data = [];
+// var dataCount = 10;
+// var startTime = +new Date();
+// console.log("startTime =  " + startTime);
+// var categories = ['J15-001', 'J15-002', 'J15-003'];
+// var types = [
+//     {name: '组合件', color: '#cbc344'},
+//     {name: '段件', color: '#3a5aff'},
+//     {name: '部装', color: '#8d2a35'},
+//     {name: '预总装', color: '#c59bff'},
+//     {name: '总装', color: '#379b3a'},
+//     {name: '喷漆', color: '#39c8c4'},
+// 	{name: '试飞', color: '#c93c3c'}
+// ];
 
 //-------------------------------------------------------------------------------------
 var data = [c1, c2, c3, c4, c5, c6, c7];
@@ -95,6 +95,7 @@ var c1=[], c2=[], c3=[], c4=[], c5=[], c6=[], c7=[];
 var names = [];
 var pNames = []; // c1+c2 型号-架次拼串
 var rNames = []; // c1+c2 型号-架次拼串
+var nameStyle = [];
 var steps = data.c3; // c3 阶段
 var pStartTimes = data.c4; // c4 计划开始时间
 var pEndTimes = data.c5; // c5 计划结束时间
@@ -168,10 +169,13 @@ rNames = [...new Set(rNames)];
 console.log("pNames[]=>", pNames);
 console.log("rNames[]=>", rNames);
 for(var i=0; i<pNames.length; i++) {
-	names.push(pNames[i])
-	names.push(rNames[i])
+	names.push(rNames[i]);
+	names.push(pNames[i]);
+	nameStyle.push("normal");
+	nameStyle.push("transparent");
 }
 console.log("names[]=>", names);
+console.log("nameStyle[]=>", nameStyle);
 
 // 第二步：组合数据 .Array
 var baseTime;
@@ -316,7 +320,7 @@ function renderItem2(params, api) {
     var categoryIndex = api.value(0);
     var start = api.coord([api.value(1), categoryIndex]);
     var end = api.coord([api.value(2), categoryIndex]);
-	console.log("api:::", api)
+	// console.log("api:::", api)
     var height = api.size([0, 1])[1] * 0.2;
 
     var rectShape = echarts.graphic.clipRectByRect({
@@ -393,6 +397,10 @@ option = {
 			type: 'category',
         	// data: yLabelItems,
 			data: names,
+			axisLabel: { // 设置label样式
+				show: true,
+			    color: nameStyle,
+			}
     	}
     ],
     series: [
