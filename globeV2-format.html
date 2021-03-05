@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>globe</title>
+<style>
+* {
+	margin: 0;
+	padding: 0;
+}
+body {
+	background: #0c2750;
+}
+
+.echarts {
+	/* width: 400px;
+	height: 400px; */
+	width: 800px;
+	height: 800px;
+	/* border: 1px solid #ccc; */
+}
+.btn-box {
+	padding: 20px;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+.btn-box button {
+	display: block;
+	background-color: transparent;
+	background: #1344ad;
+	border: 1px solid #bfbf00;
+	padding: 4px 15px;
+	border-radius: 5px;
+	margin-bottom: 20px;
+	color: #fff;
+}
+</style>
+
+<script src="js/jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/echarts.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/echarts-gl.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+
+<body>
+
+<div id="echarts" class="echarts"></div>
+
+<div class="btn-box">
+	<button type="button" onclick="reset()">复位</button>
+	<button type="button" onclick="china()">中国</button>
+	<!-- <button type="button" onclick="goThere()">定位某点</button> -->
+	<button type="button" onclick="goOn()">继续</button>
+</div>
+
+</body>
+
+<script>
+	
+// 整体的数据初始化
+var fColors = ["#3fa8d8", "#f2eb00"]; // 定义点和线条颜色
+
+var tCity = ["吉林", "北京", "天津", "上海", "新疆", "成都", "南海诸岛1", "南海诸岛2"] // 地点 C0
+var tLng = [/*"122.3438",*/ "126.4746", "116.4551", "117.4219", "121.4648", "89.9023", "103.9526", "115.5", "112.01"]; // 经度 C0
+var tLat = [/*"41.0889", */"43.5938", "40.2539", "39.4189", "31.2891", "41.748", "30.7617", "9.9", "12.4"]; // 纬度 C1
+var tType = ["空军", "空军", "空军", "空军", "海军", "海军", "海军", "海军"]; // 军种 C2
+
+var tJc = ["0102", "0203", "0304", "0405", "0506", "0607", "0815"] // 架次 C3
+var tNum = [5, 10, 15, 30, 6, 12, 3, 1] // 数量C4
+var tForce = ["空1军", "空93033师", "空93团", "空2旅", "空2军", "空12团", "空100团", "空100团"] // 服役部队 C5 
+var basePoint = ["122.3438", "41.0889"]; // 基准点，沈阳 基准点，筛选出的数据
+
+var option;
+// 坐标点
+var spotColor = '#0087f4'; // 点颜色
+var fontColor = ' #ffff00'; // 文字颜色
+var mapSpots = [];
+var lineData = [];
+var lineColors = ["#3fa8d8", "#f2eb00"]
+
+var config = {
+	color: '#750be8',
+	levels: 1, 
+	intensity: 4, // 强度
+	threshold: 0.01 // 起始点
+}
+
+function makeData() {
+	
+	// 点
+	for(var n = 0; n < tLng.length; n++) {
+		// mapSpots[n] = [tLng[n], tLat[n]];
+		mapSpots.push({
+			name: tCity[n],
+			value: [tLng[n], tLat[n]]
+		})
+	}
+	mapSpots.push({
+		name: "沈阳",
+		value: basePoint
+	})
+	console.log("mapSpots:::>", mapSpots);
+		
+	// 线
+	lineData = [];
+	for(var m = 0; m < mapSpots.length; m++) {
+		lineData.push({
+			coords: [basePoint, mapSpots[m].value],
+			value: (Math.random() * 3000).toFixed(2)
+		})
+	}
+	console.log("lineData:::>>", lineData);
+	
+	drawEarth();
+	
+}
+	
+var chart = echarts.init(document.getElementById("echarts")); //初始化chart容器
+
+function drawEarth() {
+	option = {
+		backgroundColor: 'transparent',
+		globe: {
+			baseTexture: "img/10.jpg",
+			heightTexture: "img/10.jpg",
+			displacementScale: 0.04,
+			shading: 'realistic',
+			// environment: 'img/starfield.jpg',
+			realisticMaterial: {
+				roughness: 0.9
+			},
+			postEffect: {
+				enable: true
+			},
+			viewControl: { // 控制部位
+				alpha: 30,
+				beta: 170,
+	//			    targetCoord: [123.38, 41.8], // 目标坐标
+				autoRotate: true, // 是否自动旋转
+				autoRotateAfterStill: 5,
+				distance: 200, // 缩放距离 
+				autoRotateSpeed:4
+			},
+			light: {
+				main: {
+					intensity: 2.5, // 地球光照强度
+					shadow: true
+				},
+				// ambientCubemap: {
+				// 	texture: 'js/pisa.hdr',
+				// 	diffuseIntensity: 0.2
+				// }
+			}
+		},
+		series: [{
+			name: 'lines3D',
+			type: 'lines3D',
+			coordinateSystem: 'globe',
+			effect: {
+				show: true,
+				period: 2,
+				trailWidth: 3, // 动态线条宽度
+				trailLength: 0.7,
+				trailOpacity: 1,
+				symbol: 'arrow', //箭头图标
+				symbolSize: 2, //图标大小
+				// trailColor: '#0087f4' ,// 动态线条颜色
+				trailColor: lineColors[0]// 动态线条颜色
+			},
+			blendMode: 'lighter',
+			lineStyle: { // 发射线条颜色
+				width: 5, // 动态线条宽度
+				opacity: 1,
+				// color: '#0087f4' ,// 静态线条颜色
+				color: lineColors[0] // 静态线条颜色
+			},
+			silent: false,
+			data: []
+		},{ //点
+			name: '坐标',
+			type: 'scatter3D',
+			blendMode: 'lighter',
+			coordinateSystem: 'globe',
+			showEffectOn: 'render',
+			zlevel: 2,
+			effectType:"ripple", 
+			symbolSize: 15,
+			rippleEffect: {
+				period: 4,
+				scale: 4,
+				brushType: 'fill'
+			},
+			showEffectOn: 'hover', 
+			hoverAnimation: true,
+			label: { // 地图上点名称
+				normal: {
+					show: true,
+					position: 'right',
+					formatter: function(params, api){ // 此处为自动循环
+						// console.log("params ==>>", params)
+						console.log("第"+params.dataIndex+"个点:", params.dataIndex)
+						return params.name
+					},
+					textStyle: { // 亮点文本效果
+						fontSize: 16,
+						backgroundColor:'transparent',
+						// color: '#ffff00',
+						color: fontColor,
+						
+					}
+				}
+			},
+			itemStyle: { // 坐标点颜色
+				normal: {
+					// color: '#0087f4',
+					color: spotColor
+				}
+			},
+			data: [] // 绘制地图上的点
+		}]
+	};
+
+	option.series[0].data = lineData;
+	option.series[1].data = mapSpots;
+
+	chart.setOption(option);
+}
+
+function reset() {
+	chart.setOption(option);
+}
+
+var there = [122.3438, 41.08];
+
+// 指定显示中国地图
+function china() {
+	//  控制globe中的viewControl进行旋转、缩放等控制可以实现定位
+	var chart = echarts.init(document.getElementsByClassName("echarts")[0])
+	chart.setOption({
+		globe: {
+			viewControl: { // 控制部位
+				alpha: 30,
+				beta: 160,
+			    targetCoord: [104.07, 30.67], // 目标坐标
+				autoRotate: false, // 是否自动旋转
+				autoRotateAfterStill: 10,
+				distance: 140, // 缩放距离 
+				autoRotateSpeed: 4
+			},
+		},
+	});
+}
+
+// 显示地图某个确定的点
+function goThere(there) {
+	// reset();
+	console.log("咱往这里走：：：：：：：", there);
+	//  控制globe中的viewControl进行旋转、缩放等控制可以实现定位
+	var chart = echarts.init(document.getElementsByClassName("echarts")[0])
+	chart.setOption({
+		globe: {
+			viewControl: { // 控制部位
+				alpha: 30,
+				beta: 160,
+			    // targetCoord: [123.38, 41.8], // 目标坐标
+				targetCoord: there, // 目标坐标
+				autoRotate: false, // 是否自动旋转
+				autoRotateAfterStill: 10,
+				distance: 60, // 缩放距离 
+				autoRotateSpeed: 4
+			},
+		},
+	});
+}
+
+function goOn() {
+	var chart = echarts.init(document.getElementsByClassName("echarts")[0])
+	chart.setOption({
+		globe: {
+			viewControl: { // 控制部位
+//			    targetCoord: [123.38, 41.8], // 目标坐标
+				autoRotate: true, // 是否自动旋转
+				autoRotateAfterStill: 10,
+				distance: 200, // 缩放距离 
+			},
+		},
+	});
+}
+
+window.onload = makeData();
+
+</script>
+</html>
