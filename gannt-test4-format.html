@@ -8,7 +8,7 @@
 <style type="text/css">
 #echarts {
 	width: 800px;
-	height: 500px;
+	height: 700px;
 	border: 1px solid #ccc;
 	margin: 30px;
 }
@@ -329,7 +329,7 @@ function makeData() {
 		var start = api.coord([api.value(1), categoryIndex]);
 		var end = api.coord([api.value(2), categoryIndex]);
 		// console.log("api:::", api)
-		var height = api.size([0, 1])[1] * 0.4;
+		var height = api.size([0, 1])[1] * 0.6;
 
 		var rectShape = echarts.graphic.clipRectByRect({
 			x: start[0],
@@ -355,7 +355,7 @@ function makeData() {
 		var start = api.coord([api.value(1), categoryIndex]);
 		var end = api.coord([api.value(2), categoryIndex]);
 		// console.log("api:::", api)
-		var height = api.size([0, 1])[1] * 0.2;
+		var height = api.size([0, 1])[1] * 0.3;
 
 		var rectShape = echarts.graphic.clipRectByRect({
 			x: start[0],
@@ -401,7 +401,7 @@ function makeData() {
 			type: 'slider',
 			filterMode: 'weakFilter',
 			showDataShadow: false,
-			top: 400,
+			bottom: 90,
 			height: 10,
 			borderColor: 'transparent',
 			backgroundColor: '#f9f9f9',
@@ -418,7 +418,8 @@ function makeData() {
 			type: 'inside',
 			filterMode: 'weakFilter',
 			zoomOnMouseWheel: false,
-		}, {
+		}, 
+		{
 			type: 'slider',
 			yAxisIndex: 0,
 			zoomLock: true,
@@ -427,24 +428,24 @@ function makeData() {
 			top: 50,
 			// bottom: 20,
 			start: 0,
-			end: 30,
+			end: 40,
 			handleSize: 0,
 			showDetail: false,
 			borderColor: 'transparent',
 			backgroundColor: '#f9f9f9',
 			fillerColor: "#cbd1da", 
 		}, {
-			type: 'inside',
 			id: 'insideY',
+			type: 'inside',
 			yAxisIndex: 0,
 			start: 0,
-			end: 30,
+			end: 40,
 			zoomOnMouseWheel: false,
 			moveOnMouseMove: true,
 			moveOnMouseWheel: true
 		}],
 		grid: {
-			height: 300
+			height: 500
 		},
 		xAxis: {
 			// min: baseTime,
