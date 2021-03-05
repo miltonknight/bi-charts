@@ -24,175 +24,237 @@ var params = global.params;
 /**
 * 渲染图形
 */
-function renderChart(data){
+
+// 整体的数据初始化
+var fColors = ["#3fa8d8", "#f2eb00"]; // 定义点和线条颜色
+var tCity = []; // 地点 C0
+var tLng = []; // 经度 C1
+var tLat = []; // 纬度 C2
+var tType = []; // 军种 C3
+
+tCity = ["吉林", "北京", "天津", "上海", "新疆", "成都", "南海诸岛1", "南海诸岛2"] // 地点 C0
+tLng = [/*"122.3438",*/ "126.4746", "116.4551", "117.4219", "121.4648", "89.9023", "103.9526", "115.5", "112.01"]; // 经度 C0
+tLat = [/*"41.0889", */"43.5938", "40.2539", "39.4189", "31.2891", "41.748", "30.7617", "9.9", "12.4"]; // 纬度 C1
+tType = ["空军", "空军", "空军", "空军", "海军", "海军", "海军", "海军"]; // 军种 C2
+
+var tJc = ["0102", "0203", "0304", "0405", "0506", "0607", "0815"] // 架次 
+var tNum = [5, 10, 15, 30, 6, 12, 3, 1] // 数量
+var tForce = ["空1军", "空93033师", "空93团", "空2旅", "空2军", "空12团", "空100团", "空100团"] // 服役部队 
+var basePoint = ["122.3438", "41.0889"]; // 基准点，沈阳 基准点，筛选出的数据
+
+var option;
+// 坐标点
+var spotColor = '#0087f4'; // 点颜色
+var fontColor = ' #ffff00'; // 文字颜色
+var mapSpots = [];
+var lineData = [];
+var lineColors = ["#3fa8d8", "#f2eb00"]
+
+function makeData(data){
 	console.log("newdata  C0",data.c0[2])
 	console.log("newdata  C1",data.c1[2])
 	console.log("newdata  C2",data.c2[2])
-    //sData = { //显示的数据
-    //     "name": data.c0,
-    //     "num": data.c2
-	//}
-	//max = data.c1 //最大数值
-    chart.setOption({
-	/****************************************/ 
-	    angleAxis: {
-			show: false,
-			// max: max * 3 / 2, //这里将极坐标最大值转换成仪表盘的最大值，(360度除以240度)
-			max: data.c1[2] * 2 / 1, //这里将极坐标最大值转换成仪表盘的最大值，(360度除以240度)
-			type: 'value',
-			startAngle: 180, //极坐标初始角度，从第一象限算起，大约在7-8点钟角度之间
-			endAngle: 0,
-			splitLine: {
-			  show: false //隐藏坐标
+	tCity = data.c0; // 地点 C0
+	tLng = data.c1; // 经度 C1
+	tLat = data.c2; // 纬度 C2
+	tType = data.c3; // 军种 C3
+	
+	// 点
+	for(var n = 0; n < tLng.length; n++) {
+	// mapSpots[n] = [tLng[n], tLat[n]];
+	mapSpots.push({
+		name: tCity[n],
+		value: [tLng[n], tLat[n]]
+	})
+	}
+	mapSpots.push({
+	name: "沈阳",
+	value: basePoint
+	})
+	console.log("mapSpots:::>", mapSpots);
+
+	// 线
+	lineData = [];
+	for(var m = 0; m < mapSpots.length; m++) {
+	lineData.push({
+		coords: [basePoint, mapSpots[m].value],
+		value: (Math.random() * 3000).toFixed(2)
+	})
+	}
+	console.log("lineData:::>>", lineData);
+	
+	option = {
+		backgroundColor: 'transparent',
+		globe: {
+			baseTexture: "img/10.jpg",
+			heightTexture: "img/10.jpg",
+			displacementScale: 0.04,
+			shading: 'realistic',
+			// environment: 'img/starfield.jpg',
+			realisticMaterial: {
+				roughness: 0.9
+			},
+			postEffect: {
+				enable: true
+			},
+			viewControl: { // 控制部位
+				alpha: 30,
+				beta: 170,
+	//			    targetCoord: [123.38, 41.8], // 目标坐标
+				autoRotate: true, // 是否自动旋转
+				autoRotateAfterStill: 5,
+				distance: 200, // 缩放距离 
+				autoRotateSpeed:4
+			},
+			light: {
+				main: {
+					intensity: 2.5, // 地球光照强度
+					shadow: true
+				},
+				// ambientCubemap: {
+				// 	texture: 'js/pisa.hdr',
+				// 	diffuseIntensity: 0.2
+				// }
 			}
-		},
-		barMaxWidth: 10, //圆环宽度
-		radiusAxis: { //隐藏坐标
-			show: false,
-			type: 'category',
-		},
-		polar: { //设置圆环位置和大小
-			center: ['50%', '50%'],
-			radius: '150%',
 		},
 		series: [{
-			type: 'bar',
-			data: [{ //上层圆环，用于显示真实数据
-				value: data.c2[2],
-				itemStyle: {
-					color: { //图形渐变颜色方法，四个数字分别代表，右，下，左，上，offset表示0%到100%
-						type: 'linear',
-						x: 0,
-						y: 0,
-						x2: 1, //从左到右 0-1
-						y2: 0,
-						colorStops: [{
-						  offset: 0,
-						  // color: '#CD48AE' // 0% 处的颜色
-						  color: '#0a3b6d' // 0% 处的颜色 [0].#0061ff [1].#4bd867 [2].#0a3b6d
-						}, {
-						  offset: 1,
-						  // color: '#2CABFC' // 100% 处的颜色
-						  color: '#06ff81' // 100% 处的颜色 [0].#03fcff [1].#f1e67b [2].#06ff81
-						}],
-						globalCoord: false // 缺省为 false
+			name: 'lines3D',
+			type: 'lines3D',
+			coordinateSystem: 'globe',
+			effect: {
+				show: true,
+				period: 2,
+				trailWidth: 3, // 动态线条宽度
+				trailLength: 0.7,
+				trailOpacity: 1,
+				symbol: 'arrow', //箭头图标
+				symbolSize: 2, //图标大小
+				// trailColor: '#0087f4' ,// 动态线条颜色
+				trailColor: lineColors[0]// 动态线条颜色
+			},
+			blendMode: 'lighter',
+			lineStyle: { // 发射线条颜色
+				width: 5, // 动态线条宽度
+				opacity: 1,
+				// color: '#0087f4' ,// 静态线条颜色
+				color: lineColors[0] // 静态线条颜色
+			},
+			silent: false,
+			data: []
+		},{ //点
+			name: '坐标',
+			type: 'scatter3D',
+			blendMode: 'lighter',
+			coordinateSystem: 'globe',
+			showEffectOn: 'render',
+			zlevel: 2,
+			effectType:"ripple", 
+			symbolSize: 15,
+			rippleEffect: {
+				period: 4,
+				scale: 4,
+				brushType: 'fill'
+			},
+			showEffectOn: 'hover', 
+			hoverAnimation: true,
+			label: { // 地图上点名称
+				normal: {
+					show: true,
+					position: 'right',
+					formatter: function(params, api){ // 此处为自动循环
+						// console.log("params ==>>", params)
+						console.log("第"+params.dataIndex+"个点:", params.dataIndex)
+						return params.name
 					},
-					shadowColor: 'rgba(255, 255, 255, 0.2)', //加白色阴影产生高亮效果
-					shadowBlur: 10
+					textStyle: { // 亮点文本效果
+						fontSize: 16,
+						backgroundColor:'transparent',
+						// color: '#ffff00',
+						color: fontColor,
+						
 					}
-				},
-			],
-			barGap: '-100%', //柱间距离,用来将上下两层圆环重合
-			coordinateSystem: 'polar', //类型，极坐标
-			roundCap: true, //顶端圆角
-			z: 2 //圆环层级，和zindex相似
-		}, { //下层圆环，用于显示最大值
-			type: 'bar',
-			data: [{
-				value: data.c1[2],
-				itemStyle: {
-				  color: '#03b5c3', // 背景色
-				  shadowColor: 'rgba(0, 0, 0, 0.2)', //加白色阴影产生高亮效果
-				  shadowBlur: 5,
-				  shadowOffsetY: 2
-				}
-			}],
-			barGap: '-100%', //柱间距离,用来将上下两层圆环重合
-			coordinateSystem: 'polar', //类型，极坐标
-			roundCap: true, //顶端圆角
-			z: 1 //圆环层级，和zindex相似
-		},
-		{ //仪表盘
-			type: 'gauge',
-			radius: '140px', // 调整数值改变刻度圈大小原来66%
-			startAngle: 180, //起始角度，同极坐标
-			endAngle: 0, //终止角度，同极坐标
-			max: data.c2,
-			splitNumber: 15, //分割线个数（除原点外）
-			axisLine: { // 坐标轴线
-				show: true,
-				length: 5,
-				lineStyle: {
-					width: 0,
 				}
 			},
-			pointer: {
-				show: false,
-			},
-			axisLabel: {
-				// 坐标轴数字
-				show: false,
-				textStyle: {
-					fontSize: 8,
-					color: "#13B5FC"
-				},
-			},
-			axisTick: { // 坐标轴标记
-				show: true,
-				length: 10,
-				lineStyle: {
-					color: "#13B5FC"
+			itemStyle: { // 坐标点颜色
+				normal: {
+					// color: '#0087f4',
+					color: spotColor
 				}
 			},
-			splitLine: { // 分隔线
-				length: 5,
-				lineStyle: {
-					width: 1,
-				}
-			},
-			title: { //标题，显示仪表盘标题
-				textStyle: {
-					color: '#fff',
-					shadowColor: '#fff',
-					fontSize: 30,
-				},
-				offsetCenter: ["0", '18%'] //位置偏移
-			},
-			detail: { //仪表盘数值
-				formatter: function (params) {
-					var name = data.c2[2].toString();
-					var list = ''
-					for (var i = 0; i < name.length; i++) {
-						list += '{value|' + name[i] + '}' //每个数字用border隔开
-						if (i !== name.length - 1) {
-							list += '{margin|}' //添加margin值
-						}
-					}
-					return [list]
-				},
-				offsetCenter: ["0", '-20%'],
-					rich: { //编辑富文本样式
-						value: {
-							lineHeight: 1000,
-							fontSize: '60',
-							fontWeight: 'bold',
-							color: '#2ddeff',
-							// width: 24,
-							// height: 42,
-							// borderColor: '#02A0F0',
-							// borderWidth: 2,
-							// borderRadius: 5,
-							// padding: [0, 0, 4, 0],
-							// shadowColor: 'rgb(2,157,239)',
-							// shadowBlur: 5
-						},
-						margin: {
-							width: 1,
-							height: 10,
-						}
-					}
-				},
-				data: [{
-				  value: data.c2[2],
-				  name: data.c0[2]
-				}]
-			}
-		]
-  
-	//chart.setOption(option)
-	/****************************************/
-   })
+			data: [] // 绘制地图上的点
+		}]
+	};
+	
+	option.series[0].data = lineData;
+	option.series[1].data = mapSpots;
+	
+	chart.setOption(option);
+   
 }
+
+
+function reset() {
+	chart.setOption(option);
+}
+
+var there = [122.3438, 41.08];
+
+// 指定显示中国地图
+function china() {
+	//  控制globe中的viewControl进行旋转、缩放等控制可以实现定位
+	var chart = echarts.init(document.getElementsByClassName("echarts")[0])
+	chart.setOption({
+		globe: {
+			viewControl: { // 控制部位
+				alpha: 30,
+				beta: 160,
+			    targetCoord: [104.07, 30.67], // 目标坐标
+				autoRotate: false, // 是否自动旋转
+				autoRotateAfterStill: 10,
+				distance: 140, // 缩放距离 
+				autoRotateSpeed: 4
+			},
+		},
+	});
+}
+
+// 显示地图某个确定的点
+function goThere(there) {
+	// reset();
+	console.log("咱往这里走：：：：：：：", there);
+	//  控制globe中的viewControl进行旋转、缩放等控制可以实现定位
+	var chart = echarts.init(document.getElementsByClassName("echarts")[0])
+	chart.setOption({
+		globe: {
+			viewControl: { // 控制部位
+				alpha: 30,
+				beta: 160,
+			    // targetCoord: [123.38, 41.8], // 目标坐标
+				targetCoord: there, // 目标坐标
+				autoRotate: false, // 是否自动旋转
+				autoRotateAfterStill: 10,
+				distance: 60, // 缩放距离 
+				autoRotateSpeed: 4
+			},
+		},
+	});
+}
+
+function goOn() {
+	var chart = echarts.init(document.getElementsByClassName("echarts")[0])
+	chart.setOption({
+		globe: {
+			viewControl: { // 控制部位
+//			    targetCoord: [123.38, 41.8], // 目标坐标
+				autoRotate: true, // 是否自动旋转
+				autoRotateAfterStill: 10,
+				distance: 200, // 缩放距离 
+			},
+		},
+	});
+}
+
+
 /**
  * 初始化节点数据时触发
 * @param {Object} data
@@ -201,7 +263,9 @@ function renderChart(data){
 global.init = function(data) {
 	
 	chart = echarts.init(body.querySelector("#echarts"));
-	renderChart(data);
+		
+	makeData(data);
+	// renderChart(data);
 	//对外发起联动
 	chart.on('click', function(param){
 		 global.postMessage({
@@ -217,7 +281,8 @@ global.init = function(data) {
  * @param {Object} param 联动筛选的数据
  */
 global.update = function(data, param) {
-	renderChart(data);
+	// renderChart(data);
+	makeData(data);
 }
 
 /**
